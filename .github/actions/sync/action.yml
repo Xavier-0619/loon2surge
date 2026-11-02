@@ -46,7 +46,10 @@ runs:
         LIMIT: ${{ inputs.limit }}
       run: |
         set -o pipefail
-        ARGS="--jobs 8 --delay 0.2"
+        # --fetcher auto：有 python3 就借它的 OpenSSL TLS 栈下载（Cloudflare 认指纹），
+        # 没有才退回 Go 原生。并发压在 4，避免在 Cloudflare 面前形成突发。
+        # --commit-file：让程序把"改了哪些模块 + 可莉更新时间"写成提交信息，shell 拼不出来
+        ARGS="--fetcher auto --jobs 4 --delay 0.15 --commit-file $RUNNER_TEMP/commit-msg.txt"
         case "$LIMIT" in
           ""|0) ;;
           *) ARGS="$ARGS --limit $LIMIT" ;;
@@ -59,6 +62,7 @@ runs:
       run: |
         plugins=$(find loon -name '*.lpx' 2>/dev/null | wc -l)
         modules=$(find surge -name '*.sgmodule' 2>/dev/null | wc -l)
+        channel=$(grep -m1 '下载通道' sync.log 2>/dev/null | sed 's/^下载通道：//' || true)
         {
           echo ""
           echo "### 📊 仓库现状"
@@ -67,14 +71,14 @@ runs:
           echo "| --- | --- |"
           echo "| 🧩 Loon 插件 | $plugins |"
           echo "| 📦 Surge 模块 | $modules |"
+          echo "| 🔌 下载通道 | ${channel:-未知} |"
         } >> "$GITHUB_STEP_SUMMARY"
 
     - name: 🚀 提交并推送
       if: inputs.probe != 'true'
       shell: bash
       run: |
-        DATE=$(TZ=Asia/Shanghai date +%F)
-        STATS=$(grep -o '统计：.*' sync.log | tail -1 || true)
+        MSG="$RUNNER_TEMP/commit-msg.txt"
 
         git add -A
         if git diff --cached --quiet; then
@@ -82,9 +86,21 @@ runs:
           exit 0
         fi
 
+        # 提交信息由 loon2surge 生成：标题是北京日期，正文列出新增/更新/删除的模块
+        # 和可莉那边的时间。程序没写出来（例如提前失败）就退回一句话，别让推送卡住。
+        if [ ! -s "$MSG" ]; then
+          printf '🔄 自动更新 %s\n\n本轮有插件变更\n' "$(TZ=Asia/Shanghai date +%F)" > "$MSG"
+        fi
+
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git commit -m "🔄 自动更新 $DATE" -m "${STATS:-本轮有插件变更}"
+        git commit -F "$MSG"
         git push
 
-        echo "🚀 已推送：\`🔄 自动更新 $DATE\`" >> "$GITHUB_STEP_SUMMARY"
+        {
+          echo "🚀 已推送：\`$(head -n1 "$MSG")\`"
+          echo ""
+          echo '```'
+          sed -n '3,$p' "$MSG" | head -30
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"

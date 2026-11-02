@@ -2,6 +2,7 @@ package kelee
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"strings"
 	"sync/atomic"
 	"testing"
+	"time"
 )
 
 const samplePlugin = `#!name=测试插件
@@ -75,9 +77,10 @@ func newFakeSite(t *testing.T, plugins map[string]string) *fakeSite {
 	return site
 }
 
-// sourcesFor 只保留本地站点，避免测试真的去访问 kelee.one。
+// sources 只保留本地站点，避免测试真的去访问 kelee.one；
+// 用 Go 通道跑，省掉每个请求一个 python 进程的开销。
 func (s *fakeSite) sources() *Sources {
-	src := NewSources("")
+	src, _ := NewSourcesWith("", "go")
 	src.hosts = []string{s.server.URL}
 	return src
 }
@@ -333,7 +336,10 @@ func TestRequestShapeMatchesLoonClient(t *testing.T) {
 	}))
 	defer server.Close()
 
-	sources := NewSources("")
+	sources, err := NewSourcesWith("", "go") // 这条用例检查的是 Go 通道的请求形状
+	if err != nil {
+		t.Fatalf("建通道失败：%v", err)
+	}
 	if _, err := sources.Fetch(server.URL + "/Tool/Loon/Lpx/a.lpx"); err != nil {
 		t.Fatalf("请求失败：%v", err)
 	}
@@ -354,7 +360,11 @@ func TestRequestShapeMatchesLoonClient(t *testing.T) {
 		t.Errorf("应只走 HTTP/1.1，实际 %s", proto)
 	}
 
-	transport, ok := sources.client.Transport.(*http.Transport)
+	channel, ok := sources.sender.(*goSender)
+	if !ok {
+		t.Fatal("下载通道不是 Go 原生，请求特征不再可控")
+	}
+	transport, ok := channel.client.Transport.(*http.Transport)
 	if !ok {
 		t.Fatal("传输层被换掉了，请求特征不再可控")
 	}
@@ -366,6 +376,93 @@ func TestRequestShapeMatchesLoonClient(t *testing.T) {
 	}
 	if !transport.DisableCompression {
 		t.Errorf("自动 gzip 没关掉，会多出一个 Accept-Encoding 头")
+	}
+}
+
+// TestCommitMessage 检查提交正文说清了"动了哪些模块"和"可莉什么时候更新的"。
+func TestCommitMessage(t *testing.T) {
+	entries := []Entry{
+		{Stem: "Alpha", Date: "2026-10-02 13:57:49", Status: StatusOK},
+		{Stem: "Beta", Date: "2026-10-02 13:57:49", Status: StatusOK},
+	}
+	now := time.Date(2026, 11, 2, 18, 30, 0, 0, time.UTC) // 北京 11-03 02:30
+
+	message := commitMessage(entries, []string{"Alpha"}, []string{"Beta"}, nil, nil, now)
+	for _, want := range []string{
+		"🔄 自动更新 2026-11-03",
+		"新增 1 · 更新 1 · 删除 0 · 失败 0 · 合计 2",
+		"新增模块（可莉更新 2026-10-02 13:57:49）：",
+		"- Alpha.sgmodule",
+		"更新模块（可莉更新 2026-10-02 13:57:49）：",
+		"- Beta.sgmodule",
+		"同步时间：2026-11-03 02:30:00（北京时间）",
+	} {
+		if !strings.Contains(message, want) {
+			t.Errorf("提交信息里缺少 %q：\n%s", want, message)
+		}
+	}
+	if strings.Contains(message, "删除模块") {
+		t.Errorf("没有删除时不该留一个空小节：\n%s", message)
+	}
+
+	// 多数派日期提到标题，少数派逐条标；超过 60 条折叠
+	many := make([]Entry, 0, 70)
+	stems := make([]string, 0, 70)
+	for i := 0; i < 70; i++ {
+		stem := fmt.Sprintf("Mod%02d", i)
+		date := "2026-10-02 13:57:49"
+		if i%35 == 0 { // 两条少数派
+			date = "2026-10-19 23:24:57"
+		}
+		many = append(many, Entry{Stem: stem, Date: date, Status: StatusOK})
+		stems = append(stems, stem)
+	}
+	message = commitMessage(many, stems, nil, nil, nil, now)
+	if !strings.Contains(message, "新增模块（可莉更新 2026-10-02 13:57:49）：") {
+		t.Errorf("多数派日期应提到小标题：\n%s", message[:200])
+	}
+	if got := strings.Count(message, "可莉更新 2026-10-19 23:24:57"); got != 2 {
+		t.Errorf("少数派应逐条标注，期望 2 处，得到 %d", got)
+	}
+	if got := strings.Count(message, "可莉更新 2026-10-02 13:57:49"); got != 1 {
+		t.Errorf("多数派日期不该在每行重复，期望只出现在标题，得到 %d 处", got)
+	}
+	if !strings.Contains(message, "- 其余 10 个略") {
+		t.Errorf("超过 60 条应折叠：\n%s", message)
+	}
+
+	// 日期不一致时逐条标注；下架的模块没有日期
+	entries[1].Date = "2026-10-19 23:24:57"
+	message = commitMessage(entries, nil, []string{"Alpha", "Beta"}, []string{"Gone"}, nil, now)
+	for _, want := range []string{
+		"- Alpha.sgmodule · 可莉更新 2026-10-02 13:57:49",
+		"- Beta.sgmodule · 可莉更新 2026-10-19 23:24:57",
+		"- Gone.sgmodule · 上游已下架",
+	} {
+		if !strings.Contains(message, want) {
+			t.Errorf("提交信息里缺少 %q：\n%s", want, message)
+		}
+	}
+}
+
+// TestPythonChannel 确认嵌入的 pyfetch.py 真的能跑：它是绕开 Cloudflare
+// TLS 指纹质询的关键一环，脚本写坏了必须在这里就暴露。
+func TestPythonChannel(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("hello"))
+	}))
+	defer server.Close()
+
+	sources, err := NewSourcesWith("", "python")
+	if err != nil {
+		t.Skipf("这台机器没有 python3：%v", err)
+	}
+	body, err := sources.Fetch(server.URL + "/x.lpx")
+	if err != nil {
+		t.Fatalf("python 通道下载失败：%v", err)
+	}
+	if string(body) != "hello" {
+		t.Fatalf("下载内容不对：%q", body)
 	}
 }
 

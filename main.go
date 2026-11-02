@@ -1,7 +1,7 @@
 // loon2surge 把 Loon 插件（.lpx）转换成 Surge 模块（.sgmodule）。
 //
 //	loon2surge convert <文件/目录> [-o 输出] [--check] [--report 报告.json]
-//	loon2surge sync    [--root .] [--jobs 8] [--probe] [--dry-run]
+//	loon2surge sync    [--root .] [--jobs 4] [--fetcher auto] [--probe] [--dry-run]
 package main
 
 import (
@@ -42,6 +42,8 @@ sync 选项：
   --root          仓库根目录，默认当前目录
   --jobs          并发数，默认 8
   --mirror        备用站点前缀（也可用环境变量 KLEE_MIRROR）
+  --fetcher       下载通道：auto（默认，有 python3 就借它的 TLS 栈）/ python / go
+  --commit-file   把提交信息（模块清单 + 可莉更新时间）写到指定文件
   --index-file    用本地 list.json 代替在线列表
   --only          只处理这些文件名（逗号分隔）
   --limit         只处理前 N 个（调试用）
@@ -51,7 +53,7 @@ sync 选项：
 示例：
   loon2surge convert Loon/知乎去广告.lpx -o Surge/
   loon2surge convert Loon -o Surge --report build/report.json
-  loon2surge sync --root . --jobs 8
+  loon2surge sync --root . --jobs 4
 `
 
 func main() {

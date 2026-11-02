@@ -38,7 +38,8 @@ go build -o loon2surge .          # 需要 Go 1.22+
 | 命令 | 作用 |
 | --- | --- |
 | `loon2surge convert <文件\|目录\|-> [-o 输出] [--check] [--report x.json]` | 转换插件；`-` 表示读标准输入 |
-| `loon2surge sync [--root .] [--jobs 8] [--probe] [--dry-run]` | 同步可莉插件中心并转换成模块 |
+| `loon2surge sync [--root .] [--jobs 4] [--probe] [--dry-run]` | 同步可莉插件中心并转换成模块 |
+| `loon2surge sync --fetcher go` | 强制用 Go 原生通道下载（默认 auto：有 python3 就借它的 TLS 栈） |
 | `loon2surge sync --index-file list.json` | 用本地列表离线调试 |
 | `loon2surge sync --only A,B --limit 5` | 只处理指定/前 N 个（调试用，不会误删其它插件） |
 | `loon2surge version` | 版本号 |
@@ -63,17 +64,32 @@ hub.kelee.one/list.json ──► loon/*.lpx ──► surge/*.sgmodule
 | 🔨 编译转换器 | 只编译一次，后面全部复用二进制 |
 | 📡 上游连通性自检 | 手动触发时可选，先看是不是被 403 |
 | 🔄 拉取插件并转换 | 下载 → 哈希比对 → 转换，8 并发 |
-| 📊 汇总仓库现状 | 把插件/模块数量写进 Job Summary |
-| 🚀 提交并推送 | 提交信息带日期：`🔄 自动更新 2026-11-02` |
+| 📊 汇总仓库现状 | 把插件/模块数量、实际下载通道写进 Job Summary |
+| 🚀 提交并推送 | 提交信息由程序生成：标题是北京日期，正文列出这次动过的模块 |
 | 🩺 汇报失败 | 同步出错时把整轮标红，但已成功的改动照样落盘 |
 
-提交信息长这样，日期在标题里，统计在正文：
+提交信息由 `loon2surge` 直接生成（`--commit-file`），标题只放北京日期，正文说清动了什么：
 
 ```
-🔄 自动更新 2026-11-02
+🔄 自动更新 2026-11-03
 
-统计：新增 1 · 更新 3 · 删除 0 · 失败 0 · 合计 275
+新增 1 · 更新 2 · 删除 1 · 失败 0 · 合计 275
+
+新增模块（可莉更新 2026-10-02 13:57:49）：
+- BlockAdvertisers.sgmodule
+
+更新模块：
+- Zhihu_remove_ads.sgmodule · 可莉更新 2026-10-19 23:24:57
+- Stream_Check.sgmodule · 可莉更新 2026-10-02 13:57:49
+
+删除模块：
+- Old_Plugin.sgmodule · 上游已下架
+
+同步时间：2026-11-03 02:31:05（北京时间）
 ```
+
+时间一律取可莉 `list.json` 里的 `date`，不是本机同步时刻；组内日期一致就提到小标题上，
+不一致才逐条标注，免得二十行重复同一个时间。单个分组超过 60 条会折叠成"其余 N 个略"。
 
 **对比方式**：上游的 `date` 字段是站点重建时间（275 条里 273 条完全相同），当不了版本号。
 所以每轮都下载并算 SHA-256，哈希没变就不落盘、不重转，`index.json` 也不会重写——
@@ -90,19 +106,34 @@ Git 里不会出现"只改时间戳"的空提交。
 
 ### 被 Cloudflare 拦住怎么办
 
-`kelee.one` 挂着 Cloudflare 的机器人防护，放行与否同时看**出口 IP** 和**客户端特征**，
-被拒时是直接 403（不是人机验证）。请求这一侧已经照上游同款实现的成功配置对齐：
+`kelee.one` 挂着 Cloudflare 的机器人防护，它看三样东西：**出口 IP**、**请求头**、
+**TLS 握手指纹**（JA3/JA4）。前两样能对齐，第三样在 Go 里根本改不了：
+
+> Go 的 `crypto/tls` 发出的 ClientHello 是公开指纹，Cloudflare 直接判成自动化流量，
+> 回 `403 + cf-mitigated=challenge`（托管质询）。这不是 IP 封锁——换 IP 也没用，
+> 同一个 runner 上换成 Python 的 OpenSSL 栈就能过，上游同款项目正是这么做的。
+
+所以下载这一步改成"借外部 TLS 栈"：`python3` 里的 `urllib` 负责取字节（嵌入式脚本
+`internal/kelee/pyfetch.py`，25 行，不含任何业务逻辑），解析、转换、落盘全部仍在 Go 里。
+找不到 python3 就退回 Go 原生通道，功能不缺，只是更容易被质询——日志里会写明用的是哪条。
 
 | 项 | 取值 | 为什么 |
 | --- | --- | --- |
+| 下载通道 | `python3`（auto 优先） | TLS 指纹与上游同款；`--fetcher go` 可强制原生 |
 | UA | `Loon/860 … Darwin/24.4.0` | 站点按 UA 放行，浏览器 UA 反而 403 |
 | 协议 | 只走 HTTP/1.1 | Go 默认的 h2 指纹更容易被判成爬虫 |
 | 请求头 | 只有 UA / Accept / Accept-Language | 不发 Referer，也不发 Accept-Encoding |
-| 并发 | 每个域名最多 4 条连接 | 不要在 Cloudflare 面前形成突发 |
+| 并发 | 4 | 不要在 Cloudflare 面前形成突发 |
 | 重试 | 网络类错误退避重试 3 次，403 立刻停 | 403 是整台机器的判决，原地重试只是浪费 |
 
-剩下的就是**出口 IP 抽签**：同一份代码，有的 runner 一次过，有的全 403。所以 workflow
-失败会自动换一台 runner 重来，最多三台。先自检：
+排错先看报错里的 `cf-mitigated` 字段：
+
+| 现象 | 含义 | 处理 |
+| --- | --- | --- |
+| `403，cf-mitigated=challenge` | TLS 指纹被质询 | 确认通道是 `python3`（`--probe` 第一行会打印） |
+| `403`，没有 `challenge` | 出口 IP 被拒 | 换 runner 重试即可，workflow 会自动换三台 |
+
+确实是 IP 抽签时，workflow 失败会自动换一台 runner 重来，最多三台。先自检：
 
 ```bash
 ./loon2surge sync --probe
@@ -187,7 +218,9 @@ internal/lpx/
   convert.go        [Argument]/[General]/[IP Rewrite]/[MITM] + 组装输出
   convert_test.go   23 个用例 + 整篇金标准比对 + 基准测试
 internal/kelee/
-  http.go           朴素客户端（HTTP/1.1 + 三个头）、多来源、403 记忆、退避重试
+  http.go           多来源、403 记忆、退避重试、把 403 分成"质询"与"IP 拒绝"
+  transport.go      下载通道：python3（默认，借 OpenSSL TLS 栈）/ Go 原生（兜底）
+  pyfetch.py        嵌入的 25 行下载脚本，只负责取字节，不含业务逻辑
   store.go          索引读写、INDEX.md、内容不变就不写盘
   sync.go           哈希比对、并发下载、删除保护、报告
 internal/cliargs/   标志与位置参数分离

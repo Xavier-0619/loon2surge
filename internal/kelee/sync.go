@@ -423,6 +423,8 @@ type config struct {
 	indexURL    string
 	indexFile   string
 	mirror      string
+	fetcher     string
+	commitFile  string
 	only        string
 	limit       int
 	jobs        int
@@ -441,6 +443,8 @@ func Main(argv []string) int {
 	fs.StringVar(&cfg.indexURL, "index-url", IndexURL, "插件列表地址")
 	fs.StringVar(&cfg.indexFile, "index-file", "", "用本地 list.json 代替在线列表（离线调试）")
 	fs.StringVar(&cfg.mirror, "mirror", os.Getenv("KLEE_MIRROR"), "备用站点前缀，例如 https://mirror.example.com")
+	fs.StringVar(&cfg.fetcher, "fetcher", "auto", "下载通道：auto（有 python3 就用）/ python / go")
+	fs.StringVar(&cfg.commitFile, "commit-file", "", "把提交信息写到这个文件（action 里交给 git commit -F）")
 	fs.StringVar(&cfg.only, "only", "", "只处理这些文件名（逗号分隔）")
 	fs.IntVar(&cfg.limit, "limit", 0, "只处理前 N 个（调试用）")
 	fs.IntVar(&cfg.jobs, "jobs", 8, "并发下载数")
@@ -449,7 +453,8 @@ func Main(argv []string) int {
 	fs.BoolVar(&cfg.dryRun, "dry-run", false, "只报告差异，不写文件")
 	fs.BoolVar(&cfg.probe, "probe", false, "只做连通性自检")
 	flags, _ := cliargs.Split(argv, map[string]bool{
-		"root": true, "index-url": true, "index-file": true, "mirror": true, "only": true,
+		"root": true, "index-url": true, "index-file": true, "mirror": true,
+		"fetcher": true, "commit-file": true, "only": true,
 		"limit": true, "jobs": true, "delay": true, "max-failures": true,
 	})
 	if err := fs.Parse(flags); err != nil {
@@ -460,7 +465,12 @@ func Main(argv []string) int {
 
 func runSync(cfg config) int {
 	vault := NewVault(cfg.root)
-	sources := NewSources(cfg.mirror)
+	sources, err := NewSourcesWith(cfg.mirror, cfg.fetcher)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "✗ %v\n", err)
+		return 2
+	}
+	fmt.Printf("下载通道：%s\n", sources.channel())
 
 	if cfg.probe {
 		return probe(sources, cfg)
@@ -512,8 +522,9 @@ func runSync(cfg config) int {
 		sort.Slice(entries, func(i, j int) bool { return entries[i].Stem < entries[j].Stem })
 	}
 
-	syncedAt := time.Now().UTC().Format("2006-01-02 15:04:05") + " UTC"
-	added, updated, _, failed, blocked := syncer.stats()
+	now := time.Now()
+	syncedAt := now.UTC().Format("2006-01-02 15:04:05") + " UTC"
+	added, updated, removed, failed, blocked := syncer.stats()
 
 	// 全站被拦且一无所获时，连索引都不该动，别让空结果覆盖掉旧索引；
 	// 插件没变化也不写，否则 synced_at 一变，git 里每天多一个空提交
@@ -527,6 +538,15 @@ func runSync(cfg config) int {
 	}
 
 	report(syncer, entries, cfg, syncedAt)
+
+	// 提交信息由程序生成：模块清单和可莉的更新时间只有这里知道，
+	// 让 shell 去 grep 日志只会得到一行统计。
+	if cfg.commitFile != "" && !cfg.dryRun {
+		message := commitMessage(entries, added, updated, removed, failed, now)
+		if err := writeCommitMessage(cfg.commitFile, message); err != nil {
+			fmt.Fprintf(os.Stderr, "! 提交信息写入失败：%v\n", err)
+		}
+	}
 	if blocked {
 		return 3
 	}
@@ -607,15 +627,20 @@ func probe(sources *Sources, cfg config) int {
 	}
 
 	if !ok {
-		fmt.Fprintln(os.Stderr, "\n若报 403：上游挂在 Cloudflare 后面，会按出口 IP 拒掉一部分机房地址。"+
-			"\n请求头已经按上游同款实现对齐过，剩下的就是这台机器的 IP 抽签。"+
-			"\nworkflow 里失败会自动换一台 runner 重试；想彻底不靠运气，就用自建镜像（--mirror 或仓库变量 KLEE_MIRROR）。")
+		fmt.Fprintln(os.Stderr, "\n若报「托管质询」（cf-mitigated=challenge）：Cloudflare 认的是 TLS 指纹，"+
+			"\n用 --fetcher python 走 Python 的 OpenSSL 栈，与上游同款项目一致。"+
+			"\n若只是 403 没有 challenge：那才是出口 IP 被拒，换一台 runner 重试即可。"+
+			"\n想彻底不靠运气，用自建镜像（--mirror 或仓库变量 KLEE_MIRROR）。")
 	}
 	verdict := "通过"
 	if !ok {
 		verdict = "失败"
 	}
-	writeSummary([]string{"## 连通性自检", "", "- 结果：" + verdict})
+	writeSummary([]string{
+		"## 连通性自检", "",
+		"- 结果：" + verdict,
+		"- 下载通道：" + sources.channel(),
+	})
 	if ok {
 		return 0
 	}

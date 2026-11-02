@@ -71,7 +71,8 @@ jobs:
     name: 🔁 换台 runner 重试（第 2 次）
     needs: [sync]
     # 只在第一台没成功时才换台重跑，成功就到此为止
-    if: always() && needs.sync.result != 'success' && inputs.mode != '只做连通性自检'
+    # 自检失败也换台重试：一台 runner 一个出口 IP，多试两台才知道是不是运气
+    if: always() && needs.sync.result != 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -86,11 +87,12 @@ jobs:
         with:
           mirror: ${{ vars.KLEE_MIRROR }}
           limit: ${{ inputs.limit }}
+          probe: ${{ inputs.mode == '只做连通性自检' }}
 
   retry2:
     name: 🔁 再换一台重试（第 3 次）
     needs: [sync, retry]
-    if: always() && needs.sync.result != 'success' && needs.retry.result != 'success' && inputs.mode != '只做连通性自检'
+    if: always() && needs.sync.result != 'success' && needs.retry.result != 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
@@ -105,6 +107,7 @@ jobs:
         with:
           mirror: ${{ vars.KLEE_MIRROR }}
           limit: ${{ inputs.limit }}
+          probe: ${{ inputs.mode == '只做连通性自检' }}
 
   report:
     name: 🩺 汇报结果

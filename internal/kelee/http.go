@@ -1,34 +1,20 @@
 package kelee
 
 import (
-	"crypto/tls"
 	"errors"
 	"fmt"
-	"io"
-	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"sync"
 	"time"
 )
 
-// 这一层的请求特征不是随手写的，是照着"在 GitHub runner 上确实跑得通"的那份实现抄的：
-//
-//	HTTP/1.1 · 只带 User-Agent / Accept / Accept-Language · 不发 Referer · 不要 gzip。
-//
-// kelee.one 挂在 Cloudflare 后面，放行判断同时看来源 IP 和客户端特征。
-// Go 默认客户端会走 HTTP/2、自动加 Accept-Encoding: gzip，再叠一个 Referer，
-// 这套指纹更容易被判成爬虫：同一个 runner 上，别人朴素请求拿 200，我们拿 403。
-// 所以这里刻意用最朴素的请求——少一点"现代化"，换一个能跑通的握手。
-//
-// 即便如此，机房出口 IP 仍会被随机拒掉一部分，那部分只能靠换 runner 重试，
-// 或者用自建镜像（KLEE_MIRROR）绕过去。
-
 // AcceptLanguage 与 Loon 客户端一致，别随手改成浏览器口味。
 const AcceptLanguage = "zh-CN,zh-Hans;q=0.9"
 
-// Blocked 表示目标站点直接拒绝（Cloudflare 拦截页）。
+// Blocked 表示目标站点直接拒绝（Cloudflare 拦截或质询）。
 type Blocked struct{ Reason string }
 
 func (e *Blocked) Error() string { return e.Reason }
@@ -54,14 +40,28 @@ const (
 type Sources struct {
 	hosts   []string
 	mirrors []string
-	client  *http.Client
+	sender  sender
 
 	mu   sync.Mutex
 	dead map[string]string
 }
 
-// NewSources 组装来源列表：官方站 + 可选镜像。
+// NewSources 组装来源列表：官方站 + 可选镜像，下载通道按 auto 选。
 func NewSources(mirror string) *Sources {
+	sources, _ := NewSourcesWith(mirror, "auto")
+	return sources
+}
+
+// NewSourcesWith 指定下载通道：auto / python / go。
+func NewSourcesWith(mirror, fetcher string) (*Sources, error) {
+	channel, err := pickSender(fetcher)
+	if err != nil {
+		return nil, err
+	}
+	// auto 想用 python 却没找到：要说出来，否则后面 403 会让人以为是 IP 问题
+	if _, fellBack := channel.(*goSender); fellBack && (fetcher == "" || fetcher == "auto") {
+		fmt.Fprintln(os.Stderr, "! 没找到 python3，退回 Go 原生通道：Cloudflare 可能直接返回托管质询（403）")
+	}
 	var mirrors []string
 	if trimmed := strings.TrimRight(strings.TrimSpace(mirror), "/"); trimmed != "" {
 		mirrors = append(mirrors, trimmed)
@@ -69,29 +69,13 @@ func NewSources(mirror string) *Sources {
 	return &Sources{
 		hosts:   append([]string{Canonical}, mirrors...),
 		mirrors: mirrors,
-		client:  newClient(),
+		sender:  channel,
 		dead:    map[string]string{},
-	}
+	}, nil
 }
 
-// newClient 造一个"朴素客户端"：HTTP/1.1、不发 Accept-Encoding、每站最多 4 条连接。
-//
-// 限制并发不是为了省资源，而是不要在 Cloudflare 面前形成突发打请求的形态。
-func newClient() *http.Client {
-	transport := &http.Transport{
-		Proxy:               http.ProxyFromEnvironment,
-		DialContext:         (&net.Dialer{Timeout: 20 * time.Second, KeepAlive: 30 * time.Second}).DialContext,
-		TLSClientConfig:     &tls.Config{MinVersion: tls.VersionTLS12},
-		TLSHandshakeTimeout: 20 * time.Second,
-		ForceAttemptHTTP2:   false,
-		TLSNextProto:        map[string]func(string, *tls.Conn) http.RoundTripper{},
-		DisableCompression:  true,
-		MaxIdleConnsPerHost: 4,
-		MaxConnsPerHost:     4,
-		IdleConnTimeout:     90 * time.Second,
-	}
-	return &http.Client{Timeout: requestTimeout, Transport: transport}
-}
+// channel 说明这一轮用哪条通道下载，出问题先看它。
+func (s *Sources) channel() string { return s.sender.name() }
 
 // hostKey 把地址归一成小写主机名，作为"这轮撞过墙"的记录键。
 func hostKey(raw string) string {
@@ -130,7 +114,7 @@ func (s *Sources) kill(host, reason string) {
 // candidates 返回尝试顺序：原始地址优先，其次才是各镜像的同路径地址。
 //
 // 这里刻意不把原始域名改写成 Canonical：索引在 hub.kelee.one、文件在 kelee.one，
-// 是两个不同的服务，把 hub 的路径搬到 kelee.one 上去只会得到 404。
+// 是两个不同的服务，把 hub 的路径搬到 kelee.one 上只会得到 404。
 func (s *Sources) candidates(raw string) []string {
 	parsed, err := url.Parse(raw)
 	if err != nil || parsed.Host == "" || !strings.HasSuffix(parsed.Hostname(), "kelee.one") {
@@ -204,7 +188,7 @@ func (s *Sources) download(raw string) ([]byte, error) {
 		}
 		var denied *Blocked
 		if errors.As(err, &denied) {
-			return nil, err // 被 Cloudflare 判了就别再敲，原地重试只是浪费 20 秒
+			return nil, err // 被判了就別再敲，原地重试只是浪费 20 秒
 		}
 		if attempt < attempts {
 			time.Sleep(time.Duration(attempt*2) * time.Second)
@@ -213,31 +197,18 @@ func (s *Sources) download(raw string) ([]byte, error) {
 	return nil, last
 }
 
-// once 发一次请求：三个头，就三个。
+// once 发一次请求，并把状态码翻译成"该重试 / 该放弃 / 被拦了"。
 func (s *Sources) once(raw string) ([]byte, error) {
-	request, err := http.NewRequest(http.MethodGet, raw, nil)
-	if err != nil {
-		return nil, &permanentError{Reason: err.Error()}
-	}
-	request.Header.Set("User-Agent", UserAgent)
-	request.Header.Set("Accept", "*/*")
-	request.Header.Set("Accept-Language", AcceptLanguage)
-
-	response, err := s.client.Do(request)
+	result, err := s.sender.get(raw)
 	if err != nil {
 		return nil, &FetchError{Reason: err.Error() + " ← " + raw}
 	}
-	defer response.Body.Close()
 
-	switch code := response.StatusCode; {
+	switch code := result.status; {
 	case code == http.StatusOK:
-		data, err := io.ReadAll(response.Body)
-		if err != nil {
-			return nil, &FetchError{Reason: err.Error() + " ← " + raw}
-		}
-		return data, nil
+		return result.body, nil
 	case code == http.StatusForbidden:
-		return nil, &Blocked{Reason: fmt.Sprintf("%s 拒绝访问（403%s）", request.URL.Host, edgeHint(response))}
+		return nil, &Blocked{Reason: describe403(hostKey(raw), result.hint)}
 	case code == http.StatusNotFound:
 		return nil, &permanentError{Reason: "404 " + raw}
 	case code == http.StatusTooManyRequests, code >= 500:
@@ -247,16 +218,24 @@ func (s *Sources) once(raw string) ([]byte, error) {
 	}
 }
 
-// edgeHint 把 Cloudflare 的定位信息摘出来，失败时能直接看出是哪种拦截。
-func edgeHint(response *http.Response) string {
+// describe403 把 Cloudflare 的两种拒绝区分开，不然排查时会一直猜 IP。
+func describe403(host, hint string) string {
+	if strings.Contains(hint, "cf-mitigated=challenge") {
+		return fmt.Sprintf("%s 被 Cloudflare 托管质询（JS challenge%s）——这是 TLS 指纹被判成机器人，不是 IP 封锁", host, hint)
+	}
+	return fmt.Sprintf("%s 拒绝访问（403%s）", host, hint)
+}
+
+// headerHint 从响应头里摘出 Cloudflare 的定位信息。
+func headerHint(header http.Header) string {
 	var parts []string
-	if ray := response.Header.Get("cf-ray"); ray != "" {
+	if ray := header.Get("cf-ray"); ray != "" {
 		parts = append(parts, "cf-ray="+ray)
 	}
-	if mitigated := response.Header.Get("cf-mitigated"); mitigated != "" {
+	if mitigated := header.Get("cf-mitigated"); mitigated != "" {
 		parts = append(parts, "cf-mitigated="+mitigated)
 	}
-	if server := response.Header.Get("server"); server != "" && len(parts) == 0 {
+	if server := header.Get("server"); server != "" && len(parts) == 0 {
 		parts = append(parts, "server="+server)
 	}
 	if len(parts) == 0 {
