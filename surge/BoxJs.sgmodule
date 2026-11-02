@@ -10,11 +10,13 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
+# 有 1 行无法自动转换，见文件末尾注释
+
+[Script]
+BoxJS = type=http-request, pattern=(?i:^https?:\/\/(.+\.)?boxjs\.(com|net)), script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/box/chavy.boxjs.js, requires-body=true, timeout=120
 
 [MITM]
 hostname = %APPEND% boxjs.com, boxjs.net, *.boxjs.com, *.boxjs.net
 
 # ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
 # DOMAIN-SUFFIX, jsdelivr.net, PROXY
-# request if ${url} ~= /^https?:\/\/(.+\.)?boxjs\.(com|net)/i then script("https://raw.githubusercontent.com/chavyleung/scripts/master/box/chavy.boxjs.js") with tag="BoxJS", timeout=120, requires_body=true

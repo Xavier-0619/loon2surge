@@ -15,7 +15,7 @@
 http-response-jq (?i:^https:\/\/app\.huashi6\.com\/app\/common\/config$) 'try setpath(["data.disableAd\", \"data.showTopFloatAdvanceTips"]; [true, false]) catch .'
 http-response-jq (?i:^https:\/\/app\.huashi6\.com\/app\/common\/config$) 'delpaths([["data","adsConfigIOS"],["data","adsConfigAndroid"],["data","url","tabMarket"]])'
 http-response-jq (?i:^https:\/\/app\.huashi6\.com\/app\/common\/layouts$) '.data |= {CZ_MINE_MENUS: .CZ_MINE_MENUS}'
-http-response-jq (?i:^https:\/\/app\.huashi6\.com\/app\/common\/themeConfig$) '.data.tabbars |= map(select(.title != \"商城\"))'
+http-response-jq (?i:^https:\/\/app\.huashi6\.com\/app\/common\/themeConfig$) '.data.tabbars |= map(select(.title != "商城"))'
 
 [Map Local]
 (?i:^https:\/\/app\.huashi6\.com\/app\/index\/ad\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

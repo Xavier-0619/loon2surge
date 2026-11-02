@@ -12,7 +12,7 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/tqt\.weibo\.cn\/master\/nav\/tab\?) 'map(.tabs|=map(select(.type==\"weather\" or .type==\"radar\" or .type==\"my\")))'
+http-response-jq (?i:^https:\/\/tqt\.weibo\.cn\/master\/nav\/tab\?) 'map(.tabs|=map(select(.type=="weather" or .type=="radar" or .type=="my")))'
 
 [Map Local]
 (?i:^https:\/\/forecast\.sina\.cn\/app\/overall\/switch\.php\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

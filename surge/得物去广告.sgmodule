@@ -12,9 +12,9 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/app\.dewu\.com\/api\/v1\/app\/biz-aggregate\/me\/user-index\?) '.data.modules |= map(if .key == \"wallet\" then .data.menus |= map(select(.key == \"coupon\" or .key == \"allowance\" or .key == \"gift\" or .key == \"balance\")) else . end) | .data.modules |= map(select(.key != \"merchant\" and .key != \"discountCoupon\"))'
-http-response-jq (?i:^https:\/\/app\.dewu\.com\/api\/v1\/app\/account\/wallet\/page\/entrance\?) '.data.groupInfoDTOS |= map(.moduleInfoDTO = {assetModule: .moduleInfoDTO.assetModule}) | .data.moduleNames = [.data.moduleNames[] | select(. == \"assetModule\")] | . as $full | $full | .data.groupNames |= (map(select(. == \"MAIN\" or . == \"ASYNC_COMMON\" or . == \"ASYNC_GOODS_FEEDS\")))'
-http-response-jq (?i:^https:\/\/app\.dewu\.com\/identify-discovery\/v1\/discovery\/index\?) '.data.groups |= map(.items |= map(select(.title == \"消息中心\")))'
+http-response-jq (?i:^https:\/\/app\.dewu\.com\/api\/v1\/app\/biz-aggregate\/me\/user-index\?) '.data.modules |= map(if .key == "wallet" then .data.menus |= map(select(.key == "coupon" or .key == "allowance" or .key == "gift" or .key == "balance")) else . end) | .data.modules |= map(select(.key != "merchant" and .key != "discountCoupon"))'
+http-response-jq (?i:^https:\/\/app\.dewu\.com\/api\/v1\/app\/account\/wallet\/page\/entrance\?) '.data.groupInfoDTOS |= map(.moduleInfoDTO = {assetModule: .moduleInfoDTO.assetModule}) | .data.moduleNames = [.data.moduleNames[] | select(. == "assetModule")] | . as $full | $full | .data.groupNames |= (map(select(. == "MAIN" or . == "ASYNC_COMMON" or . == "ASYNC_GOODS_FEEDS")))'
+http-response-jq (?i:^https:\/\/app\.dewu\.com\/identify-discovery\/v1\/discovery\/index\?) '.data.groups |= map(.items |= map(select(.title == "消息中心")))'
 
 [Map Local]
 (?i:^https:\/\/app\.dewu\.com\/api\/v1\/app\/advertisement\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

@@ -16,7 +16,7 @@ DOMAIN,saad.ms.zhangyue.net,REJECT,extended-matching,pre-matching
 
 [Body Rewrite]
 http-response-jq (?i:^https:\/\/(webboot\.zhangyue\.com|ih2\.ireader\.com)\/zybook4\/iphone\/u\/p\/api\.php\?) 'delpaths([["Splash"]])'
-http-response-jq (?i:^https:\/\/(webboot\.zhangyue\.com|ih2\.ireader\.com)\/bookstore\/read\/visual\/channel\/list\?) '.body.list |= map(select(.id | contains(\"ad_\") | not))'
+http-response-jq (?i:^https:\/\/(webboot\.zhangyue\.com|ih2\.ireader\.com)\/bookstore\/read\/visual\/channel\/list\?) '.body.list |= map(select(.id | contains("ad_") | not))'
 
 [Map Local]
 (?i:^https:\/\/(webboot\.zhangyue\.com|ih2\.ireader\.com)\/zyapi\/bookstore\/ad\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

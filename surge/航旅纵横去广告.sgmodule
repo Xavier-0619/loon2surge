@@ -10,13 +10,12 @@
 #!requirement=CORE_VERSION>=6008000
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
 
 [Rule]
 URL-REGEX,"^http?:\/\/(discardrp|startup)\.umetrip\.com\/gateway\/api\/umetrip\/native",REJECT,extended-matching,pre-matching
 
+[Script]
+移除首页广告 = type=http-response, pattern=(?i:^http?:\/\/(114\.115\.217\.129)|(home\.umetrip\.com)\/gateway\/api\/umetrip\/native$), script-path=https://kelee.one/Resource/JavaScript/Umetrip/Umetrip_remove_ads.js, timeout=10
+
 [MITM]
 hostname = %APPEND% 114.115.217.129, home.umetrip.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^http?:\/\/(114\.115\.217\.129)|(home\.umetrip\.com)\/gateway\/api\/umetrip\/native$/i then script("https://kelee.one/Resource/JavaScript/Umetrip/Umetrip_remove_ads.js") with tag="移除首页广告"

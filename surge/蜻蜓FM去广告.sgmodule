@@ -17,7 +17,7 @@ DOMAIN,adlaunch.qtfm.cn,REJECT,extended-matching,pre-matching
 
 [Body Rewrite]
 http-response-jq (?i:^https:\/\/app\.qtfm\.cn\/m-bff\/v\d\/signin\/show_homepage_icon$) 'try setpath(["data","display_icon"]; false) catch .'
-http-response-jq (?i:^https:\/\/app\.qtfm\.cn\/recommendapi\/v\d\/hotpage\?) '.data.head |= map(select(.type == \"IconGrid\")) | .data.feeds |= map(select(.type == \"Channel\" or .type == \"Radio\" or .type == \"ListenListChannel\"))'
+http-response-jq (?i:^https:\/\/app\.qtfm\.cn\/recommendapi\/v\d\/hotpage\?) '.data.head |= map(select(.type == "IconGrid")) | .data.feeds |= map(select(.type == "Channel" or .type == "Radio" or .type == "ListenListChannel"))'
 http-response-jq (?i:^https:\/\/app\.qtfm\.cn\/m-bff\/v\d\/channel\/\d{6}\/playpage\/\d{8}) 'delpaths([["data","related_recommend"],["data","recommend_bar"]])'
 http-response-jq (?i:^https:\/\/app\.qtfm\.cn\/m-bff\/v\d\/mylistenpage) 'delpaths([["data","banner"]])'
 http-response-jq (?i:^https:\/\/app\.qtfm\.cn\/m-bff\/v\d\/subscribed_channels\?) 'delpaths([["data","recommends"]])'

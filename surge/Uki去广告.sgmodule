@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 4 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/api\.chenlongtech\.cn\/v\d\/friends\/startInfo$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
@@ -20,11 +19,11 @@
 (?i:^https:\/\/api\.chenlongtech\.cn\/v\d\/friends\/advConf$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/api\.chenlongtech\.cn\/v\d\/user\/checkQTSheInsurance$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除匹配卡横幅 = type=http-response, pattern=(?i:^https:\/\/api\.chenlongtech\.cn\/v\d\/lover\/productList), script-path=https://kelee.one/Resource/JavaScript/Uki/Uki_remove_ads.js, requires-body=true, timeout=10
+移除密友横幅 = type=http-response, pattern=(?i:^https:\/\/api\.chenlongtech\.cn\/v\d\/friends\/closeFriend\/home), script-path=https://kelee.one/Resource/JavaScript/Uki/Uki_remove_ads.js, requires-body=true, timeout=10
+移除娱乐页面横幅和悬浮窗配置 = type=http-response, pattern=(?i:^https:\/\/api\.chenlongtech\.cn\/v\d\/party\/config$), script-path=https://kelee.one/Resource/JavaScript/Uki/Uki_remove_ads.js, requires-body=true, timeout=10
+移除广场搜索填充词 = type=http-response, pattern=(?i:^https:\/\/api\.chenlongtech\.cn\/v1\/post\/fetchSearchRecommend$), script-path=https://kelee.one/Resource/JavaScript/Uki/Uki_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% api.chenlongtech.cn
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/api\.chenlongtech\.cn\/v\d\/lover\/productList/i then script("https://kelee.one/Resource/JavaScript/Uki/Uki_remove_ads.js") with tag="移除匹配卡横幅", requires_body=true
-# response if ${url} ~= /^https:\/\/api\.chenlongtech\.cn\/v\d\/friends\/closeFriend\/home/i then script("https://kelee.one/Resource/JavaScript/Uki/Uki_remove_ads.js") with tag="移除密友横幅", requires_body=true
-# response if ${url} ~= /^https:\/\/api\.chenlongtech\.cn\/v\d\/party\/config$/i then script("https://kelee.one/Resource/JavaScript/Uki/Uki_remove_ads.js") with tag="移除娱乐页面横幅和悬浮窗配置", requires_body=true
-# response if ${url} ~= /^https:\/\/api\.chenlongtech\.cn\/v1\/post\/fetchSearchRecommend$/i then script("https://kelee.one/Resource/JavaScript/Uki/Uki_remove_ads.js") with tag="移除广场搜索填充词", requires_body=true

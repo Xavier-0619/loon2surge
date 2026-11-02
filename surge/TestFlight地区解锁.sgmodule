@@ -13,7 +13,7 @@
 # 有 1 行无法自动转换，见文件末尾注释
 
 [Body Rewrite]
-http-request-replace-regex (?i:^https?:\/\/testflight\.apple\.com\/v\d\/accounts\/.+?\/install$) '"storefrontId"\x20:\x20"\d{6}-\d{2},\d{2}",' '\"storefrontId\":\"143441-19,29\",'
+http-request (?i:^https?:\/\/testflight\.apple\.com\/v\d\/accounts\/.+?\/install$) (?-ims)"storefrontId"\x20:\x20"\d{6}-\d{2},\d{2}", "storefrontId":"143441-19,29",
 
 [MITM]
 hostname = %APPEND% testflight.apple.com

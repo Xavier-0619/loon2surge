@@ -1,0 +1,13 @@
+审计 107 个脚本：0 个可下载，107 个失败
+  ✗ https://github.com/NSRingo/WeatherKit/releases/download/v3.1.0/response.bundle.js,（Apple天气增强.sgmodule）：HTTP 404 Not Found
+  ✗ https://github.com/sub-store-org/Sub-Store/releases/latest/download/cron-sync-artifacts.min.js,（Sub-Store.sgmodule）：HTTP 404 Not Found
+  ✗ https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-0.min.js,（Sub-Store.sgmodule）：HTTP 404 Not Found
+  ✗ https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-1.min.js,（Sub-Store.sgmodule）：HTTP 404 Not Found
+  ✗ https://kelee.one/Resource/JavaScript/12306/12306_remove_ads.js,（12306去广告.sgmodule）：HTTP 403 Forbidden
+  ✗ https://kelee.one/Resource/JavaScript/AliYunDrive/AliYunDrive_remove_ads.js,（阿里云盘去广告.sgmodule）：HTTP 403 Forbidden
+  ✗ https://kelee.one/Resource/JavaScript/AutoHome/AutoHome_remove_ads.js,（汽车之家去广告.sgmodule）：HTTP 403 Forbidden
+  ✗ https://kelee.one/Resource/JavaScript/BabyTree/BabyTree_remove_ads.js,（宝宝树孕育去广告.sgmodule）：HTTP 403 Forbidden
+  ✗ https://kelee.one/Resource/JavaScript/BaiduSearch/BaiduSearchHomePage_remove_ads.js,（百度网页去广告.sgmodule）：HTTP 403 Forbidden
+  ✗ https://kelee.one/Resource/JavaScript/Baidu_input_method/Baidu_input_method_remove_ads.js,（百度输入法去广告.sgmodule）：HTTP 403 Forbidden
+  … 另有 97 个失败，见报告
+报告已写入 /home/runner/work/_temp/script-audit.json

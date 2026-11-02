@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=6008000
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
 
 [Body Rewrite]
 http-response-jq (?i:^https:\/\/iosapi\.peiyinxiu\.com\/Api\/live\/LiveList) 'delpaths([["data","banners"]])'
@@ -18,8 +17,8 @@ http-response-jq (?i:^https:\/\/iosapi\.peiyinxiu\.com\/api\/live\/FollowList) '
 http-response-jq (?i:^https:\/\/iosapi\.peiyinxiu\.com\/Api\/Friend\/GetRecommendUsers) 'delpaths([["obj","data"]])'
 http-response-jq (?i:^https:\/\/iosapi\.peiyinxiu\.com\/api\/Union\/HomeData) 'delpaths([["obj","data"]])'
 
+[Script]
+移除首页底部弹窗 = type=http-response, pattern=(?i:^https:\/\/iosapi\.peiyinxiu\.com\/Api\/Film\/GetConfigValue), script-path=https://kelee.one/Resource/JavaScript/DubbingShow/DubbingShow_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% iosapi.peiyinxiu.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/iosapi\.peiyinxiu\.com\/Api\/Film\/GetConfigValue/i then script("https://kelee.one/Resource/JavaScript/DubbingShow/DubbingShow_remove_ads.js") with tag="移除首页底部弹窗", requires_body=true

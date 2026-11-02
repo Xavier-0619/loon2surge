@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https?:\/\/mime\.baidu\.com\/v5\/start_screen_ads\/list) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
@@ -20,8 +19,8 @@
 (?i:^https?:\/\/mbd\.baidu\.com\/ccs\/v1\/start\/confsync\?appname=baidu_input) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/mime\.baidu\.com\/v5\/(fb\/st\?logtype|(notiv3|cellloc_noti|noti_cloudswitch_noti)\/info)) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+百度输入法去广告 = type=http-response, pattern=(?i:^https?:\/\/mime\.baidu\.com\/(imrobot\/v1\/pub\/relation\/get_robot_list|v5\/custom_page\/(layout|getdata))), script-path=https://kelee.one/Resource/JavaScript/Baidu_input_method/Baidu_input_method_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% imeres.baidu.com, mbd.baidu.com, mime.baidu.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https?:\/\/mime\.baidu\.com\/(imrobot\/v1\/pub\/relation\/get_robot_list|v5\/custom_page\/(layout|getdata))/i then script("https://kelee.one/Resource/JavaScript/Baidu_input_method/Baidu_input_method_remove_ads.js") with tag="百度输入法去广告", requires_body=true

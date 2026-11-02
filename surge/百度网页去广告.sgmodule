@@ -9,10 +9,9 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
+
+[Script]
+移除百度搜索首页信息流广告 = type=http-response, pattern=(?i:^https?:\/\/(www|m)\.baidu\.com\/?($|\?from=\w{8,9})), script-path=https://kelee.one/Resource/JavaScript/BaiduSearch/BaiduSearchHomePage_remove_ads.js, requires-body=true, timeout=10
 
 [MITM]
 hostname = %APPEND% m.baidu.com, www.baidu.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https?:\/\/(www|m)\.baidu\.com\/?($|\?from=\w{8,9})/i then script("https://kelee.one/Resource/JavaScript/BaiduSearch/BaiduSearchHomePage_remove_ads.js") with tag="移除百度搜索首页信息流广告", requires_body=true

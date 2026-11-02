@@ -15,7 +15,7 @@
 DOMAIN,advert.mafengwo.cn,REJECT,extended-matching,pre-matching
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/mapi\.mafengwo\.cn\/discovery\/get_index\/v7\?) '.data.list |= map(select(.data.business_type != \"gdcpm\"))'
+http-response-jq (?i:^https:\/\/mapi\.mafengwo\.cn\/discovery\/get_index\/v7\?) '.data.list |= map(select(.data.business_type != "gdcpm"))'
 http-response-jq (?i:^https:\/\/mapi\.mafengwo\.cn\/sales\/home\/get_header\/v3\?) '.data.list[] |= ( .data |= del(.banners) )'
 
 [Map Local]

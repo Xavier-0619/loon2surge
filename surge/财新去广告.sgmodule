@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 6 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/entities\.caixin\.com\/api\/(dataplus\/promotionHints|public\/push\/appIndex|public\/recommendNews)) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
@@ -19,13 +18,13 @@
 (?i:^https:\/\/gg\.caixin\.com\/s\?z=caixin&slot=\d+) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/msgapi\.caixin\.com\/msg_api\/annmsg\/annlist) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除财新数据通广告 = type=http-response, pattern=(?i:^https:\/\/entities\.caixin\.com\/api\/dataplus\/columns), script-path=https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js, requires-body=true, timeout=10
+移除文末广告 = type=http-response, pattern=(?i:^https:\/\/gateway\.caixin\.com\/api\/app-api\/(caixinapp\/appinfo|search\/getkeyword)), script-path=https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js, requires-body=true, timeout=10
+移除财新FM广告 = type=http-response, pattern=(?i:^https:\/\/gateway\.caixin\.com\/api\/app-content\/fm\/index\/list\?), script-path=https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js, requires-body=true, timeout=10
+移除开屏广告 = type=http-response, pattern=(?i:^https:\/\/gg\.caixin\.com\/s\?z=caixin&op=\d), script-path=https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js, requires-body=true, timeout=10
+移除正文广告 = type=http-response, pattern=(?i:^https:\/\/mappsv5\.caixin\.com\/articlev5\/\d+\/\d+\.json$), script-path=https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js, requires-body=true, timeout=10
+移除正文广告-2 = type=http-response, pattern=(?i:^https:\/\/mapps?v5\.caixin\.com\/(channelv5\/list|\/?index_page_v5\/)\w+), script-path=https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% e*.caixin.com, g*.caixin.com, m*.caixin.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/entities\.caixin\.com\/api\/dataplus\/columns/i then script("https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js") with tag="移除财新数据通广告", requires_body=true
-# response if ${url} ~= /^https:\/\/gateway\.caixin\.com\/api\/app-api\/(caixinapp\/appinfo|search\/getkeyword)/i then script("https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js") with tag="移除文末广告", requires_body=true
-# response if ${url} ~= /^https:\/\/gateway\.caixin\.com\/api\/app-content\/fm\/index\/list\?/i then script("https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js") with tag="移除财新FM广告", requires_body=true
-# response if ${url} ~= /^https:\/\/gg\.caixin\.com\/s\?z=caixin&op=\d/i then script("https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js") with tag="移除开屏广告", requires_body=true
-# response if ${url} ~= /^https:\/\/mappsv5\.caixin\.com\/articlev5\/\d+\/\d+\.json$/i then script("https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js") with tag="移除正文广告", requires_body=true
-# response if ${url} ~= /^https:\/\/mapps?v5\.caixin\.com\/(channelv5\/list|\/?index_page_v5\/)\w+/i then script("https://kelee.one/Resource/JavaScript/CaixinMedia/CaixinMedia_remove_ads.js") with tag="移除正文广告", requires_body=true

@@ -12,8 +12,8 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/api\.kmovie\.gifshow\.com\/rest\/n\/kmovie\/app\/banner\/common\/getBannerByTypeV2\?) 'del(.list[] | select(.bannerChannelName == \"活动\"))'
-http-response-jq (?i:^https:\/\/api\.kmovie\.gifshow\.com\/rest\/n\/kmovie\/app\/banner\/common\/getAllBannerPage\?) 'del(.data[] | select(.bannerChannelName == \"活动\"))'
+http-response-jq (?i:^https:\/\/api\.kmovie\.gifshow\.com\/rest\/n\/kmovie\/app\/banner\/common\/getBannerByTypeV2\?) 'del(.list[] | select(.bannerChannelName == "活动"))'
+http-response-jq (?i:^https:\/\/api\.kmovie\.gifshow\.com\/rest\/n\/kmovie\/app\/banner\/common\/getAllBannerPage\?) 'del(.data[] | select(.bannerChannelName == "活动"))'
 
 [Map Local]
 (?i:^https:\/\/api\.kmovie\.gifshow\.com\/rest\/n\/kmovie\/app\/resource\/get\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

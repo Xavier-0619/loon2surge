@@ -10,14 +10,13 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/m\.riskbird\.com\/prod-qbb-api\/user\/getBannerList) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/m\.riskbird\.com\/prod-qbb-api\/searchHotEnt) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除推荐老板 = type=http-response, pattern=(?i:^https:\/\/m\.riskbird\.com\/prod-qbb-api\/query\/person\/personRecommend), script-path=https://kelee.one/Resource/JavaScript/RiskBird/RiskBird_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% m.riskbird.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/m\.riskbird\.com\/prod-qbb-api\/query\/person\/personRecommend/i then script("https://kelee.one/Resource/JavaScript/RiskBird/RiskBird_remove_ads.js") with tag="移除推荐老板", requires_body=true

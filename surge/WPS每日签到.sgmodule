@@ -8,13 +8,13 @@
 #!homepage=https://github.com/luestr/ProxyResource/blob/main/Resource/Markdown/WPS/README.md
 #!date=2026-10-02 13:57:49
 #!requirement=CORE_VERSION>=20
+#!arguments=CaptureCookie:#,AK:,SK:,MAX_RETRIES:5,CRONEXP:0 8 * * *
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
+
+[Script]
+{{{CaptureCookie}}}捕获Cookie = type=http-request, pattern=(?i:^https:\/\/moapi\.wps\.cn\/app\/ios\/v1\/app$), script-path=https://kelee.one/Resource/JavaScript/WPS/WPS_checkin.js, requires-body=true, timeout=10
+WPS每日签到 = type=cron, cronexp="{{{CRONEXP}}}", script-path=https://kelee.one/Resource/JavaScript/WPS/WPS_checkin.js, timeout=120, argument="{\"AK\":{{{AK}}},\"SK\":{{{SK}}},\"MAX_RETRIES\":{{{MAX_RETRIES}}}}"
 
 [MITM]
 hostname = %APPEND% moapi.wps.cn
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# request if ${url} ~= /^https:\/\/moapi\.wps\.cn\/app\/ios\/v1\/app$/i then script("https://kelee.one/Resource/JavaScript/WPS/WPS_checkin.js") with enable=${CaptureCookie}, tag="捕获Cookie", requires_body=true
-# cron ${CRONEXP} then script("https://kelee.one/Resource/JavaScript/WPS/WPS_checkin.js", {${AK}, ${SK}, ${MAX_RETRIES}}) with tag="WPS每日签到", timeout=120

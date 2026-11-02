@@ -8,14 +8,14 @@
 #!homepage=https://hub.kelee.one
 #!date=2026-10-02 13:57:49
 #!requirement=CORE_VERSION>=20
+#!arguments=blockUpload:false,blockShorts:false,blockImmersive:false,captionLang:zh-Hans,debug:false
 
 # 由 loon2surge 自动转换
-# 有 3 行无法自动转换，见文件末尾注释
+
+[Script]
+YouTube去广告 = type=http-response, pattern=(?i:^https:\/\/youtubei\.googleapis\.com\/(youtubei\/v1\/(browse|next|player|search|reel\/reel_watch_sequence|guide|account\/get_setting|get_watch|log_event|config))(\?(.*))?$), script-path=https://kelee.one/Resource/JavaScript/YouTube/YouTube_remove_ads/YouTube_remove_ads_response.js, requires-body=true, binary-body-mode=true, timeout=10, argument="{\"blockUpload\":{{{blockUpload}}},\"blockShorts\":{{{blockShorts}}},\"blockImmersive\":{{{blockImmersive}}},\"captionLang\":{{{captionLang}}},\"debug\":{{{debug}}}}"
+请求初始化 = type=http-request, pattern=(?i:^https?:\/\/[\w-]+\.googlevideo\.com\/initplayback.+&ack.*), script-path=https://kelee.one/Resource/JavaScript/YouTube/YouTube_remove_ads/YouTube_remove_ads_request.js, requires-body=true, binary-body-mode=true, timeout=10, argument="{\"captionLang\":{{{captionLang}}}}"
+请求日志事件 = type=http-request, pattern=(?i:^https:\/\/youtubei\.googleapis\.com\/youtubei\/v1\/log_event), script-path=https://kelee.one/Resource/JavaScript/YouTube/YouTube_remove_ads/YouTube_remove_ads_request.js, requires-body=true, binary-body-mode=true, timeout=10, argument="{\"blockUpload\":{{{blockUpload}}},\"blockShorts\":{{{blockShorts}}},\"blockImmersive\":{{{blockImmersive}}},\"captionLang\":{{{captionLang}}},\"debug\":{{{debug}}}}"
 
 [MITM]
 hostname = %APPEND% *.googlevideo.com, youtubei.googleapis.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/youtubei\.googleapis\.com\/(youtubei\/v1\/(browse|next|player|search|reel\/reel_watch_sequence|guide|account\/get_setting|get_watch|log_event|config))(\?(.*))?$/i then script("https://kelee.one/Resource/JavaScript/YouTube/YouTube_remove_ads/YouTube_remove_ads_response.js", {${blockUpload}, ${blockShorts}, ${blockImmersive}, ${captionLang}, ${debug}}) with tag="YouTube去广告", requires_body=true, binary_body_mode=true
-# request if ${url} ~= /^https?:\/\/[\w-]+\.googlevideo\.com\/initplayback.+&ack.*/i then script("https://kelee.one/Resource/JavaScript/YouTube/YouTube_remove_ads/YouTube_remove_ads_request.js", {${captionLang}}) with tag="请求初始化", requires_body=true, binary_body_mode=true
-# request if ${url} ~= /^https:\/\/youtubei\.googleapis\.com\/youtubei\/v1\/log_event/i then script("https://kelee.one/Resource/JavaScript/YouTube/YouTube_remove_ads/YouTube_remove_ads_request.js", {${blockUpload}, ${blockShorts}, ${blockImmersive}, ${captionLang}, ${debug}}) with tag="请求日志事件", requires_body=true, binary_body_mode=true

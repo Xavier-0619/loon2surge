@@ -13,7 +13,7 @@
 
 [Body Rewrite]
 http-response-jq (?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.tmall\.kangaroo\.core\.service\.route\.fixrespagerecommend\/) 'delpaths([["data","resultValue","data","normal-banner-resource-code"],["data","resultValue","data","feeds-channel-code"]])'
-http-response-jq (?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.tmall\.campus\.guide\.app\.userprofile\.framework\.v\d\/) 'del(.data.memberBenefit, .data.memberBenefitNew) | .data.moduleSorts |= map(select(. != \"memberBenefit\" and . != \"memberBenefitNew\"))'
+http-response-jq (?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.tmall\.campus\.guide\.app\.userprofile\.framework\.v\d\/) 'del(.data.memberBenefit, .data.memberBenefitNew) | .data.moduleSorts |= map(select(. != "memberBenefit" and . != "memberBenefitNew"))'
 
 [Map Local]
 (?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.tmall\.campus\.guide\.advertising\.config\.list\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

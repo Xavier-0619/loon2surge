@@ -14,7 +14,7 @@
 [Body Rewrite]
 http-response-jq (?i:^https:\/\/api\.bevol\.com\/appmain\/app\/home\/page$) 'delpaths([["result","versionPopUp"],["result","isShowSearchLabel"],["result","isShowSearchFeedBack"],["result","centerBannerAdvert"],["result","programmaticAdvertising"],["result","mattsData"],["result","questionnaireMap"],["result","appPullDownAdvert"]])'
 http-response-jq (?i:^https:\/\/api\.bevol\.com\/appmain\/app\/home\/feed$) 'delpaths([["result","banners"]])'
-http-response-jq (?i:^https:\/\/api\.bevol\.com\/appmain\/app\/home\/feed$) '. | .result.returnList |= (map(select(.tname == \"userPart\"))) | .result.returnList |= map(select(. | has(\"adId\") | not))'
+http-response-jq (?i:^https:\/\/api\.bevol\.com\/appmain\/app\/home\/feed$) '. | .result.returnList |= (map(select(.tname == "userPart"))) | .result.returnList |= map(select(. | has("adId") | not))'
 http-response-jq (?i:^https:\/\/api\.bevol\.com\/trialbox\/shop\/app\/homePage$) 'delpaths([["result","firstPersonActivity"],["result","mainActivity"],["result","brandZone"],["result","imageAD2"],["result","couponPopupInfo"]])'
 
 [Map Local]

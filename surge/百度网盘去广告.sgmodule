@@ -12,7 +12,7 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/pan\.baidu\.com\/feed\/kingkongdistrict\?) '.data.data |= map(select(.type != \"novel\" and .type != \"shortplay\" and .type != \"print\" and .type != \"job_hunt\"))'
+http-response-jq (?i:^https:\/\/pan\.baidu\.com\/feed\/kingkongdistrict\?) '.data.data |= map(select(.type != "novel" and .type != "shortplay" and .type != "print" and .type != "job_hunt"))'
 
 [Map Local]
 (?i:^https:\/\/pan\.baidu\.com\/api\/getconfig\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

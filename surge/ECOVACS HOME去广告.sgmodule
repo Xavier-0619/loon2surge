@@ -12,7 +12,7 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/gl-cn-api\.ecovacs\.cn\/v3\/private\/) '.data.navigateInfoResponseList |= map(select(.positionType == \"Robot\" or .positionType == \"Mine\"))'
+http-response-jq (?i:^https:\/\/gl-cn-api\.ecovacs\.cn\/v3\/private\/) '.data.navigateInfoResponseList |= map(select(.positionType == "Robot" or .positionType == "Mine"))'
 
 [Map Local]
 (?i:^https:\/\/api-app\.dc-cn\.cn\.ecouser\.net\/api\/ecms\/app\/ad\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

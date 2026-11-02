@@ -12,7 +12,7 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/gateway\.kugou\.com\/youth\/v1\/yueku\/tab\?) '.data.responses |= map(select(.module == \"new_song_publish\" or .module == \"song_rank\"))'
+http-response-jq (?i:^https:\/\/gateway\.kugou\.com\/youth\/v1\/yueku\/tab\?) '.data.responses |= map(select(.module == "new_song_publish" or .module == "song_rank"))'
 
 [Map Local]
 (?i:^https:\/\/gateway\.kugou\.com\/ads\.service\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

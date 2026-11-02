@@ -10,19 +10,18 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 6 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/j1\.pupuapi\.com\/client\/account\/discount\/order) data-type=text data="" status-code=404
 (?i:^https:\/\/j1\.pupuapi\.com\/client\/marketing\/banner\/v7\?position_types=100) data-type=text data="" status-code=404
 
+[Script]
+移除朴朴超市广告 = type=http-response, pattern=(?i:^https:\/\/j1\.pupuapi\.com\/client\/marketing\/banner\/v7), script-path=https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js, requires-body=true, timeout=10
+移除朴朴超市广告-2 = type=http-response, pattern=(?i:^https:\/\/j1\.pupuapi\.com\/client\/marketing\/banner\/search_component_banner), script-path=https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js, requires-body=true, timeout=10
+移除朴朴超市广告-3 = type=http-response, pattern=(?i:^https:\/\/j1\.pupuapi\.com\/client\/search\/hot_keywords\/v3), script-path=https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js, requires-body=true, timeout=10
+移除朴朴超市广告-4 = type=http-response, pattern=(?i:^https:\/\/j1\.pupuapi\.com\/client\/app_resource\/resource_preload\/list_h5_resource), script-path=https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js, requires-body=true, timeout=10
+移除朴朴超市广告-5 = type=http-response, pattern=(?i:^https:\/\/j1\.pupuapi\.com\/client\/recommendation\/interests\/products), script-path=https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js, requires-body=true, timeout=10
+移除朴朴超市广告-6 = type=http-response, pattern=(?i:^https:\/\/j1\.pupuapi\.com\/client\/marketing\/advertisement\/v1), script-path=https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% j1.pupuapi.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/j1\.pupuapi\.com\/client\/marketing\/banner\/v7/i then script("https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js") with tag="移除朴朴超市广告", requires_body=true
-# response if ${url} ~= /^https:\/\/j1\.pupuapi\.com\/client\/marketing\/banner\/search_component_banner/i then script("https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js") with tag="移除朴朴超市广告", requires_body=true
-# response if ${url} ~= /^https:\/\/j1\.pupuapi\.com\/client\/search\/hot_keywords\/v3/i then script("https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js") with tag="移除朴朴超市广告", requires_body=true
-# response if ${url} ~= /^https:\/\/j1\.pupuapi\.com\/client\/app_resource\/resource_preload\/list_h5_resource/i then script("https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js") with tag="移除朴朴超市广告", requires_body=true
-# response if ${url} ~= /^https:\/\/j1\.pupuapi\.com\/client\/recommendation\/interests\/products/i then script("https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js") with tag="移除朴朴超市广告", requires_body=true
-# response if ${url} ~= /^https:\/\/j1\.pupuapi\.com\/client\/marketing\/advertisement\/v1/i then script("https://kelee.one/Resource/JavaScript/PuPuMall/PuPuMall_remove_ads.js") with tag="移除朴朴超市广告", requires_body=true

@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=6008000
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
 
 [Rule]
 DOMAIN,ad.12306.cn,DIRECT,extended-matching
@@ -18,8 +17,8 @@ DOMAIN,ad.12306.cn,DIRECT,extended-matching
 [Body Rewrite]
 http-response-jq (?i:^https:\/\/ad\.12306\.cn\/ad\/ser\/getAdList$) 'delpaths([["materialsList"],["advertParam"]])'
 
+[Script]
+移除12306应用内广告 = type=http-request, pattern=(?i:^https:\/\/mobile\.12306\.cn\/otsmobile\/app\/mgs\/mgw\.htm$), script-path=https://kelee.one/Resource/JavaScript/12306/12306_remove_ads.js, timeout=10
+
 [MITM]
 hostname = %APPEND% ad.12306.cn, mobile.12306.cn
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# request if ${url} ~= /^https:\/\/mobile\.12306\.cn\/otsmobile\/app\/mgs\/mgw\.htm$/i then script("https://kelee.one/Resource/JavaScript/12306/12306_remove_ads.js") with tag="移除12306应用内广告"

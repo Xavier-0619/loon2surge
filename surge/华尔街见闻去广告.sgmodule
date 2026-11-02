@@ -12,7 +12,7 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/api-one-wscn\.awtmt\.com\/apiv1\/kvconfig\/items\/tabbarconfig1$) '.data.items |= [.[] | select(.key == \"news\" or .key == \"live\")]'
+http-response-jq (?i:^https:\/\/api-one-wscn\.awtmt\.com\/apiv1\/kvconfig\/items\/tabbarconfig1$) '.data.items |= [.[] | select(.key == "news" or .key == "live")]'
 http-response-jq (?i:^https:\/\/api-one-wscn\.awtmt\.com\/apiv1\/content\/articles\/) 'delpaths([["data","recommend_vip_img_uri"]])'
 http-response-jq (?i:^https:\/\/api-one-wscn\.awtmt\.com\/\/apiv1\/kvconfig\/items\/membersrights$) 'delpaths([["data","vip_article"]])'
 

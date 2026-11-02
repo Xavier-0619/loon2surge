@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/manga\.bilibili\.com\/twirp\/comic\.v\d\.Comic\/GetActivityTab) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
@@ -25,9 +24,9 @@
 (?i:^https:\/\/manga\.bilibili\.com\/twirp\/comic\.v\d\.Comic\/AppInit) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/manga\.bilibili\.com\/twirp\/comic\.v\d\.Comic\/ListFlash) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除顶部标签 = type=http-response, pattern=(?i:^https:\/\/manga\.bilibili\.com\/twirp\/comic\.v\d\.Comic\/GetClassPageAllTabs), script-path=https://kelee.one/Resource/JavaScript/BiliComic/BiliComic_remove_ads.js, requires-body=true, timeout=10
+精简我的页面 = type=http-response, pattern=(?i:^https:\/\/manga\.bilibili\.com\/twirp\/user\.v\d\.User\/UCenterConf), script-path=https://kelee.one/Resource/JavaScript/BiliComic/BiliComic_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% manga.bilibili.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/manga\.bilibili\.com\/twirp\/comic\.v\d\.Comic\/GetClassPageAllTabs/i then script("https://kelee.one/Resource/JavaScript/BiliComic/BiliComic_remove_ads.js") with tag="移除顶部标签", requires_body=true
-# response if ${url} ~= /^https:\/\/manga\.bilibili\.com\/twirp\/user\.v\d\.User\/UCenterConf/i then script("https://kelee.one/Resource/JavaScript/BiliComic/BiliComic_remove_ads.js") with tag="精简我的页面", requires_body=true

@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=6008000
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
 
 [Body Rewrite]
 http-response-jq (?i:^https:\/\/api\.boohee\.com\/meta-interface\/v2\/index\?) 'delpaths([["data","recom_cards"],["data","recom_btns"]])'
@@ -25,8 +24,8 @@ http-response-jq (?i:^https:\/\/api\.boohee\.com\/open-interface\/v1\/string\/ma
 (?i:^https:\/\/bohe\.sfo-tx-shanghai-01\.saas\.sensorsdata\.cn\/api\/v2\/sfo\/user_popup_configs\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/api\.boohee\.com\/meta-interface\/v1\/index\/sensor-banners\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除广场推荐页面横幅 = type=http-response, pattern=(?i:^https:\/\/api\.boohee\.com\/meta-interface\/v1\/index\/plaza-flow\?), script-path=https://kelee.one/Resource/JavaScript/BooHee/BooHee_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% api.boohee.com, bohe.sfo-tx-shanghai-01.saas.sensorsdata.cn, lego.boohee.com, status.boohee.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/api\.boohee\.com\/meta-interface\/v1\/index\/plaza-flow\?/i then script("https://kelee.one/Resource/JavaScript/BooHee/BooHee_remove_ads.js") with tag="移除广场推荐页面横幅", requires_body=true

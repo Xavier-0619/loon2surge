@@ -10,11 +10,10 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
+
+[Script]
+捕获令牌 = type=http-request, pattern=(?i:^https?:\/\/apapia-sqk-weblogic\.manmanbuy\.com\/baoliao\/center\/menu$), script-path=https://kelee.one/Resource/JavaScript/JD/JD_Price.js, requires-body=true, timeout=10
+京东比价 = type=http-response, pattern=(?i:^https?:\/\/in\.m\.jd\.com\/product\/graphext\/\d+\.html), script-path=https://kelee.one/Resource/JavaScript/JD/JD_Price.js, requires-body=true, timeout=10
 
 [MITM]
 hostname = %APPEND% in.m.jd.com, apapia-sqk-weblogic.manmanbuy.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# request if ${url} ~= /^https?:\/\/apapia-sqk-weblogic\.manmanbuy\.com\/baoliao\/center\/menu$/i then script("https://kelee.one/Resource/JavaScript/JD/JD_Price.js") with tag="捕获令牌", timeout=10, requires_body=true
-# response if ${url} ~= /^https?:\/\/in\.m\.jd\.com\/product\/graphext\/\d+\.html/i then script("https://kelee.one/Resource/JavaScript/JD/JD_Price.js") with tag="京东比价", timeout=10, requires_body=true

@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=6008000
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
 
 [Rule]
 DOMAIN-SUFFIX,soulapp.cn,DIRECT,extended-matching
@@ -35,8 +34,8 @@ http-response-jq (?i:^https:\/\/(?:api-\w+|gateway-mobile-gray|post)\.soulapp\.c
 (?i:^https:\/\/ssp\.soulapp\.cn\/api\/q) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/chat-live\.soulapp\.cn\/live\/planet\/recListV2) data-type=text data="" status-code=200
 
+[Script]
+移除Soul广告 = type=http-response, pattern=(?i:^https:\/\/(?:api-\w+|chat-live|post)\.soulapp\.cn\/(?:chat\/limitInfo|chatroom\/chatClassifyRoomList|homepage\/diamond\/position\/info|v2\/post\/recSquare\/subTabs|v6\/planet\/config)), script-path=https://kelee.one/Resource/JavaScript/Soul/Soul_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% api*.soulapp.cn, gateway-mobile-gray.soulapp.cn, post.soulapp.cn, ssp.soulapp.cn
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/(?:api-\w+|chat-live|post)\.soulapp\.cn\/(?:chat\/limitInfo|chatroom\/chatClassifyRoomList|homepage\/diamond\/position\/info|v2\/post\/recSquare\/subTabs|v6\/planet\/config)/i then script("https://kelee.one/Resource/JavaScript/Soul/Soul_remove_ads.js") with tag="移除Soul广告", requires_body=true

@@ -1,6 +1,6 @@
 {
   "source": "https://hub.kelee.one/list.json",
-  "synced_at": "2026-11-02 16:03:44 UTC",
+  "synced_at": "2026-11-02 16:56:57 UTC",
   "count": 275,
   "plugins": [
     {
@@ -17,14 +17,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/1.1.1.1.lpx",
       "lpx_sha": "2d709ffb5801b6c3d291abbe5864ffee1badf759a972a9b2416f3a28cc027e31",
-      "module_sha": "75ceda2cb2c0c4fbbaaf2be17b9beae26fe7cab213dc549cba2c8b86963a6a9a",
+      "module_sha": "3f4cfead131e71d29287657607db711f9a7bc48769b77ce1a6802cabeb6ad8ec",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/(api|zero-trust-client)\\.cloudflarecl…",
-        "[script-type] L15: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/(api|zero-trust-client)\\.cloudflarec…",
-        "[script-type] L16: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/(api|zero-trust-client)\\.cloudflarecl…",
-        "[script-type] L17: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/(api|zero-trust-client)\\.cloudflarec…",
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L15: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L16: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L17: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×4"
       ]
     },
     {
@@ -41,13 +45,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/12306_remove_ads.lpx",
       "lpx_sha": "ffefab9b5c8108fa5080bd1fc66a9ccde6ed13ff22dc47d828988055e13bae9d",
-      "module_sha": "270111b83bf881ca70b71c198aaeaf6c682a5672e3144e28e4146e94a3bb43d1",
+      "module_sha": "221154a41301552b4e1a2d2440fa4969dc6bd821eb6b2b9b6761f28caf5e5687",
       "status": "ok",
       "notes": [
-        "[script-type] L21: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https:\\/\\/mobile\\.12306\\.cn\\/otsmobile\\/app\\/mgs…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "123云盘去广告",
@@ -67,7 +71,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "360摄像机去广告",
@@ -87,7 +92,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "360智慧生活去广告",
@@ -107,7 +113,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "36氪去广告",
@@ -122,12 +129,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/36Kr_remove_ads.lpx",
       "lpx_sha": "104c5ba2353613997edd96632adc53cdeaa80918f5fa84a5123593117b3575e7",
-      "module_sha": "7494144750b9a57ab5c7991e06af0a43ecd98228e2bcd9589c305f24d3c9b555",
+      "module_sha": "1dea74efab1c7a3a339b01edbf4333bf3d8af3328cce28bf9b0a220d4ad82821",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "555电影去广告",
@@ -142,12 +150,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/555DY_remove_ads.lpx",
       "lpx_sha": "6e48d4e25da04cc0f3e999bccb32c1d84926f24c4fb3dcab22d1f144245516e9",
-      "module_sha": "553b3ad28555931feccf71b38caf8d95e91b328824d7981aa49f8ec42522d5bb",
+      "module_sha": "ace41fbf13df9f7313cdf24858387e48b83a3960ca17d0f019d934b2961487b2",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "5EPlay去广告",
@@ -167,7 +176,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Apple天气增强",
@@ -184,14 +194,22 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/AppleWeatherEnhancer.lpx",
       "lpx_sha": "a3562774f771d5762f048f8f193da83900a7eb752991393f6ba44b8d103d8fd9",
-      "module_sha": "e8cc07b0dab60c77d009400e51f10a5c030549d3f25f7a39484a15408bbf49eb",
+      "module_sha": "d30903ecfb4de89a5d783f957a5170fff99546529452be5fc51bd415055d5ab1",
       "status": "ok",
       "notes": [
         "[rule-policy] L25: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：DOMAIN, weather-analytics-events.apple.com, REJECT-DROP",
         "[rule-policy] L26: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：DOMAIN, tether.edge.apple, REJECT-DROP",
         "[rule-policy] L27: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：DOMAIN-SUFFIX, tthr.apple.com, REJECT-DROP",
         "[rule-policy] L28: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：AND, ((OR, ((IP-ASN, 714, no-resolve), (IP-ASN, 6185, no-resolve))), (P…",
-        "[script-type] L31: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/weatherkit\\.apple\\.com\\/api\\/v1\\/ava…"
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "脚本参数清单转成 argument JSON ×2",
+        "属性名归一（下划线转连字符） ×3"
+      ],
+      "review": [
+        "4 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -212,7 +230,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "BoxJs",
@@ -227,13 +246,20 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/BoxJs.lpx",
       "lpx_sha": "e2754d4bb8b96b539ca17dd69472fe5b88bce44915dd5391774ade5f9ad0cc20",
-      "module_sha": "79a6024ca811d84b963ecd10de44879f99761be691f960002666a7dbb8777e27",
+      "module_sha": "d05980be325da4cd0d0c5de2b34fabb7f42801369cbea46cacdc4e6249166839",
       "status": "ok",
       "notes": [
         "[rule-policy] L14: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN-SUFFIX, jsdelivr.net, PROXY",
-        "[script-type] L17: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/(.+\\.)?boxjs\\.(com|net)/i then script…",
+        "[script-attribute-alias] L17: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
+      ],
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -249,12 +275,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/CCLive_remove_ads.lpx",
       "lpx_sha": "a631ca36f8bd28733f59bbf68dea204c6d6f768676ac8a015de928f183464cc3",
-      "module_sha": "eb02becc6175b9fb7e6c3aedbd83dd0cf880b31af3bafbd01ce0dd5e965d63fc",
+      "module_sha": "892f519e1f1d6cfea6b4050b63a38b7f60cffc4191c53f4c6697b75fe7e63c50",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "DJ多多去广告",
@@ -269,12 +296,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/DjDuoDuo_remove_ads.lpx",
       "lpx_sha": "468133036ca0f1f2b542af43bcd76ede78bf7abeebc7637328dfe3be9ffb46b8",
-      "module_sha": "257524d5a792db1bb68b0f1779132f76ce3362c92c4f3bb8036f824462e480ab",
+      "module_sha": "8472e1ae143b6799df186350a4f393b132a0109277488eefa2fa37204cc91d42",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.dianyinduoduo\\.com\\/v4\\/config\\.…",
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -294,7 +325,8 @@
       "status": "loon-only",
       "notes": [
         "模块规则只能用 DIRECT/REJECT，原文用的是 PROXY"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "DREAME去广告",
@@ -309,13 +341,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/DREAME_remove_ads.lpx",
       "lpx_sha": "7cb2856bf932874ab3cb4aa92720cf80ea0fd6bbc82dafeae39ad3707146570b",
-      "module_sha": "af28fdc80b6eba6bc32de4dc8c43e873b2611988aec081a56960f167a15398ff",
+      "module_sha": "b35082890e49bb9408d1abf3823e7ce76b42054c67ba0a2483c14898b81ae529",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L20: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/cn\\.iot\\.dreame\\.tech:\\d+\\/dreame-pro…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Dlabel云标签去广告",
@@ -335,7 +367,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "ECOVACS HOME去广告",
@@ -350,12 +383,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/EcovacsHome_remove_ads.lpx",
       "lpx_sha": "bb58d5a7b69a8709d7550cd96d889c8494596f86170a1055ba1c5cb2ee20785d",
-      "module_sha": "8561fcfef41be271b2e637f57fd6c9e72cdbd777c86e3f13071194506cea983d",
+      "module_sha": "8dea1ce701d83cb8ea7506da46ba3af6215a824c6ef9c075434e92d365cad45c",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Fileball网盘挂载",
@@ -370,12 +404,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Fileball_mount.lpx",
       "lpx_sha": "01547df74bbce3bcc5bd2631ecb8489bb84c9180fd46273d695df5a4445618d6",
-      "module_sha": "31850618dc422cacbbb9cf46734513e0ac7d92590572c35fde3bd52428607bae",
+      "module_sha": "5f982304b9853e2b4ee1d5ed8d8179d2e73296c396f3b418176e47fcbf5b3592",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^http:\\/\\/(aliyun|quark|pikpak)\\.example\\.com/i t…",
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -392,14 +430,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/FollowRSS_checkin.lpx",
       "lpx_sha": "94ece1c36cbcd9d9abeab254e5e20df07e45cd27322026186acc23ae2b9ad01e",
-      "module_sha": "2010a2afb10d869e4a21dd14e57f3e46227d43f6e786a04eee72e1a93473f337",
+      "module_sha": "05422de44623eedaa1257c6992345e39b614b3727e616f0e5babef1f2437e14c",
       "status": "ok",
       "notes": [
-        "[script-path] L19: 缺少 script-path → 已注释：cron ${cron} then script(\"https://kelee.one/Resource/JavaScript/FollowR…",
-        "[argument-unused] 参数 token 未被任何行引用，已删除",
-        "[argument-unused] 参数 cookie 未被任何行引用，已删除",
-        "[argument-unused] 参数 cron 未被任何行引用，已删除",
-        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "脚本参数清单转成 argument JSON"
       ]
     },
     {
@@ -420,7 +460,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Google搜索重定向",
@@ -440,7 +481,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "HTTPDNS拦截器",
@@ -465,7 +507,8 @@
         "[rule-duplicate] L221: 重复规则已合并：DOMAIN,httpdns.zybang.com,REJECT,extended-matching,pre-matching",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Hong Kong Toolbar去广告",
@@ -487,6 +530,10 @@
         "[rule-policy] L15: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：URL-REGEX, \"^https:\\/\\/a\\.881903\\.com\\/v\\d\\/app\\/game\\/.*\", REJECT-DROP",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "2 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -502,13 +549,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/IPATool.lpx",
       "lpx_sha": "92505aeeae967bdd8b5ef53ddb8571b4ece6900f1db64ba831feb0ce7613a909",
-      "module_sha": "16c784754dfb130822b314a859389293175c4af8dd8dafa30b9b16d494d29284",
+      "module_sha": "4395a005b45dad50b195497592d457d1b4d21e48fee5f16e9cd153e48f62bf0f",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https:\\/\\/apple-api\\.com/i then script(\"https://…",
-        "[script-type] L16: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https:\\/\\/xiaobai\\.app/i then script(\"https://ke…",
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -524,14 +574,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/IThome_remove_ads.lpx",
       "lpx_sha": "99ba72fc23e285b0295c3730cd0731ca7269ec6f157c7413ef709819e0db402c",
-      "module_sha": "0ac06f8e3c8f40b41dd79f7e3753b2763926f4946226cafbdd73028943960f0e",
+      "module_sha": "f7ad846e513119af836ad46ba8717fd1fb8a32a228f0354e54ee2863b26346dc",
       "status": "ok",
       "notes": [
-        "[script-type] L21: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/napi\\.ithome\\.com\\/api\\/(news\\/indexv…",
-        "[argument-unused] 参数 removePinnedArticles 未被任何行引用，已删除",
-        "[argument-unused] 参数 removeAllBanners 未被任何行引用，已删除",
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "脚本参数清单转成 argument JSON",
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -552,7 +606,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "KOOK去广告",
@@ -572,7 +627,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Keep去广告",
@@ -587,12 +643,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Keep_remove_ads.lpx",
       "lpx_sha": "015279fe23c9b7323b2c97adf0740dc6f697ccd938675f3adfd81c22610659ff",
-      "module_sha": "c3ff07d5c6ca5e5141fc00d012b7f6fa8813293e07221be078008a18a741d61d",
+      "module_sha": "2a13a26fc1f57483caca14c37bfa45ad45f5666cf479f3a92d2b03116dc960db",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Line去广告",
@@ -615,6 +672,10 @@
         "[rule-policy] L18: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：URL-REGEX, \"^https:\\/\\/a\\.line\\.me\\/cs\\/v\\d\\/oa$\", REJECT-DROP",
         "[rule-policy] L20: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：URL-REGEX, \"^https:\\/\\/w\\.line\\.me\\/adp\\/api\\/ad\\/v\\d\\/\", REJECT-DROP",
         "[rule-policy] L21: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：URL-REGEX, \"^https:\\/\\/crs-event\\.line\\.me\\/v\\d\\/imp\", REJECT-DROP"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "14 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -635,7 +696,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "PICOOC去广告",
@@ -655,7 +717,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Pinterest去广告",
@@ -670,12 +733,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Pinterest_remove_ads.lpx",
       "lpx_sha": "905ce81e2a26cb5421219b8f9009502d7c014291b3b3a5532e13dd6ad3a01d95",
-      "module_sha": "85fd6af46ada256649dd73002bbcebb9a030383b1e2530c85578949ecb4232ec",
+      "module_sha": "ebd4320565a90d057d4eb967165512147ddfdfc823fda39c6f5981ecf7955444",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "QQ链接解锁",
@@ -690,15 +754,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/QQ_Redirect.lpx",
       "lpx_sha": "2d2abfe97a3870de15367e82ae88df38227da6205300c78eca523fb3bcda1845",
-      "module_sha": "2c952efc35b071cd12269a428a9df86b9b26f3f3b3441784e55b290f558ca55f",
+      "module_sha": "885dba6ccef6bef1531bf6c440c8c7940815f20c3c0a6dfc703fe16cc4f59f4b",
       "status": "ok",
       "notes": [
-        "[rewrite-condition] L14: URL 正则格式无法识别：/(^https:\\/\\/c\\.pc\\.qq\\.com\\/middlem\\.html\\?pfurl=)(http.*)(&pfuin=.*)/i as urlMatch → 已注释：request if ${url} ~= /(^https:\\/\\/c\\.pc\\.qq\\.com\\/middlem\\.html\\?pfurl=…",
-        "[rewrite-condition] L15: URL 正则格式无法识别：/(^https:\\/\\/c\\.pc\\.qq\\.com\\/middlect\\.html\\?pfuin=.*&pfurl=)(http.*)(&gjsublevel=.*)/i as urlMatch → 已注释：request if ${url} ~= /(^https:\\/\\/c\\.pc\\.qq\\.com\\/middlect\\.html\\?pfuin…",
-        "[rewrite-condition] L16: URL 正则格式无法识别：/(^https:\\/\\/c\\.pc\\.qq\\.com\\/middlect\\.html\\?iscontinue=.*pfurl=)(http.*)(&pfuin=.*)/i as urlMatch → 已注释：request if ${url} ~= /(^https:\\/\\/c\\.pc\\.qq\\.com\\/middlect\\.html\\?iscon…",
-        "[rewrite-condition] L17: URL 正则格式无法识别：/(^https:\\/\\/pingtas\\.qq\\.com\\/webview\\/pingd\\?dm=c\\.pc\\.qq\\.com&pvi=\\d+&si=s\\d+&url=\\/middlem\\.html\\?pfurl%3d)(http.*)(%26pfuin%3d.*%26pfuin%3d.*)/i as urlMatch → 已注释：request if ${url} ~= /(^https:\\/\\/pingtas\\.qq\\.com\\/webview\\/pingd\\?dm=…",
-        "[rewrite-condition] L18: URL 正则格式无法识别：/(^https:\\/\\/cgi\\.connect\\.qq\\.com\\/qqconnectopen\\/get_urlinfoForQQV2\\?url=)(http.*)/i as urlMatch → 已注释：request if ${url} ~= /(^https:\\/\\/cgi\\.connect\\.qq\\.com\\/qqconnectopen\\…"
-      ]
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "QQ音乐去广告",
@@ -718,7 +780,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "RQrun去广告",
@@ -738,7 +801,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Reddit去广告",
@@ -759,6 +823,10 @@
         "[rewrite-json] L14: 不支持的 json 动作：jq_file → 已注释：response if ${url} ~= /^https?:\\/\\/gql(-fed)?\\.reddit\\.com/i then respo…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -779,7 +847,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Roborock去广告",
@@ -794,12 +863,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Roborock_remove_ads.lpx",
       "lpx_sha": "8761e9409a3c0257b91e61ed561d4fb3f1077485b64ab827562924edecf03cdb",
-      "module_sha": "0491e4b2ea65954bf829ac9f905381dd380a0c34be1b75ed9496c239942d936a",
+      "module_sha": "25a6b84d14539f5f6c10494e3a6c11ae061a2ed1c96581503d0743d62085ddd4",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Script-Hub",
@@ -817,14 +887,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Script-Hub.lpx",
       "lpx_sha": "ee2afe3563d461f6bc6162eb224cdc8b4c352d2ab92b63845ac3caae5d5c95f8",
-      "module_sha": "1f2b3019510670061a67c28e95ef5814e04e87244972be298a7689f06048749b",
+      "module_sha": "100ee5ecf8ee2ca16f73acf86fa76323a48f7fac38069f4813c8d8ad023941c6",
       "status": "ok",
       "notes": [
         "[rule-policy] L17: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN, scripthub.vercel.app, PROXY",
-        "[script-type] L20: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/script\\.hub\\/($|edit\\/|reload)/i then…",
-        "[script-type] L22: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/script\\.hub\\/file\\/_start_\\/.+type=(?…",
-        "[script-type] L24: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/script\\.hub\\/file\\/_start_\\/.+type=ru…",
-        "[script-type] L26: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/script\\.hub\\/convert\\//i then script(…"
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `select` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `input` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -840,13 +914,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Sofascore_remove_ads.lpx",
       "lpx_sha": "248322ccf8db498f6bb9a0651d6ce97d39e2a0def0dbfea797422bddc372267d",
-      "module_sha": "90387c15944c2fa9a75a07d216188bdb91e286bd3c7709b6e2a80f21022876ac",
+      "module_sha": "8621c6c1538821d47d8dded5e0b2d7fee31f4b5564d5abd1b1253c6f5ffe462d",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L16: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.sofascore\\.com\\/api\\/v\\d\\/trendi…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Soul去广告",
@@ -863,12 +937,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Soul_remove_ads.lpx",
       "lpx_sha": "21279bcb0451d352cf0843a2ea52599d57ac80fc03b9de288d6fcfe1e826ea28",
-      "module_sha": "134bd2fd943f7088e68f4bc535d1d897737c6e5eda5e605e2b2f62964042464b",
+      "module_sha": "55121d28fe20e89a81f5722a4ecf707a772989b5d70a3456f2954d804ec06dc9",
       "status": "ok",
       "notes": [
-        "[script-type] L38: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(?:api-\\w+|chat-live|post)\\.soulapp\\.…",
+        "[script-attribute-alias] L38: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -884,14 +962,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Spotify_remove_ads.lpx",
       "lpx_sha": "9c4b7cdd6564fd488c12516f40f7bbdd60cb66eeb34ebcd99bf4098bcb9c5469",
-      "module_sha": "2594fc3fd5fb76e7e320069597fa36ba39f3ef5fce9742adba6c9b2c01d4137a",
+      "module_sha": "32c5ffe144871803802e1f22d10b455df8477f1bad7474e39d70c9efedf4423d",
       "status": "ok",
       "notes": [
-        "[rewrite-condition] L23: URL 正则格式无法识别：/^https:\\/\\/(?:\\w+-spclient|spclient\\.wg)\\.spotify\\.com(?::443)?\\/artistview\\/v1\\/artist\\/(.*)&platform=iphone/i as urlMatch → 已注释：request if ${url} ~= /^https:\\/\\/(?:\\w+-spclient|spclient\\.wg)\\.spotify…",
-        "[script-type] L26: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(?:\\w+-spclient|spclient\\.wg)\\.spotif…",
-        "[argument-unused] 参数 tab 未被任何行引用，已删除",
-        "[argument-unused] 参数 useractivity 未被任何行引用，已删除",
-        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[script-attribute-alias] L26: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L26: 属性名归一 binary_body_mode → binary-body-mode",
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "脚本参数清单转成 argument JSON",
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -907,14 +990,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Spotify_lyrics_translation.lpx",
       "lpx_sha": "c28fed3a74bc4e99bbc81d3b06e524ab36f186a3ae3439088cb57cdf14280648",
-      "module_sha": "f56cbfa2ca2e2345c5da7070f2261e062db088fac9a78f09104ee68045a13110",
+      "module_sha": "04278abd52b23650c24af8e2ae17196fa721267291cc7bb949c1bfb015a95040",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/api\\.spotify\\.com\\/v1\\/tracks\\?/i th…",
-        "[script-type] L16: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/spclient\\.wg\\.spotify\\.com\\/color-lyr…",
-        "[script-type] L17: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/spclient\\.wg\\.spotify\\.com\\/color-lyr…",
-        "[script-type] L19: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/spclient\\.wg\\.spotify\\.com\\/color-ly…",
-        "[script-type] L20: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/spclient\\.wg\\.spotify\\.com\\/color-ly…"
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L16: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L17: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L17: 属性名归一 binary_body_mode → binary-body-mode",
+        "[script-attribute-alias] L19: 属性名归一 requires_body → requires-body"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×10"
       ]
     },
     {
@@ -930,14 +1017,21 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Sub-Store.lpx",
       "lpx_sha": "64c4297cde2fb12bce2b62bf660b54ed9c63cf6c2957f6f5b6f5c1b76c2e31a7",
-      "module_sha": "6f00b86b1417973ec9d83706286771793e21b45046f6a2124d248edfbca2fbe3",
+      "module_sha": "c1762cf6e7bdb09e1a8dc2cdb9041cc8e2cd88dc122baea7c8f912268b78cf9f",
       "status": "ok",
       "notes": [
         "[rule-policy] L14: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN, sub-store.vercel.app, PROXY",
-        "[script-type] L20: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/sub\\.store\\/((download)|api\\/(preview…",
-        "[script-type] L21: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/sub\\.store/i then script(\"https://git…",
-        "[script-path] L22: 缺少 script-path → 已注释：cron ${cron} then script(\"https://github.com/sub-store-org/Sub-Store/re…",
-        "[argument-unused] 参数 cron 未被任何行引用，已删除"
+        "[script-attribute-alias] L20: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2"
+      ],
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -953,15 +1047,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/TelegramRedirect.lpx",
       "lpx_sha": "3ef620e5ab707f091e3af6260d5617406e0745f1c9e3d4f2b6527577c21c60ca",
-      "module_sha": "fd9219a21881fac52f4ce423c0d476b8bc579b765ad97fdf91a87718397a5ae3",
+      "module_sha": "002808ee2e2d276ed488b7db5ad817d0b4d4ba034006ac4ce0705b598ecf6383",
       "status": "ok",
       "notes": [
-        "[rewrite-condition] L17: URL 正则格式无法识别：/^https:\\/\\/t\\.me\\/([A-Za-z][A-Za-z0-9_]{3,30}[A-Za-z0-9])\\/?$/ as item → 已注释：request if ${url} ~= /^https:\\/\\/t\\.me\\/([A-Za-z][A-Za-z0-9_]{3,30}[A-Z…",
-        "[rewrite-condition] L18: URL 正则格式无法识别：/^https:\\/\\/t\\.me\\/\\+([A-Za-z0-9_-]+)\\/?$/ as item → 已注释：request if ${url} ~= /^https:\\/\\/t\\.me\\/\\+([A-Za-z0-9_-]+)\\/?$/ as item…",
-        "[argument-unused] 参数 app 未被任何行引用，已删除",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "TeraBox去广告",
@@ -981,7 +1073,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "TestFlight地区解锁",
@@ -996,12 +1089,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/TestFlightRegionUnlock.lpx",
       "lpx_sha": "75cefd506bb502f1cdfd1fa00772bb2108f983431a8fcb76f0d313d200af5ffb",
-      "module_sha": "436890d8b7d2cf9603cc8ba771dbde4142c0444743f03a8ba6ba24f6e6ea55e6",
+      "module_sha": "7f6137813aa92522c46f2bafae79110a5759dabfee1758989928c19bae010376",
       "status": "ok",
       "notes": [
         "[rule-policy] L14: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN, testflight.apple.com, PROXY",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -1023,6 +1120,10 @@
         "[rule-policy] L14: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN, app.tubemaxapp.com, PROXY",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -1043,7 +1144,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "Uki去广告",
@@ -1058,14 +1160,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Uki_remove_ads.lpx",
       "lpx_sha": "b229b01725adee1ee844416d9a8ba0f10f086185c79dac130a37c6e1fd3fa0dc",
-      "module_sha": "8df65ddc23809b6f86dbf0afa369df138b949310b1a754b4a42ffca7cef0b835",
+      "module_sha": "db52065d1d0354b386f921b6424ef4df7cdd7c080b2eaeb7bc75252512c9a871",
       "status": "ok",
       "notes": [
-        "[script-type] L22: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.chenlongtech\\.cn\\/v\\d\\/lover\\/pr…",
-        "[script-type] L24: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.chenlongtech\\.cn\\/v\\d\\/friends\\/…",
-        "[script-type] L26: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.chenlongtech\\.cn\\/v\\d\\/party\\/co…",
-        "[script-type] L28: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.chenlongtech\\.cn\\/v1\\/post\\/fetc…",
+        "[script-attribute-alias] L22: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L24: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L26: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L28: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×4"
       ]
     },
     {
@@ -1082,14 +1188,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/VVebo_repair.lpx",
       "lpx_sha": "387d1bc5b196e0b14f21aab4efefb9b15f5d14eac93bc0e2d72397d151b36f29",
-      "module_sha": "7e969c26c0fecac7a7d378671a94985ec8b49218b47ecfebb60697d9ac6ba3bd",
+      "module_sha": "030149a3aa53515910a9186f3df553939a11b4bf6166c3c5d147fcfe166795b4",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/users\\/show\\?/i the…",
-        "[script-type] L16: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/statuses\\/user_time…",
-        "[script-type] L18: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/remind\\/unread_coun…",
-        "[script-type] L20: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/profile\\/statuses\\…",
-        "[script-type] L22: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/cardlist\\?/i then …"
+        "[script-name-shared] L16: 脚本重名，已改名为 修复时间线-2（Surge 里同名脚本会被后者覆盖，只留一条生效）",
+        "[script-name-shared] L18: 脚本重名，已改名为 修复时间线-3（Surge 里同名脚本会被后者覆盖，只留一条生效）",
+        "[script-attribute-alias] L20: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L20: 脚本重名，已改名为 修复时间线-4（Surge 里同名脚本会被后者覆盖，只留一条生效）",
+        "[script-attribute-alias] L22: 属性名归一 requires_body → requires-body"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "重名脚本自动加后缀 ×3",
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -1106,12 +1217,20 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/WARP_Node_Query.lpx",
       "lpx_sha": "c6b28e5f7064f045c8a893d01fcc512468aaa7a2d8ff8000e15e637d8d4f5b1f",
-      "module_sha": "449c6f8df0a8fcd22d77a68bd6a302cbd6970817c59529d41a25657abd82028c",
+      "module_sha": "0af53ce1e6b58b46613456fafdc4f46077a7083e89a9ff92a3aa63f4f13c5de9",
       "status": "ok",
       "notes": [
-        "[script-path] L14: 缺少 script-path → 已注释：generic then script(\"https://raw.githubusercontent.com/VirgilClyne/Clou…",
+        "[script-attribute-alias] L14: 属性名归一 img_url → img-url",
+        "[script-generic] L14: generic 脚本在 Surge 里没有 Loon 的节点上下文，请自行确认",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
+      ],
+      "review": [
+        "generic 脚本没有节点上下文"
       ]
     },
     {
@@ -1127,14 +1246,20 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/WPS_checkin.lpx",
       "lpx_sha": "5406f5de6e95974fcbc4608ae192dd4e51f4b2622150f5cc21d192114d819ef9",
-      "module_sha": "61639415c09aedc8988c13c161a9c17d93443fc929568bdac56fc2989ddab204",
+      "module_sha": "5a2ed26acb56b3144fcb7f663088d9686b180a41b1ecfd60d913065a729a155e",
       "status": "ok",
       "notes": [
-        "[script-type] L22: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https:\\/\\/moapi\\.wps\\.cn\\/app\\/ios\\/v1\\/app$/i t…",
-        "[script-path] L24: 缺少 script-path → 已注释：cron ${CRONEXP} then script(\"https://kelee.one/Resource/JavaScript/WPS/…",
-        "[argument-unused] 参数 CaptureCookie 未被任何行引用，已删除",
-        "[argument-unused] 参数 AK 未被任何行引用，已删除",
-        "[argument-unused] 参数 SK 未被任何行引用，已删除"
+        "[script-attribute-alias] L22: 属性名归一 requires_body → requires-body",
+        "[script-enable] L22: enable 已转为行前缀开关 {{{CaptureCookie}}}",
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[argument-unused] 参数 DAY 未被任何行引用，已删除",
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）",
+        "enable 转为模块参数开关",
+        "脚本参数清单转成 argument JSON"
       ]
     },
     {
@@ -1155,7 +1280,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "YY去广告",
@@ -1170,12 +1296,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/YY_Voice_remove_ads.lpx",
       "lpx_sha": "daadfdb9d23bf52fddc30369e7a5c46b900d7717d930cc40a68d5a7475262d37",
-      "module_sha": "34ab29b6faa16cc6c8a57311bf1b33b013bb94ac48415ae7fbe7dc1d119cbeb5",
+      "module_sha": "554406bb5ea33264d270c2567b0bb449c860e3377dd8241a71bed64cdefe781f",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "YY语音去广告",
@@ -1190,12 +1317,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/YYVoiceTool_remove_ads.lpx",
       "lpx_sha": "da4c7bb3b7e129dcf508b569bd1b852eaa92db094aaba2970d67df074d183eae",
-      "module_sha": "e53d96052bd1c67c5753d3945e255997132672d8769baf304e916feba1927fb3",
+      "module_sha": "dd5795e9022ef6b2250cb9f6a47daeb02c02a7084b8caa76502179cc51f8162b",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "YouTube去广告",
@@ -1214,14 +1342,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/YouTube_remove_ads.lpx",
       "lpx_sha": "0e5da80d8d79d58d854f33383053d76355e30cb0507cf89bc53330249ae1da7f",
-      "module_sha": "47ffad506fca9079640319e465d60cfedb5bc2a6b7db612674dccd13628085ad",
+      "module_sha": "86fdb789d15bc798f07e12caa89283133b432036c13a33069f64f42b2b7a0544",
       "status": "ok",
       "notes": [
-        "[script-type] L21: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/youtubei\\.googleapis\\.com\\/(youtubei\\…",
-        "[script-type] L23: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/[\\w-]+\\.googlevideo\\.com\\/initplaybac…",
-        "[script-type] L25: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https:\\/\\/youtubei\\.googleapis\\.com\\/youtubei\\/v…",
-        "[argument-unused] 参数 blockUpload 未被任何行引用，已删除",
-        "[argument-unused] 参数 blockShorts 未被任何行引用，已删除"
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L21: 属性名归一 binary_body_mode → binary-body-mode",
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "脚本参数清单转成 argument JSON ×3",
+        "属性名归一（下划线转连字符） ×6"
       ]
     },
     {
@@ -1237,14 +1370,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/YouTubeSubtitlesTranslation.lpx",
       "lpx_sha": "6b5cfe5b12fa5d42e9b5732255edfddfcd9fc4e2bb377b896f0726f687c71ee0",
-      "module_sha": "d2609aa28d7ab2ac1fae8624ae5c7d0e2a86d8957f88516d0be66c873cc00221",
+      "module_sha": "733c177afe02817c80dfb6f91e75c254da9bf5bbb59ee20ed6ca19b0bf7386e7",
       "status": "ok",
       "notes": [
-        "[script-type] L20: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/(www|m|tv)\\.youtube\\.com\\/youtubei\\/v…",
-        "[script-type] L21: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/(www|m|tv)\\.youtube\\.com\\/youtubei\\/…",
-        "[script-type] L22: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/youtubei\\.googleapis\\.com\\/youtubei\\/…",
-        "[script-type] L23: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/youtubei\\.googleapis\\.com\\/youtubei\\…",
-        "[script-type] L24: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/youtubei\\.googleapis\\.com\\/youtubei\\…"
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[script-attribute-alias] L20: 属性名归一 requires_body → requires-body",
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "脚本参数清单转成 argument JSON ×8",
+        "属性名归一（下划线转连字符） ×16"
       ]
     },
     {
@@ -1260,12 +1398,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/ZAKER_remove_ads.lpx",
       "lpx_sha": "ac48339042c6b3659b9b1ca5636dc29782bac8ef84cb5344852b8a0c69abc687",
-      "module_sha": "ceabb43d2af5e9e8756476ed2f5360912381111fb79ec8d26cebd12b816783a0",
+      "module_sha": "f75226687181457b85805031afed1af6de3c614120e84040d91c832be19bb00a",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "e充电去广告",
@@ -1285,7 +1424,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "一刻相册去广告",
@@ -1305,7 +1445,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "一甜相机去广告",
@@ -1325,7 +1466,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "七猫小说去广告",
@@ -1345,7 +1487,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "下厨房去广告",
@@ -1360,12 +1503,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/XiaChuFang_remove_ads.lpx",
       "lpx_sha": "90daf81c40e3f4495ac29c2581684a5a098dddbfd9837f35752185d3dfce6924",
-      "module_sha": "734ee9d455f88b260678e5b94e05371c570a469fa67cbea7bae4130b7b25de28",
+      "module_sha": "35e3a27ab8bc751f692a876b81306dbf3260e34ddc9549af70a88694be298717",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "两步路户外助手去广告",
@@ -1385,7 +1529,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "中华万年历去广告",
@@ -1400,12 +1545,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/EtouchEcalendar_remove_ads.lpx",
       "lpx_sha": "d3fcfc4a7cc8d332b53776ffee1e755e5d22476847dfb067590a30892269c57b",
-      "module_sha": "f2b6aeb620a573a2463ddc727f4921ac1b74b485714cba194b6911050e758b5a",
+      "module_sha": "d3f844a29d80047ddb375cf03fc6da7048654282f86c9a7fe404bc185d65e443",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "中国人保去广告",
@@ -1420,13 +1566,17 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/PICC_Insurance_remove_ads.lpx",
       "lpx_sha": "9d626294dd5bd1435992408a2cb716d8833d3accadf219f9a3fd3dfde8266b69",
-      "module_sha": "50ca1e7116133d8f6b1b8a5d36c8776e8f2766f0d901cd063ea3823bfaba10c2",
+      "module_sha": "0f24a502a0763749d884430de8fe01e9c2ce7a7dce997399db1a20cfe11ef7c7",
       "status": "ok",
       "notes": [
-        "[script-type] L19: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/zgrb\\.epicc\\.com\\.cn\\/G-HAPP\\/a\\/conf…",
-        "[script-type] L21: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/zgrb\\.epicc\\.com\\.cn\\/G-HAPP\\/mpageco…",
+        "[script-attribute-alias] L19: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -1447,7 +1597,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "中国移动云盘去广告",
@@ -1462,13 +1613,17 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/mobileClouds_remove_ads.lpx",
       "lpx_sha": "4a444fe7a8c6f068b95cda32453e008cdb025d48c59d39983e14d2ecd4049aa0",
-      "module_sha": "b4218325a24c298c95560ac9fa4ae937402abf88944603e8fa1f201bb9b64aaa",
+      "module_sha": "9bf0c6b091cdfe1b5d497e68c1528d71ebe90af1d1b77097073c8514b8edbc26",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/jzts\\.cmpassport\\.com\\/personalized\\/…",
-        "[script-type] L16: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/ad\\.mcloud\\.139\\.com\\/advertapi\\/adv-…",
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L16: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -1489,7 +1644,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "乐播投屏去广告",
@@ -1504,12 +1660,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/TV_Assistant_remove_ads.lpx",
       "lpx_sha": "6dddf3ae98926351336f2b7ec18c428d0370977bff891eb2441e1974ca1b0b68",
-      "module_sha": "14bc6fae61b47a82dfca8c00a031121f2b9ec5f957dbf726eeb9fbf7f8dedde1",
+      "module_sha": "befcbf6c779c932e1b192ecca79117f08f3a12b9c36e328effc119ee868d6776",
       "status": "ok",
       "notes": [
-        "[script-type] L21: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/saas\\.hpplay\\.cn\\/api\\/lebo-desk\\/end…",
+        "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -1525,12 +1685,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/ShuQiCenterReader_remove_ads.lpx",
       "lpx_sha": "6e5bb08216386dbdd70511cd95b3b8a191687ee9ece095bebc7055d4d53aaaf8",
-      "module_sha": "1c49eee09956f3b0a632811b16a2b6ce9017ae926826a37a1e46ce613fc4bb7a",
+      "module_sha": "e127dfe9dc92bd2a2de37a2ea1f045001f4e5e46f2f9afcd34dc4da2ceef2d73",
       "status": "ok",
       "notes": [
-        "[script-type] L24: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/ocean\\.shuqireader\\.com\\/sqios\\/rende…",
+        "[script-attribute-alias] L24: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -1551,7 +1715,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "京东去广告",
@@ -1567,12 +1732,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/JD_remove_ads.lpx",
       "lpx_sha": "282d322d5939dc2c103846eefbbd98c535e783324a95655e74f1a841b78b42c6",
-      "module_sha": "0abe1a4925aab713c8e490b90cbbe91610df6f4348ce17289826ce0bdbd5fc23",
+      "module_sha": "b809999c2c1c02a1a96848282d139aad01775774b496856630da6522b90e7a91",
       "status": "ok",
       "notes": [
-        "[script-type] L22: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.m\\.jd\\.com\\/client\\.action\\?func…",
+        "[script-attribute-alias] L22: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -1588,12 +1757,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/JDWaimai_remove_ads.lpx",
       "lpx_sha": "b26fab00df363e86fcc5e36475ece3e16421bea703bfc5a6510da2f34c87e1f2",
-      "module_sha": "4568b26545994d0ed03721e9f73e7fc6148fd335438b9b00c24257a8f31f9bf9",
+      "module_sha": "1cba65b5b2481ea70aa7b6c70ce6cc0386d3f98c3408fd8b3ddb5c8ef4ee33d6",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "京东比价",
@@ -1610,13 +1780,17 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/JD_Price.lpx",
       "lpx_sha": "8f37377f4c141a032efe1c31c2085704302b2901c584b1ba42956ffbeec0db15",
-      "module_sha": "f140f8e378104154f82b774222612b104f482882a3e8db55c469df7da022d114",
+      "module_sha": "4ad9d303611f4dd9cfa0333b7e9d34aca1d79f65d6a793c63599fc5c9df6b5af",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/apapia-sqk-weblogic\\.manmanbuy\\.com\\/…",
-        "[script-type] L16: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/in\\.m\\.jd\\.com\\/product\\/graphext\\/\\…",
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L16: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -1632,13 +1806,17 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Qbb_remove_ads.lpx",
       "lpx_sha": "eb9bc357443b7744c61fe1011107fe51c0e90ec60a19d32b3772f89e9f5e806a",
-      "module_sha": "0c744e6825340a8ba0d113a76002698f2bd06066fd4e24e0b9310f439e9b3fe9",
+      "module_sha": "54fc8cd70d1d7c39302d0adcdd99f7e8027e06b5298c5082aca71e74345b3758",
       "status": "ok",
       "notes": [
-        "[script-type] L33: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.qbb6\\.com\\/commons\\/self\\/button…",
-        "[script-type] L35: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/apipt\\.qbb6\\.com\\/parenting\\/pt\\/home…",
+        "[script-attribute-alias] L33: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L35: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -1654,12 +1832,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/smzdm_remove_ads.lpx",
       "lpx_sha": "66fa44e8af0a01c9d67c87655a5d05d8efa5f5d0d7debef92c3814296ab0240b",
-      "module_sha": "d2c29db1f4ce88bd4e42edfede05cd4f3adfdc2722ac778ed0cd4c3a644e6915",
+      "module_sha": "55d40e19e7f2f6ed18346a615d97fbbc740a4fa80ec029789c6587c869da7bd6",
       "status": "ok",
       "notes": [
         "[rewrite-json] L25: 不支持的 json 动作：jq_file → 已注释：response if ${url} ~= /^https:\\/\\/homepage-api\\.smzdm\\.com\\/v3\\/home\\?/…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -1675,12 +1857,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Taqu_remove_ads.lpx",
       "lpx_sha": "b8fc86a3cabd9c4ddde1073f5a0ad1235c98bc7000a871dcf74a193d909c83bf",
-      "module_sha": "b47db137d2e1e697d4effd4f045860ae809dcbee165830fca80012c35179eb72",
+      "module_sha": "fe7b563b578710fb1de3f1b0cf78043559fc08270195f6b67a0d4c3c55945332",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "代理链路检测",
@@ -1703,6 +1886,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
+      "converter": "2.1.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ],
@@ -1731,7 +1915,8 @@
         "[rule-duplicate] L26: 重复规则已合并：DOMAIN,cad.youku.com,REJECT,extended-matching,pre-matching",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "健康160去广告",
@@ -1746,12 +1931,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/91160_remove_ads.lpx",
       "lpx_sha": "81aa72a5890bd751b2e1231f97f6e13df3554533635be8f29c27e2ab29cfb917",
-      "module_sha": "075d056df62cb9e120eabb4dbf48b47f5501f501297c5c15708e044483591618",
+      "module_sha": "16d2593c551edccdf8a83018997478fc8d41685f9c32dce40c9ceaa19b631ad6",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "全民K歌去广告",
@@ -1771,7 +1957,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "凤凰新闻去广告",
@@ -1786,12 +1973,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/ifengNews_remove_ads.lpx",
       "lpx_sha": "ba91d98876f164829b6832302284675e42efb8ac05240b9cbbe925977f779cd2",
-      "module_sha": "79bf074273b4c6865f78044bbd6ba7ed7bf7fead0a54c83efcd76b0ff5246c9f",
+      "module_sha": "b678b27be5d9e3aa4203bfc24ae370068225a7c9d0fb5b14d6c15b4a26e3c3fe",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "创维智慧云去广告",
@@ -1811,7 +1999,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "前程无忧去广告",
@@ -1831,7 +2020,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "剑网三无界去广告",
@@ -1851,7 +2041,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "医考帮去广告",
@@ -1871,7 +2062,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "华住会去广告",
@@ -1886,12 +2078,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/HantingHotels_remove_ads.lpx",
       "lpx_sha": "27b2b46a6b03f506f91087254cdbd9b124b8a5da8a296178346f0ef00e6b37db",
-      "module_sha": "bf9c97bd8b4bf1b7baf3f9aa2163deebb2814605cc9dc2ba983e546900466e38",
+      "module_sha": "3fc8ef357f1c01a13933c7c33312b04776e70aa8aed604e9e07b57aefb6a2807",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "华尔街见闻去广告",
@@ -1906,12 +2099,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/FinanceNews_remove_ads.lpx",
       "lpx_sha": "b727cfacab03cccff71056e83d5b328008c5c846d43c9fb006acf40682a2933a",
-      "module_sha": "fa69bbd552ac08bf6665afc3945d9ebed06d0660aef67860c7a58f129391f1d6",
+      "module_sha": "2a158a0e1d4f641e295d38ede2325b5fee2f4b2d3572cdc3c3e01415f33811cf",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "南网在线去广告",
@@ -1926,12 +2120,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/CSG_remove_ads.lpx",
       "lpx_sha": "5a550c686c8f099e877f882925a79d94eb3d4cca1e20d7ecfd85d67fa09f93b4",
-      "module_sha": "5aed1d43cb57ec2a884a4b0b5a92359752efc4c4572a4def491f859c74e8fd37",
+      "module_sha": "4bc853910d66875a5c4ecbe456244b88f02603f6b30ec0e5ba14cd760d01b9bc",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "口袋壁纸去广告",
@@ -1946,12 +2141,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/ShoujiDesk_remove_ads.lpx",
       "lpx_sha": "f270c31ac7d3f5e3406804d55daa1f4f53dc6656e518e95d93d1aa5e65b84783",
-      "module_sha": "6f941aef63d712e0a0231712f5766dac27b7ad6972bc02b6391ebb1c13e99f27",
+      "module_sha": "fc2b34160d641d6e000f554a05fac17813d507b58ca2cccd5edc865cbabcd506",
       "status": "ok",
       "notes": [
-        "[script-type] L19: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.tdz5\\.com\\/base\\/init\\?/i then s…",
+        "[script-attribute-alias] L19: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -1969,12 +2168,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/DingdongMaicai_remove_ads.lpx",
       "lpx_sha": "5622a7467a07224e9f9e7baf6b7e069405447e81debc09d4431ef3e48b80c711",
-      "module_sha": "879b04ed188954d4933f1499f4a910380ec7cc69ed2383fa669d7271db648d57",
+      "module_sha": "d6f54429dcbfd5d55ba681874a6f3b70db5ff4ab1aa19b2ba9ae26700c3a1c2c",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "可莉广告过滤器",
@@ -1989,14 +2189,14 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Remove_ads_by_keli.lpx",
       "lpx_sha": "3f79243904d9718c9ec760442b2a669c4bdfea65770e3e33f6aa3f293524b801",
-      "module_sha": "1aa9f8da985250e3dfc5390e4db695e52ac9496a0e09c2df99c1e6420a2dd3a4",
+      "module_sha": "23c5b7d0f49d5a63b09e25241124388906ac0ec6c5f9beff8ab559073fc93fca",
       "status": "ok",
       "notes": [
         "[rule-duplicate] L22: 重复规则已合并：DOMAIN,sdkconfig.ad.xiaomi.com,REJECT,extended-matching,pre-matching",
-        "[rewrite-body] L161: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https?:\\/\\/m\\.client\\.10010\\.com\\/mobileService…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "向日葵去广告",
@@ -2016,7 +2216,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "启信宝去广告",
@@ -2036,7 +2237,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "哈罗去广告",
@@ -2051,12 +2253,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/EasyBike_remove_ads.lpx",
       "lpx_sha": "be91c7e3c5e99586fb76b63b1cfe924f7c83e98af730fe65a6c521f8f901fddf",
-      "module_sha": "d64bc3c2ee99eb8570009eca4538464413166219f6764b01f66dfa46902f57e3",
+      "module_sha": "20d6f7e3c52604ec2a4dddc619e6b9f4862f581f4f3fd1102a3d9adc887a9aa0",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/mobileconfig-gateway\\.hellobike\\.com\\…",
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -2072,14 +2278,23 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Bilibili_remove_ads.lpx",
       "lpx_sha": "8db02264fa15b0271ccad40eaa5c14ea3f40864aa5af501c7a64941620e6b0e5",
-      "module_sha": "892a20a80e713f452e7ffe2023df2d8c3be41987a73ffe2e4afa4e72c29c91a8",
+      "module_sha": "c578f178cfc56bc8967fea04f2445d5efaa07b0311538eacd5e313dd80988689",
       "status": "ok",
       "notes": [
         "[rule-policy] L21: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN, bsbsb.top, PROXY",
-        "[rewrite-body] L33: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/app\\.bilibili\\.com\\/x\\/v2\\/splash\\/li…",
         "[rewrite-json] L35: 不支持的 json 动作：jq_file → 已注释：response if ${url} ~= /^https:\\/\\/app\\.bilibili\\.com\\/x\\/resource\\/show…",
-        "[rewrite-body] L39: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.bilibili\\.com\\/pgc\\/activity\\/de…",
-        "[rewrite-body] L46: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/ap[ip]\\.bilibili\\.com\\/x\\/(resource\\/…"
+        "[rewrite-json] L56: 不支持的 json 动作：jq_file → 已注释：response if ${url} ~= /^https:\\/\\/app\\.bilibili\\.com\\/x\\/v2\\/account\\/m…",
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[script-attribute-alias] L68: 属性名归一 requires_body → requires-body"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "脚本参数清单转成 argument JSON ×3",
+        "属性名归一（下划线转连字符） ×7",
+        "enable 转为模块参数开关 ×2"
+      ],
+      "review": [
+        "3 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -2095,13 +2310,17 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/BiliComic_remove_ads.lpx",
       "lpx_sha": "6e243938e0d4f5dcea9bb700ee885bd15baf03fa53e372168d94163fd6975645",
-      "module_sha": "e52ce09ac1d3b16a48b858406cfab6c8aabe68c702abc172b5f34d2e45f5a9b6",
+      "module_sha": "3562d4afdf159ac6d9c8c0c133023317597131166af46a3afbe9fc03e8aa6023",
       "status": "ok",
       "notes": [
-        "[script-type] L27: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/manga\\.bilibili\\.com\\/twirp\\/comic\\.v…",
-        "[script-type] L28: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/manga\\.bilibili\\.com\\/twirp\\/user\\.v\\…",
+        "[script-attribute-alias] L27: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L28: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -2117,13 +2336,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Himalaya_remove_ads.lpx",
       "lpx_sha": "c4fbddb80af7ba89e9cfa2226950178353745972194821df28692d74221dff36",
-      "module_sha": "fe3afcbf862310a45281eb5b473d4a6976fe110b6a5ff5b6e598c9162093f7e7",
+      "module_sha": "1c1e9afc79ea2c32a5b6e4d2b9c49dc750b86eee15fa992852b391feaa85f751",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L40: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/(m|mwsa)\\.ximalaya\\.com\\/community\\/s…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "图怪兽去广告",
@@ -2143,7 +2362,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "堆糖去广告",
@@ -2158,12 +2378,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/DuiTang_remove_ads.lpx",
       "lpx_sha": "a67e65c548b3b3f0ebd1de205b56f677f6e7e03be4e2d682a7b8ddafa91d8748",
-      "module_sha": "461c20b52aa9f38d0c65c1f7e82bedb49b9f383fe81cf4eaec94c7e371e04a3a",
+      "module_sha": "56333c47b6fe403c47808d9c40487b028e5d39f96b1b1279ddf20bf26a4aee4d",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "墨迹天气去广告",
@@ -2178,12 +2399,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MojiWeather_remove_ads.lpx",
       "lpx_sha": "5bfca277969ca907f689a6095f5e23650a7220c88a9f559a8c3a327db2d757ca",
-      "module_sha": "672271779469c047cfc812af78a2f7cfdace6288f57ec6f2814236f1a059eb9a",
+      "module_sha": "b16e94b8bc3238247771de14a9d3cde2662ec1de5d0aa169fc405a5eb2fc7a1a",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "多屏互动去广告",
@@ -2198,12 +2420,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/TCLnScreen_remove_ads.lpx",
       "lpx_sha": "691c8405aa8c03e602c48975f294320dbf094580b04f443f2845d7d8cfbd1b58",
-      "module_sha": "2e2e0939f37a0143b313dcd1838d748e7c59b341eddf292ed1177e5a97b14c4b",
+      "module_sha": "37a785b9d2a5217ba965677d94db2ae507005163032d9b698e3eca220d676fee",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "大姨妈月经期助手去广告",
@@ -2218,12 +2441,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Dayima_remove_ads.lpx",
       "lpx_sha": "1deaedbed2801a8a7cd32243bad7e40bd6d8594f4098394ff460fdbdba59621e",
-      "module_sha": "65fa1e88ef7a20b2c4ebaddde7cf7108fbbe6e8c3070c90e8bc9c6e4a26baabe",
+      "module_sha": "350b1c88178ff614382e5d881d365c5602f59b7661a2d17233aa0fb1c1156bb1",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "大麦去广告",
@@ -2243,7 +2467,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "天天跳绳去广告",
@@ -2263,7 +2488,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "天气通去广告",
@@ -2278,12 +2504,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/TianQiTong_remove_ads.lpx",
       "lpx_sha": "297eae03517e86b6c901dfe1f8fb08483e74d3c173cffac078c92960b8414055",
-      "module_sha": "283f37835020e3d6aae15333ee90bd536f6f97fd52f3a231e186bb710ac566aa",
+      "module_sha": "a9047691ca7e8fff004b7365b4ba309669351b55c80604fceca7704ec61ccd3b",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "天气预报去广告",
@@ -2298,12 +2525,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/iReaderCityWeather_remove_ads.lpx",
       "lpx_sha": "89246ddfdfec6a5a1c86688239977c76404384f179335a78ea5bb04a8bd50b02",
-      "module_sha": "188cc1c4ee2e55521b7e5fd30a3463f40fcf749ce2cde1c3b0bf7439b76de93a",
+      "module_sha": "b19c49f0d7a50df91b8c765dbb24bca39cc6c207d402416aea6640dbec4c07aa",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L18: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^http:\\/\\/weatherapi\\.ccqyj\\.com\\/server\\/listsv…",
+        "[mitm-missing] 该模块改写了 HTTPS 流量，但源插件没有 hostname，需手动补 [MITM]",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "缺 [MITM] hostname"
       ]
     },
     {
@@ -2319,12 +2550,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/TmallCampus_remove_ads.lpx",
       "lpx_sha": "eee4c3f5bb919f36485ec77b75c20b880b2df75c87880cb12ef8af6f7906969e",
-      "module_sha": "8f85cd8cc9a141a5d5fc92a8a9b2ef261467df7b905da3028386f508cb7f3c6e",
+      "module_sha": "d1380217522ea89d7b0691c78e438e910d8581d7cb1c9f5b36225d51d523d7a0",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "夸克去广告",
@@ -2344,7 +2576,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "夸克扫描王去广告",
@@ -2364,7 +2597,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "好轻去广告",
@@ -2379,12 +2613,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/YunmaiScale_remove_ads.lpx",
       "lpx_sha": "13d4faff26015c2b973ed967ec5a124577a36114e80e3d6045681ff0a07822da",
-      "module_sha": "3e349ce9bd56774a8c9e0c17de81d09f2ca39faaf3bdaf50d9c6eff0afd37be7",
+      "module_sha": "75d55ee1dfc5e3675c6828867b6d74b8b46f3e5cc55050559859b21c3145b5b6",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "威锋去广告",
@@ -2404,7 +2639,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "学习通去广告",
@@ -2424,7 +2660,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "完美世界电竞去广告",
@@ -2444,7 +2681,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "宝宝树孕育去广告",
@@ -2459,14 +2697,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/BabyTree_remove_ads.lpx",
       "lpx_sha": "30142e15f87fa0816ddecade7bded0e5e46eb3119731fd25f245c3bb689a9f89",
-      "module_sha": "09b208a2cd12326a4b50a22b957cc60aa85a994b7e6f541c3bf7a6ac9c8f3860",
+      "module_sha": "1d1b3204b089e4f519b511abb09991cf6a5f4f1f9892b49bd66ecb480a5e6c9e",
       "status": "ok",
       "notes": [
-        "[script-type] L21: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^http:\\/\\/api\\.babytree\\.com\\/bafconfigcenter_in…",
-        "[script-type] L22: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^http:\\/\\/go\\.babytree\\.com\\/go_pregnancy\\/api\\/…",
-        "[script-type] L23: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^http:\\/\\/go\\.babytree\\.com\\/go_search\\/api\\/mob…",
+        "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L22: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×3"
       ]
     },
     {
@@ -2487,7 +2729,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "小宇宙去广告",
@@ -2502,12 +2745,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/CosmosPodcast_remove_ads.lpx",
       "lpx_sha": "560c182dad126d891e290ad4c88e48fac76fc1f9ac740a2c8a4efeeb72c4ccbf",
-      "module_sha": "2adacddd0f6f9a85dc4b483d6eacf953576906b862a98bbf13bcaa995b6989f2",
+      "module_sha": "83bd77cd3ba14f100f4ccdd707813a4b032dfaf26c1e8db983b65d2aaec8e37e",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "小店掌柜去广告",
@@ -2527,7 +2771,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "小桔充电去广告",
@@ -2542,13 +2787,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/XiaojukejiCharge_remove_ads.lpx",
       "lpx_sha": "b23b72332ba1705b1149ba725185a8e2f4f3ef0f922dc34b184e76cad08601d1",
-      "module_sha": "91c8376803c4e6c5b698ce4d716f31332dcadf0649b4e81f9d13cd0b2af9638c",
+      "module_sha": "7ec1eddc04680c43660dbc29c373e1a91e839ea76395c7bd84346554465dd381",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L22: 不支持的 body 动作：mock_file → 已注释：response if ${url} ~= /^https:\\/\\/am\\.didistatic\\.com\\/static\\/am\\/cf-t…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "小白智慧打印去广告",
@@ -2563,12 +2808,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/XiaobaiPrint_remove_ads.lpx",
       "lpx_sha": "0afc709cb4eaf4fda8691a80ff48caf8a7b48af7b728f953506e78af5b60ff72",
-      "module_sha": "937c3e705d393d74184baf6270b462eb599abf7ac34b3dca32db9f776ca45712",
+      "module_sha": "dff454ce14860789be27e83d7b00f3e54798496766cfa4c34fa32c649e9e8e7b",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "小睡眠去广告",
@@ -2588,7 +2834,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "小米音箱去广告",
@@ -2608,7 +2855,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "小红书去广告",
@@ -2624,14 +2872,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/RedPaper_remove_ads.lpx",
       "lpx_sha": "b782ea4f811702a80f853eae8bd3a3f7a33c8a3af833f5c54fba3d75a524f646",
-      "module_sha": "eb654c67040e1cdb8e4c779b8650645a25f8548d273fcd544954a294cbcdedc0",
+      "module_sha": "9960c8109422ce75bf83028073bc122ce6c472c8540e7337324920830ed41b55",
       "status": "ok",
       "notes": [
-        "[script-type] L31: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/edith\\.xiaohongshu\\.com\\/api\\/sns\\/v1…",
-        "[script-type] L33: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/edith\\.xiaohongshu\\.com\\/api\\/sns\\/v1…",
-        "[script-type] L35: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/edith\\.xiaohongshu\\.com\\/api\\/sns\\/v1…",
-        "[script-type] L37: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/edith\\.xiaohongshu\\.com\\/api\\/sns\\/v2…",
-        "[script-type] L39: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/edith\\.xiaohongshu\\.com\\/api\\/sns\\/v2…"
+        "[script-attribute-alias] L31: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L33: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L35: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L37: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L39: 属性名归一 requires_body → requires-body"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×12",
+        "重名脚本自动加后缀"
       ]
     },
     {
@@ -2653,7 +2906,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "小象超市去广告",
@@ -2668,12 +2922,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/iMaiCai_remove_ads.lpx",
       "lpx_sha": "8eec14587aa8698dd8e5a024fad1dc2115e430ca3e46c540f92d492da298eea1",
-      "module_sha": "987cef2d085bf9d3c7e4a66484694fc87c12955b55bbd11c2db8a1c2540be5ef",
+      "module_sha": "3b29f9f0d2610f16122f7116528d8f428b02543956eb704349db7763293ce643",
       "status": "ok",
       "notes": [
-        "[script-type] L23: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/portal-portm\\.meituan\\.com\\/horn_ios\\…",
+        "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -2694,7 +2952,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "帆书去广告",
@@ -2709,14 +2968,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/KebidaDushu_remove_ads.lpx",
       "lpx_sha": "afd9a0fb716b8863f08fe007d5ea27e13f1aac912d84d63d7db37499d2498c44",
-      "module_sha": "84d60a5855e0e3878f808fe2505ac8fcc78303cd7187b9a898e7ad98065cd165",
+      "module_sha": "9b982bc19f1f22668bdd141af5afb262ffa21f7b14ae2647a1f1a4243d713178",
       "status": "ok",
       "notes": [
-        "[script-type] L25: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/g[a-z0-9-]+\\.dushu365\\.com\\/chief-or…",
-        "[script-type] L26: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/g[a-z0-9-]+\\.dushu365\\.com\\/abtest-f…",
-        "[script-type] L27: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/g[a-z0-9-]+\\.dushu365\\.com\\/resource…",
-        "[script-type] L28: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/g[a-z0-9-]+\\.dushu365\\.com\\/fs-membe…",
-        "[script-type] L29: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/g[a-z0-9-]+\\.dushu365\\.com\\/chief-or…"
+        "[script-attribute-alias] L25: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L26: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L26: 脚本重名，已改名为 帆书去广告-2（Surge 里同名脚本会被后者覆盖，只留一条生效）",
+        "[script-attribute-alias] L27: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L27: 脚本重名，已改名为 帆书去广告-3（Surge 里同名脚本会被后者覆盖，只留一条生效）"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×9",
+        "重名脚本自动加后缀 ×8"
       ]
     },
     {
@@ -2741,7 +3005,8 @@
         "[rule-duplicate] L142: 重复规则已合并：DOMAIN,otheve.beacon.qq.com,REJECT,extended-matching,pre-matching",
         "[rule-duplicate] L196: 重复规则已合并：DOMAIN-SUFFIX,puata.info,REJECT,extended-matching,pre-matching",
         "[rule-duplicate] L205: 重复规则已合并：DOMAIN-SUFFIX,uyunad.com,REJECT,extended-matching,pre-matching"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "库街区去广告",
@@ -2761,7 +3026,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "彩云天气去广告",
@@ -2776,12 +3042,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/ColorfulClouds_remove_ads.lpx",
       "lpx_sha": "bc979e7ec8b3d75c199ddfcd267b8199954d9b26b9ae73339bba387c84a5264c",
-      "module_sha": "ec8b22264d2132f896a30a63d189769a74707b1d0c537c61782381b971c9eb23",
+      "module_sha": "59c068270eab6f5d0a0d10f653264b074544df9601e3cf88b6699af5224958ac",
       "status": "ok",
       "notes": [
-        "[script-type] L23: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(wrapper\\.cyapi\\.cn|api\\.caiyunapp\\.c…",
+        "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -2797,12 +3067,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Dewu_remove_ads.lpx",
       "lpx_sha": "97b4948634a536e2ec78a2b7e095bf6603a7cd2a0e966a540ba11d172c0a4ce0",
-      "module_sha": "a891376debb28b4c084b94b72947ef8faf05b9bab5e9b24cdb023ac786cda83f",
+      "module_sha": "7979511d8dde594639a7c15edbb89d462d5c49309e08569b18c81df220f0eb12",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "得间小说去广告",
@@ -2822,7 +3093,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "微信公众号去广告",
@@ -2842,7 +3114,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "微信外部链接解锁",
@@ -2857,12 +3130,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Weixin_external_links_unlock.lpx",
       "lpx_sha": "044f1537807459d5c1c405f26c2416658171860b9b8ed8994ae08ed90638f72d",
-      "module_sha": "9b080bcd5dd9ce08da4ca9ffa2e111e7b55fb432103f14e259423db32335030a",
+      "module_sha": "ee8a9d639808cdd4c13326c220763132ae7c66bf61a26b02c2db3d7a0aa355a4",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https\\:\\/\\/(weixin110\\.qq|security.wechat)\\.com…",
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -2878,14 +3155,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/WexinMiniPrograms_Remove_ads.lpx",
       "lpx_sha": "a3e17aa9fa533f226fab0d178a3f1a7061f9833348af757dc14c03ef17469f20",
-      "module_sha": "fe3d6050749b954cf819169d2ae4c49d65d19e35ac352b7815aec1d4ff8ff1e8",
+      "module_sha": "5a0dd87a9f5d7494d34cb179d0f8ad3870dfab9ee7247de0f7a5250fc9a0849b",
       "status": "ok",
       "notes": [
-        "[script-type] L213: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/webapi\\.qmai\\.cn\\/web\\/catering\\/desi…",
-        "[script-type] L215: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/ump\\.ems\\.com\\.cn\\/new-generation-ext…",
-        "[script-type] L217: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/mapi\\.xiaotucc\\.com\\/(mall\\/main|main…",
-        "[script-type] L219: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/minifm\\.maxxipoint\\.com\\/banner\\/list…",
-        "[script-type] L221: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/lawsonapi\\.yorentown\\.com\\/area\\/sh-l…"
+        "[script-attribute-alias] L213: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L215: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L217: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L219: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L221: 属性名归一 requires_body → requires-body"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×12"
       ]
     },
     {
@@ -2902,14 +3183,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Weibo_remove_ads.lpx",
       "lpx_sha": "2d48b4f03df6341dedf6a44c1ba71953c9140e533a50dd43005100b51d7cc425",
-      "module_sha": "6b98238e22ef25d700b6f31a3d3d47e5489108d18300ab948adeebae428eacea",
+      "module_sha": "a97c5b68f595463f65afbe8b897a790fb6862fd7652381829a1dd15fdedc0804",
       "status": "ok",
       "notes": [
-        "[script-type] L45: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/(?:checkin\\/show|c…",
-        "[script-type] L47: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/groups\\/allgroups\\…",
-        "[script-type] L49: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/(?:cardlist|page)/…",
-        "[script-type] L51: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/comments\\/build_co…",
-        "[script-type] L53: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.weibo\\.cn\\/2\\/(?:container\\/asyn…"
+        "[script-attribute-alias] L45: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L47: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L49: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L51: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L53: 属性名归一 requires_body → requires-body"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×20",
+        "重名脚本自动加后缀 ×2"
       ]
     },
     {
@@ -2925,12 +3211,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Weibo_intl_remove_ads.lpx",
       "lpx_sha": "78f41ea7e4c1798031c60a48f268d2e85e5e969bdc561a9d2b9736e714e3f16e",
-      "module_sha": "98de7f3dee32adbe4a743ca38e8da0db644a1caa1f5cb9b215084d889281ab79",
+      "module_sha": "50f7b7e33ace25dcd2c2b3beca7792b6642e6a7f290698cb55b2271e5bb9d492",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "微店去广告",
@@ -2945,13 +3232,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Weidian_remove_ads.lpx",
       "lpx_sha": "570cb5ba054504f7f39d8f064f21eb3efe98e674590596f1574f0736d4056758",
-      "module_sha": "75ebdfda8bb743a8d30f2acdffff2feb6f9c4ece136c8d377f12dbb41f7658cd",
+      "module_sha": "b4d4110f9de73f1fdff2d500a3300d33c4d1b1d60297c8b7f9cbf99f4ba1d908",
       "status": "ok",
       "notes": [
-        "[script-type] L39: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/thor\\.weidian\\.com\\/appconf\\/getAppCo…",
-        "[script-type] L41: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/thor\\.weidian\\.com\\/wgs\\/wallet\\.quer…",
-        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
-        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+        "[script-attribute-alias] L39: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L39: 属性名归一 binary_body_mode → binary-body-mode",
+        "[script-attribute-alias] L41: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L41: 属性名归一 binary_body_mode → binary-body-mode",
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×4"
       ]
     },
     {
@@ -2972,7 +3264,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "快对去广告",
@@ -2992,7 +3285,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "快影去广告",
@@ -3007,12 +3301,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/KwaiVideoeditor_remove_ads.lpx",
       "lpx_sha": "1e27d04fd483b53627e969af7a14d31235f00c178baa25656ba4f35ff97565d9",
-      "module_sha": "3ca36e1ebbd92ef9840f67a51346551d3c1717d79ade0bd8ddb51da71355591f",
+      "module_sha": "7e907ea5ff7e6e16a8a030d7b4493e9b77e83ce646f7413c6f63e35ccf08b656",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "快手去广告",
@@ -3027,12 +3322,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/KuaiShou_remove_ads.lpx",
       "lpx_sha": "fa1a189869564e9cbb21afe54c7f6f6b9c5fd518d2e551161e45676d4636fe05",
-      "module_sha": "8655a6091e10770ff1f39485bda9738152721c4f0c2ae6e53c55ddce0e32020a",
+      "module_sha": "a5febe71f19fdc85a00ea347b73158509f0660292e622ea08934e6c4aab78caf",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "快捷搜索",
@@ -3047,15 +3343,13 @@
       "date": "2026-10-16 11:03:37",
       "url": "https://kelee.one/Tool/Loon/Lpx/QuickSearch.lpx",
       "lpx_sha": "00a73460844211a79459b2dc31d74ef2431d23ee2e65b80d45b852155d91ba57",
-      "module_sha": "c83ef8b4e2592151756384098eed7acf1c68bf942774aeb82c304dd2985a60c5",
+      "module_sha": "aff97c9f3a5fd92d6fc2bff0843c05b78719d27ee03fd2a17cd235ff63bc9e45",
       "status": "ok",
       "notes": [
-        "[rewrite-condition] L16: URL 正则格式无法识别：/^https:\\/\\/duckduckgo\\.com\\/\\?q=bd\\+([^&]+).+/i as urlMatch → 已注释：request if ${url} ~= /^https:\\/\\/duckduckgo\\.com\\/\\?q=bd\\+([^&]+).+/i a…",
-        "[rewrite-condition] L17: URL 正则格式无法识别：/^https:\\/\\/duckduckgo\\.com\\/\\?q=bdimg\\+([^&]+).+/i as urlMatch → 已注释：request if ${url} ~= /^https:\\/\\/duckduckgo\\.com\\/\\?q=bdimg\\+([^&]+).+/…",
-        "[rewrite-condition] L18: URL 正则格式无法识别：/^https:\\/\\/duckduckgo\\.com\\/\\?q=gimg\\+([^&]+).+/i as urlMatch → 已注释：request if ${url} ~= /^https:\\/\\/duckduckgo\\.com\\/\\?q=gimg\\+([^&]+).+/i…",
-        "[rewrite-condition] L19: URL 正则格式无法识别：/^https:\\/\\/duckduckgo\\.com\\/\\?q=b\\+([^&]+).+/i as urlMatch → 已注释：request if ${url} ~= /^https:\\/\\/duckduckgo\\.com\\/\\?q=b\\+([^&]+).+/i as…",
-        "[rewrite-condition] L20: URL 正则格式无法识别：/^https:\\/\\/duckduckgo\\.com\\/\\?q=wk\\+([^&]+).+/i as urlMatch → 已注释：request if ${url} ~= /^https:\\/\\/duckduckgo\\.com\\/\\?q=wk\\+([^&]+).+/i a…"
-      ]
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "快看漫画去广告",
@@ -3070,14 +3364,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/KuaiKanComic_remove_ads.lpx",
       "lpx_sha": "c6f25912a46af06dee0285f9734f70ee2118893c216a7a45e363ead05a5dd94d",
-      "module_sha": "2638cd9415a64210040375a58a68e232cf522b30fca9080e84c67bc043eaee96",
+      "module_sha": "5079fd05282f99982e8347097a6f4abb9ff17c851a95d761672f59eefa8b2fa0",
       "status": "ok",
       "notes": [
-        "[script-type] L51: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(cdn-)?api\\.kkmh\\.com\\/v\\d\\/ironman\\/…",
-        "[script-type] L53: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(cdn-)?api\\.kkmh\\.com\\/v\\d\\/ironman\\/…",
-        "[script-type] L55: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(cdn-)?social\\.kkmh\\.com\\/v\\d\\/graph\\…",
-        "[script-type] L57: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(cdn-)?social\\.kkmh\\.com\\/v\\d\\/graph\\…",
+        "[script-attribute-alias] L51: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L53: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L55: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L57: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×4"
       ]
     },
     {
@@ -3098,7 +3396,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "慧生活798去广告",
@@ -3118,7 +3417,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "成分喵去广告",
@@ -3138,7 +3438,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "拼多多去广告",
@@ -3154,13 +3455,17 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/PinDuoDuo_remove_ads.lpx",
       "lpx_sha": "4461c71b66c8725dcb659ab013915a92d647481b891b7dadb3181ed6c954feb4",
-      "module_sha": "eb0f09df18f55a9da95680a11c0270d4f3e15649d03d312ebc717c1d6dce8fb7",
+      "module_sha": "8b99d460ff3e4468a9beb79fd36e8214a4426a3cb207cd3a170ec16cca110c96",
       "status": "ok",
       "notes": [
         "[rule-duplicate] L20: 重复规则已合并：DOMAIN,titan.pinduoduo.com,REJECT,extended-matching,pre-matching",
-        "[script-type] L72: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/m\\.pinduoduo\\.net\\/mdkd\\/package\\?fro…",
+        "[script-attribute-alias] L72: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -3181,7 +3486,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "挖财记账去广告-2",
@@ -3196,13 +3502,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Wacai_remove_ads.lpx",
       "lpx_sha": "99b8087c4e424e09b40e67189eb640f48e6d49ef2b4f15bf4263a0c22e0462a1",
-      "module_sha": "7e6baf9c5d22ba89315a2c3d4e4c15f3138cb1c0872a151b852af9854aa04492",
+      "module_sha": "15e855bd53cfd0745c054cc9563a318e2212379db60ae781240e86fc095ec4ec",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L14: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/jz\\.wacaijizhang\\.com\\/sensor\\/config…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "掌上无畏契约去广告",
@@ -3222,7 +3528,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "掌上英雄联盟去广告",
@@ -3242,7 +3549,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "掌阅去广告",
@@ -3257,12 +3565,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/iReader_remove_ads.lpx",
       "lpx_sha": "716bc4c8956e9129f030e729efd2c31d3474da99f02cf61e1ee72bd59f4376f2",
-      "module_sha": "adb717f3893c5c7352ca1dc40124c3a285fdfb0353edbd9d73b1eba3ffafa142",
+      "module_sha": "3f3a331fee8fb800d275c44ea12084e5413265402263c642eed24c36530835b8",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "排班日历去广告",
@@ -3282,7 +3591,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "推栏去广告",
@@ -3302,7 +3612,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "摩天轮去广告",
@@ -3322,7 +3633,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "摩托范去广告",
@@ -3337,14 +3649,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MotorFans_remove_ads.lpx",
       "lpx_sha": "28a8ac76c486fe4ce4ee9491efe4a7278307736f1af39feeb6c6ef00cd0dcc85",
-      "module_sha": "20f8f2ff1b2d4611a99e1756f7fd92286e8e662cac67da4b33501ab85abe9592",
+      "module_sha": "6dcf8109bd58f292adf096668943af9d6fe200e99a84f792e9e35b6f5011cdb3",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L21: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.58moto\\.com\\/forum\\/public\\/busi…",
-        "[rewrite-body] L23: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.58moto\\.com\\/forum\\/public\\/busi…",
-        "[rewrite-body] L25: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.58moto\\.com\\/forum\\/public\\/labe…",
-        "[script-type] L30: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.58moto\\.com\\/expands\\/config\\/ap…",
-        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+        "[script-attribute-alias] L30: 属性名归一 requires_body → requires-body",
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -3365,7 +3679,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "数字心动去广告",
@@ -3380,12 +3695,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/DigitalHeartbeat_remove_ads.lpx",
       "lpx_sha": "802fd6e67f3aae15b144ef4da4b4cd502959a26a4fe47e422ade1072ed1f8fe0",
-      "module_sha": "27da5942abc0f95e73802fcbc81e50d59c7c65297e52b178d969775d4ad84d17",
+      "module_sha": "6ac40155a27809fc6551017f357f42269f7eefba38245e539bebb44e493597cf",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "斗鱼去广告",
@@ -3400,12 +3716,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Douyu_remove_ads.lpx",
       "lpx_sha": "d71fc96c20104821ce99f9f9d5989115d699fc11bba3ed31f953d8dc237fe0d8",
-      "module_sha": "65c8193100743851f72bb9478506f22695debc6cdd9e9344013c6cd494e63a24",
+      "module_sha": "698ae96bb872e9c43f844ec09f60dfda09a10c6e64aadca96de78bb7fbb83965",
       "status": "ok",
       "notes": [
-        "[script-type] L30: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/apiv2\\.douyucdn\\.cn\\/mgapi\\/livenc\\/h…",
+        "[script-attribute-alias] L30: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -3421,12 +3741,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/SinaStock_remove_ads.lpx",
       "lpx_sha": "8eeae9a190954b281dd106d75153d7e93c8fcaad21c2a87991f328b6553e4f3e",
-      "module_sha": "4e1813405ebbcc38dfb5f68faedb27acfd0c83aa9dfe8b6ff31fa4821be9295f",
+      "module_sha": "943ea5575cd636c8c27352d3057af8288510303476d496484b704fc08fcccb48",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "无他相机去广告",
@@ -3441,12 +3762,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/WutaCamera_remove_ads.lpx",
       "lpx_sha": "b050cfb46a23fe9741f3c06672053c5357a55ea9caaa4929bb4cbe627a7cc7b6",
-      "module_sha": "3f252a67b53983aeff39e46622463f65e605163cc51dc5e990da95b35c9429ec",
+      "module_sha": "06d003f9371f2f734be02d30fe9948a6ae63bbc12e78f0e3ad323199515a3479",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "易校园去广告",
@@ -3461,12 +3783,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/YiSchool_remove_ads.lpx",
       "lpx_sha": "b09c110f88c81607953bdf9a9371e2a646dc7352ac120ca7a22d20f50068b4a6",
-      "module_sha": "b0bfa4cd41a38b7c410592fdab085bc5057240ed95cb67cee5cd0109e1d7bbc1",
+      "module_sha": "62c91d2d416fd8dbf482ad5d7e39d73c81511cc0c7c5c398f642d3af90fac55b",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "智慧苏州去广告",
@@ -3481,14 +3804,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/SuZhouCitizenCard_remove_ads.lpx",
       "lpx_sha": "53a4a699f289d523e4011888de199ca6e7b40357b386045d7b25d5cf16fcbe5c",
-      "module_sha": "6769c4524bbe40e38bd8132fe610d3a3a4fd4f7d8bdff7095a6430b47311bfc5",
+      "module_sha": "c94a79375a9a2bece04190b17053bb400760baa18e7815fee17e8f8eb48ff57c",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L14: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https?:\\/\\/newapp2\\.szsmk\\.com\\/app\\/config\\/qu…",
-        "[rewrite-body] L16: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https?:\\/\\/newapp2\\.szsmk\\.com\\/app\\/config\\/(q…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "智联招聘去广告",
@@ -3508,7 +3830,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "最右去广告",
@@ -3528,7 +3851,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "最美壁纸去广告",
@@ -3543,14 +3867,18 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/iWallBiZhi_remove_ads.lpx",
       "lpx_sha": "6345a00cb31ab6c56e42c55f4063c5dbe51a9ade0e911ea8953bde600d64f364",
-      "module_sha": "46128e86e6cc7786eed1da5eac40d009ef297b56e3c87f5931f060e8e21c5c10",
+      "module_sha": "8794f085278ef8bb8297bc4158ddd6fe71d49e5ba014ef3a4f945b6b6d40ec07",
       "status": "ok",
       "notes": [
-        "[script-type] L19: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.fzxhmy\\.com\\/core\\/initialize\\?/…",
-        "[script-type] L21: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.fzxhmy\\.com\\/landing\\/initialize…",
-        "[script-type] L23: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.fzxhmy\\.com\\/avatar\\/landing\\?/i…",
+        "[script-attribute-alias] L19: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×3"
       ]
     },
     {
@@ -3571,7 +3899,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "有道翻译官去广告",
@@ -3591,7 +3920,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "朴朴超市去广告",
@@ -3607,14 +3937,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/PuPuMall_remove_ads.lpx",
       "lpx_sha": "1c20c9124c45b832dd942a1a92ac0533d01bfe96228da07943c849864c548bbd",
-      "module_sha": "c1eda1ed2c089bc69cc191c503d0dba82c7d255856848316d97034851a23f830",
+      "module_sha": "22ff5028217c732750c6b0705f444c69edb63a4d9d34a89bd392f2458b495c59",
       "status": "ok",
       "notes": [
-        "[script-type] L18: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/j1\\.pupuapi\\.com\\/client\\/marketing\\/…",
-        "[script-type] L19: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/j1\\.pupuapi\\.com\\/client\\/marketing\\/…",
-        "[script-type] L20: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/j1\\.pupuapi\\.com\\/client\\/search\\/hot…",
-        "[script-type] L21: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/j1\\.pupuapi\\.com\\/client\\/app_resourc…",
-        "[script-type] L22: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/j1\\.pupuapi\\.com\\/client\\/recommendat…"
+        "[script-attribute-alias] L18: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L19: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L19: 脚本重名，已改名为 移除朴朴超市广告-2（Surge 里同名脚本会被后者覆盖，只留一条生效）",
+        "[script-attribute-alias] L20: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L20: 脚本重名，已改名为 移除朴朴超市广告-3（Surge 里同名脚本会被后者覆盖，只留一条生效）"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×6",
+        "重名脚本自动加后缀 ×5"
       ]
     },
     {
@@ -3635,7 +3970,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "比心去广告",
@@ -3650,14 +3986,17 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Bixin_remove_ads.lpx",
       "lpx_sha": "3fc203cb01bab2b5e960ef2ddee636cd9c53fae416002a5fa4b0427726114437",
-      "module_sha": "9ddc334826b733b73a670e64e20c54b41d38b46b3c9941388f8615bfc1cf1db9",
+      "module_sha": "b29d230d838ca0d06ebabde7680fbd835af7067feaae3ee4a5aac4344b618df0",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L28: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.hibixin\\.com\\/content\\/v\\d\\/home…",
-        "[rewrite-body] L39: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/gateway\\.xxqapp\\.cn\\/living\\/room\\/fe…",
-        "[script-type] L46: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/gateway\\.hibixin\\.com\\/resource\\/v\\d\\…",
-        "[script-type] L48: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/gateway\\.hibixin\\.com\\/resource\\/v\\d\\…",
-        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+        "[script-attribute-alias] L46: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L48: 属性名归一 requires_body → requires-body",
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -3678,7 +4017,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "汽水音乐去广告",
@@ -3693,12 +4033,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/SodaMusic_remove_ads.lpx",
       "lpx_sha": "f18bd96cdd1125770fcf30d2b21868da061a7f7ccc0078bb2678a7f892d40b39",
-      "module_sha": "6d85af71a39496de5ffd599f92429be9aed044b538e59a8fd0c1eda9a3dabc50",
+      "module_sha": "34dfca9222c1c7ac4eb89c2cb85fe9ab4ea3304002a6e5c78b07d1a1ecb49e2c",
       "status": "ok",
       "notes": [
-        "[script-type] L48: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(beta-luna\\.douyin|api5-lq\\.qishui)\\.…",
+        "[script-attribute-alias] L48: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -3714,14 +4058,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/AutoHome_remove_ads.lpx",
       "lpx_sha": "d5e5df298aff4b2df080926426ac8b196c04ec69963113f86b3bcfc7d97e0efc",
-      "module_sha": "cbcfba381929e4cc8d84bd432746825b3ee7c8585bfc7b9b5e3e5365ca4582af",
+      "module_sha": "2d7d500b511eaa31dc621ad1f68299bba64794524c58969c035bc52296b3c8db",
       "status": "ok",
       "notes": [
-        "[script-type] L53: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/news\\.app\\.autohome\\.com\\.cn\\/news_v\\…",
-        "[script-type] L55: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(a\\.athm\\.cn\\/)?mobile\\.app\\.autohome…",
-        "[script-type] L57: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(a\\.athm\\.cn\\/)?club\\.app\\.autohome\\.…",
-        "[script-type] L59: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(a\\.athm\\.cn\\/)?cars\\.app\\.autohome\\.…",
-        "[script-type] L61: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(a\\.athm\\.cn\\/)?cars\\.app\\.autohome\\.…"
+        "[script-attribute-alias] L53: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L55: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L55: 脚本重名，已改名为 精简我的页面-2（Surge 里同名脚本会被后者覆盖，只留一条生效）",
+        "[script-attribute-alias] L57: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L59: 属性名归一 requires_body → requires-body"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×6",
+        "重名脚本自动加后缀"
       ]
     },
     {
@@ -3737,12 +4086,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Walmart_remove_ads.lpx",
       "lpx_sha": "2eb276cce759d19dc43eb159a635f101ad1243e6cea7a885128918dfeb7d6ae9",
-      "module_sha": "e722a3521c49d19882bc9cfcf5b194157f1dd373673e32579d721ef99a0c3d61",
+      "module_sha": "1472b953e2b40cdb44e8d24328c5a9ec965c6ee57b22d39047ef3d350626e507",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "波点音乐去广告",
@@ -3757,12 +4107,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/BodianMusic_remove_ads.lpx",
       "lpx_sha": "2a7dd88c9bdef484e4a55b585a72b0924719fb441b393303b7c8a6c027fdaee0",
-      "module_sha": "e700d8aed50be37c11ee1b0e630fae71676b90dcc533dce10c29ee5d126e02ff",
+      "module_sha": "f67ca31ada3c2d8d3912f2adc880bc6414d95cfaf3ffc85e9d82c6f5f046ca8f",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "测测去广告",
@@ -3777,13 +4128,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Cece_remove_ads.lpx",
       "lpx_sha": "851dff430dca5b644a274ce696c886f21f1ec1f679fc7fdce8b11d7d5edc9eef",
-      "module_sha": "779134cc997f5f7e3977955c070c3ed9642c77f0d996e56f0a0376a2d8a0ad1e",
+      "module_sha": "402c2a23d06bce421925893348b3db3173044c962000d90a92dbfc4618b18d74",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L40: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.cece\\.com\\/live\\/user\\/coupon_ta…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "海雀去广告",
@@ -3803,7 +4154,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "淘宝去广告",
@@ -3818,13 +4170,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Taobao_remove_ads.lpx",
       "lpx_sha": "23f29f4b051c237b802a5b22a4fd9f7e7eb713a559e5f81ca94d8d6b6f4554cc",
-      "module_sha": "dcfccc267a11117a8f0c467a805d667486f43fefff618aeec2e7378f96b13d4c",
+      "module_sha": "3d6ce89492b9f6d5c7dcdb6d26a0a879c111f25be4d42b7d93c1e19d7179693b",
       "status": "ok",
       "notes": [
-        "[script-type] L35: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/guide-acs\\.m\\.taobao\\.com\\/gw\\/mtop\\.…",
-        "[script-type] L37: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/poplayer\\.template\\.alibaba\\.com\\/\\w+…",
+        "[script-attribute-alias] L35: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L37: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L37: 脚本重名，已改名为 移除淘宝开屏广告-2（Surge 里同名脚本会被后者覆盖，只留一条生效）",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2",
+        "重名脚本自动加后缀"
       ]
     },
     {
@@ -3840,12 +4198,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Taopiaopiao_remove_ads.lpx",
       "lpx_sha": "44e8648e5dea86046fca91aadf177d95b297ab8dd825c6ad6cfc4d5a11fee3ee",
-      "module_sha": "272aeed13b1878d77a9a150aca1c7da4859dc01a6f9c31d48e042010ee805c0d",
+      "module_sha": "bbee74df4eb7349b57b3bded5a1e34ecb732f7fb347e96ddb39967cf403f4b38",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "滴滴去广告",
@@ -3860,12 +4219,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/DiDi_remove_ads.lpx",
       "lpx_sha": "bc7385fe302ae697a08c3dbf345079548917b7f2e6cc2454431417a7a601b970",
-      "module_sha": "ce68c57a5102530dc7944c027a06c8b21b4527538c0f4b951f10dee93b9de318",
+      "module_sha": "dee6637a260527f2aec32d5456bcf02702d8bfc799592ccb61b11e7ef08f03e2",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "滴答出行去广告",
@@ -3885,7 +4245,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "漫客栈去广告",
@@ -3900,12 +4261,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MKZ_remove_ads.lpx",
       "lpx_sha": "0ff3a79e41c84d2a0f2556adfe2f418ce63c56b9260fe18a7adb19a77e5a9343",
-      "module_sha": "44c450b5542845111e0df97635b1953bf041f0744e36df25a99a257de46e236a",
+      "module_sha": "d5772b3976470025c08260deef0128d601c5e436db7b1d5790bdfef07b457d29",
       "status": "ok",
       "notes": [
-        "[script-type] L23: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/base\\.mkzcdn\\.com\\/app\\/config\\//i th…",
+        "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -3926,7 +4291,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "爱奇艺去广告",
@@ -3941,12 +4307,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/iQiYi_Video_remove_ads.lpx",
       "lpx_sha": "def8536ae65bb360c12c1234d471a1402c3972081750b099b1b1ba85cdca579b",
-      "module_sha": "656d4ec365230875f82066fe73b157d1b246d4fd4874be9b3f5dd551bd067d0f",
+      "module_sha": "0fd26eff3f985311d93d17dfae34272c97854b5d96c86548425617d063560ac9",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "猫耳FM去广告",
@@ -3961,12 +4328,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/CatEarFM_remove_ads.lpx",
       "lpx_sha": "c1c65ba389ac611b4fd265f5332f0c66953d468104108c6bfc66bec4a4bfda28",
-      "module_sha": "7fe1244e5d8830aa118974f78143506153f0cb1996bac6a11139adba1474ea37",
+      "module_sha": "7540918c9404de95598d9b4f45ef355a0350e104bfa2a2ac73b6dd7241f9a8e0",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "瑞幸咖啡去广告",
@@ -3986,7 +4354,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "番茄小说去广告",
@@ -4006,7 +4375,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "百度地图去广告",
@@ -4026,7 +4396,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "百度文库去广告",
@@ -4046,7 +4417,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "百度网盘去广告",
@@ -4061,12 +4433,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/BaiduNetDisk_remove_ads.lpx",
       "lpx_sha": "c6e05423a0af766ea41e735949091eb8d42695efc77d7c22cc6f7f3fe7bca42c",
-      "module_sha": "fcff5b286399aaf490ac65eade9891949963e5909e948fa6fb565c9b147d4783",
+      "module_sha": "cf98d435a20a64b317a126a0d533b8192e10995da7bdec6ed7333aa07ea37434",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "百度网页去广告",
@@ -4081,12 +4454,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/BaiduSearchWebpage_remove_ads.lpx",
       "lpx_sha": "de15529e97e5c6804983f353b9441ff69b5ff42a23cfb4a9ae16aba183ad4aea",
-      "module_sha": "e10761b089abdeafc20c27fc9bf66e8fb2432fe171db72ef3c1c6f8d122b8027",
+      "module_sha": "d6a7922eb2f588335600a24c4b0c897a341e9e78cd5359c6775349ddae630dbf",
       "status": "ok",
       "notes": [
-        "[script-type] L14: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/(www|m)\\.baidu\\.com\\/?($|\\?from=\\w{8…",
+        "[script-attribute-alias] L14: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -4107,7 +4484,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "百度贴吧去广告",
@@ -4123,14 +4501,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Tieba_remove_ads.lpx",
       "lpx_sha": "6a9cd398f460e6604307ac8a4010af644dda62cbade209864c6938d8449c2398",
-      "module_sha": "c54c70bddb47c89ce906d1e5e113852821a8e1850602e7af7ab2a7906c6c5c1e",
+      "module_sha": "ced1b35ca444653ad4df62f4e5bc37d1819a90bc46d49741a96c09a145191bed",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L30: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https?:\\/\\/tieba\\.baidu\\.com\\/mo\\/q\\/search\\/st…",
-        "[script-type] L49: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/tieba(?:c)?\\.baidu\\.com\\/c\\/(f\\/exce…",
-        "[argument-unused] 参数 per_filter_video_thread 未被任何行引用，已删除",
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[script-attribute-alias] L49: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L49: 属性名归一 binary_body_mode → binary-body-mode",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "脚本参数清单转成 argument JSON",
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -4146,12 +4529,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Baidu_input_method_remove_ads.lpx",
       "lpx_sha": "ee9b8fb58952afd16ed963267a51d88a2b8fd06d9ba1405ef9f7ae81baff58a1",
-      "module_sha": "8f4491991fb1272da6d0e89fc0fdca26939d3663bf45d845e0e78dd4589fbf2f",
+      "module_sha": "28bb0b3eb4204a2ae3719761e71058c8f37060de247d09249e41dfb930be15ff",
       "status": "ok",
       "notes": [
-        "[script-type] L24: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/mime\\.baidu\\.com\\/(imrobot\\/v1\\/pub\\…",
+        "[script-attribute-alias] L24: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -4167,12 +4554,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/PiPiXia_remove_ads.lpx",
       "lpx_sha": "8db2c4929d6358cead0145e44a6ca43ec3572ec22bbf1f048f68dc085c15724f",
-      "module_sha": "d9887403c8657f2854a4a091c443a254513f3d8c587ceb194109bc73c8b47bc6",
+      "module_sha": "a6a92741a71030251814acd05bb765c924daf03822153caf2c7d9a579917ac79",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "盒马去广告",
@@ -4187,12 +4575,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MrHema_remove_ads.lpx",
       "lpx_sha": "ae3e5864b85ebae531dee0fb5fae8a516acc50ce86c2f7c5e4c5944291309c92",
-      "module_sha": "724f7d814b143100bda9abf1005f7b34547b0b3443421445e41a3b9bbdde2f80",
+      "module_sha": "4deb8816d24d9a0652e16adcd07803e0699bf2e0c0dcce69a0d3db8224aad2fe",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "盖得排行去广告",
@@ -4212,7 +4601,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "直播吧去广告",
@@ -4227,12 +4617,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Zhibo8_remove_ads.lpx",
       "lpx_sha": "c684b14cc6c499dbeaa8bb40bfadc34b16004afee49351b601b803524a99aa02",
-      "module_sha": "30805b677ae07079a3616d2fe4826b87b579c47a9ca80899d2f15c3d591821cf",
+      "module_sha": "7795b0f51d5e4b4abadf732318f066b82b49e28ff2a079b6f4c568cc6351aa16",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "省钱快报去广告",
@@ -4247,12 +4638,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/YueDanBa_remove_ads.lpx",
       "lpx_sha": "973f112a629f30c90c6d8976ddd1613d3dbb79abceea843b1f83ba43f9e5c583",
-      "module_sha": "23d051fd034755868b62f85158c70c218f1f33a754448c4d91e161449769b0a7",
+      "module_sha": "1ee265e1319638f7c9c4d8b963ba77330ce80b05c43c5cb2cc58394acb332b5a",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "看家王去广告",
@@ -4272,7 +4664,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "知乎去广告",
@@ -4287,12 +4680,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Zhihu_remove_ads.lpx",
       "lpx_sha": "4f716d735fbb3a9edef05112eec6a6901b798d1aa2ad64dc0f64fb4819549e4a",
-      "module_sha": "579a3d154bb56be8255a32238deafde932eb709fbdc52470279a525b44edc4af",
+      "module_sha": "c920810a300fe79a8caecc42039c05382a089def4ced44ff6c66d756ae07cdd7",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "知识星球去水印",
@@ -4305,12 +4699,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/UnnooQuan_remove_watermark.lpx",
       "lpx_sha": "64654b2a03d8e46eeebabbb1a9b7c7b831f28b2037650870dafa8aa6adb04023",
-      "module_sha": "cefd41a33a7b9af641ba15bdaf277bd0f1105e121e65447f87cd87fde7ee18ed",
+      "module_sha": "4d02526b1570c4983cf5b71bbb1275ec1a030d2f7a9009fd40e157cbbc7a016d",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "磁力宅播放器去广告",
@@ -4330,7 +4725,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "稿定设计去广告",
@@ -4345,12 +4741,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/GaoDing_remove_ads.lpx",
       "lpx_sha": "e6c777f69279dfffd4fb22028bb1205d5ed0278398a127b900bdb5b44c1fac77",
-      "module_sha": "3f51e0e9b18df25574667ec8c4ae38b731ed7350ca5689c4b67b2450a99cf4f8",
+      "module_sha": "3af582ff55ba28f285b6b098c4789387b18b6b52c7ce09d0168f8d336fd691d7",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "米游社去广告",
@@ -4370,7 +4767,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "粉笔去广告",
@@ -4385,13 +4783,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/FenBi_remove_ads.lpx",
       "lpx_sha": "17a03272af79e422cf364730f993f32a58dac234a1eea5f29e7739ef8fd8339d",
-      "module_sha": "77184d7d37fca5a8bcd67bf09e22c505e12272057c1e2d21f2f1482163172a2d",
+      "module_sha": "c133dd51332e2b6c3d7ae562aaa7acbc1ec4e13d65bbb93955080807bc434030",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L18: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/keapi\\.fenbi\\.com\\/app\\/(iphone|ipad)…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "纵横小说去广告",
@@ -4411,7 +4809,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "纷玩岛去广告",
@@ -4431,7 +4830,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "网易云音乐去广告",
@@ -4447,14 +4847,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/NeteaseCloudMusic_remove_ads.lpx",
       "lpx_sha": "a3117ca5a0993a987c41987a402ebc24708f146a08ffc7519296c2331cdf03ad",
-      "module_sha": "8d59e41a548e7c0b7408a947c6d5fb513bd833a99d542eb0d42536d18ab812f2",
+      "module_sha": "31600cdf9c154f43de42c9faca78e534b78f4e37f830239fee33e7873b5b1d3e",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L36: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https?:\\/\\/interface\\d?\\.music\\.163\\.com\\/e?api…",
-        "[rewrite-body] L43: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https?:\\/\\/interface\\d?\\.music\\.163.com\\/w?e?ap…",
-        "[script-type] L49: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/interface\\d?\\.music\\.163\\.com\\/eapi\\…",
-        "[script-type] L50: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/interface\\d?\\.music\\.163\\.com\\/eapi\\…",
-        "[script-type] L51: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https?:\\/\\/interface\\d?\\.music\\.163\\.com\\/eapi\\…"
+        "[script-attribute-alias] L49: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L49: 属性名归一 binary_body_mode → binary-body-mode",
+        "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
+        "[script-attribute-alias] L50: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L50: 属性名归一 binary_body_mode → binary-body-mode"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×12",
+        "脚本参数清单转成 argument JSON ×2"
       ]
     },
     {
@@ -4470,12 +4875,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/NetEaseGodlike_remove_ads.lpx",
       "lpx_sha": "e4eb39fe2b1a7ce10fcf75e7ac5fadd1f5da91b1fce7f2b219a9466e5bddb6a8",
-      "module_sha": "f7847800a5bb6c9705c214c0fef0d56be2daabe83737c361af1087f7ff735a8a",
+      "module_sha": "3cb3b6c46db45e6832e58c65ef504966f80bc430e1ca69afcc9e2e137d481c52",
       "status": "ok",
       "notes": [
-        "[script-type] L26: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/app-conf\\.ds\\.163\\.com\\/v1\\/app\\/base…",
+        "[script-attribute-alias] L26: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -4491,14 +4900,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/NeteaseNews_remove_ads.lpx",
       "lpx_sha": "827054a37355006a14c7316ad1c99c65b60db4ee00c43e458afb5ab62faf5c6d",
-      "module_sha": "e813f8f8e6884c7931f40940ebf883c95b5f5bec387b72b27ccbfd31c3d1eb43",
+      "module_sha": "4e810f925bc365851328ed9abd40a61f50e56813a5b8d94dd1e14d3815198493",
       "status": "ok",
       "notes": [
-        "[script-type] L27: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/nex\\.163\\.com\\/q/i then script(\"https…",
-        "[script-type] L29: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/gw\\.m\\.163\\.com\\/nc\\/api\\/v1\\/feed\\/d…",
-        "[script-type] L31: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/gw\\.m\\.163\\.com\\/nc\\/api\\/v1\\/search\\…",
-        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
-        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+        "[script-attribute-alias] L27: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L29: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L29: 脚本重名，已改名为 移除网易新闻广告-2（Surge 里同名脚本会被后者覆盖，只留一条生效）",
+        "[script-attribute-alias] L31: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L31: 脚本重名，已改名为 移除网易新闻广告-3（Surge 里同名脚本会被后者覆盖，只留一条生效）"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×3",
+        "重名脚本自动加后缀 ×2"
       ]
     },
     {
@@ -4519,7 +4933,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "网易邮箱大师去广告",
@@ -4534,12 +4949,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MailMaster_remove_ads.lpx",
       "lpx_sha": "dbfe3f385baa932428c947d378e90c9332a30bb739c71afbee53c414db7a7d9e",
-      "module_sha": "75e74af56cc59e0c21a4a386ef4f7bdc4a1b5c9fe85240ce2d0efe3ed12a19b1",
+      "module_sha": "a3c803cef71a344b7f00d9fffb56e0faad726d58785475389020dc6aec592c81",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "美丽修行去广告",
@@ -4554,12 +4970,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Meizhixiuxing_remove_ads.lpx",
       "lpx_sha": "3c47e10cc25166e4000e812f13c6f6f9d997c1f46b5202618913c1f44ecab75c",
-      "module_sha": "53bd349ee741a36aa6fc656694f22945a724f196500dd13ab58cdc914b1567e8",
+      "module_sha": "f651f3c26db251f87e1735d53ef7771ee0acd8579880815f6497327ef55e1016",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "美图秀秀去广告",
@@ -4579,7 +4996,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "美柚去广告",
@@ -4599,7 +5017,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "美颜相机去广告",
@@ -4614,12 +5033,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MeituMYXJ_remove_ads.lpx",
       "lpx_sha": "969a6872460411009f5648f6a63779d0d2179c1ba29045a77cb8cdbe9e5a9d12",
-      "module_sha": "30fbd92bc6fe0236553abc4ab2e3972ad4e35ef7bc9d3b254a29bdb05e97be3b",
+      "module_sha": "d426f8445cb6dbc95f13eeab07401f8784a9ef618d46a7f171bba94337902def",
       "status": "ok",
       "notes": [
-        "[script-type] L24: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.meiyan\\.com\\/operation\\/home\\.js…",
+        "[script-attribute-alias] L24: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -4635,12 +5058,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MeiShiJie_remove_ads.lpx",
       "lpx_sha": "107899f01c39ceeff2576971e67fc4da188035c1ec95d65bfd675e0e0b4d106c",
-      "module_sha": "b63e4f3c5d0de6cb6f706b80dcc72abc91529dced87a3e774999cf9e32dc2b14",
+      "module_sha": "203a877f354b94601610dc00365e825fa5ed7078586c3babcb2c2047f6b609fc",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "联掌门户去广告",
@@ -4660,7 +5084,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "胖乖生活去广告",
@@ -4680,7 +5105,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "脉脉去广告",
@@ -4695,12 +5121,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MaiMai_remove_ads.lpx",
       "lpx_sha": "d54dcdf063e3dcbb73bfe4ccacad4a7ce9490eeb95654ef0333ff297ef4a03e3",
-      "module_sha": "50eaf876e4b76fd4faab1d9dbee47050084103c4da27519ec631578eeaf2883f",
+      "module_sha": "75b1c24338853b70cefa971393d0184175cf007b639ad9de3a4544cbd8f643e3",
       "status": "ok",
       "notes": [
-        "[script-type] L23: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(h3\\.)?open\\.taou\\.com\\/maimai\\/(feed…",
+        "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -4721,7 +5151,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "腾讯视频去广告",
@@ -4739,9 +5170,13 @@
       "module_sha": "dd656dabd05f33ed5d22c89eebdd594967dd0ebfc7c78be395963c49d1862b14",
       "status": "ok",
       "notes": [
-        "[script-type] L35: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/vv\\.video\\.qq\\.com\\/getvinfo/i then s…",
+        "[script-action] L35: 脚本参数清单要用 {} 包起来：\"&sppreviewtype=\\\\d(.*)&spsrt=\\\\d->&sppreviewtype=0$1&spsrt=0\" → 已注释：request if ${url} ~= /^https?:\\/\\/vv\\.video\\.qq\\.com\\/getvinfo/i then s…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -4768,6 +5203,7 @@
         "[script-enable] L27: enable 已转为行前缀开关 {{{RunMonitor}}}",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
       ],
+      "converter": "2.1.0",
       "adapted": [
         "enable 转为模块参数开关 ×3"
       ],
@@ -4788,13 +5224,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Umetrip_remove_ads.lpx",
       "lpx_sha": "7b070aef1a326142fa6d19317e1e74eafe9309dcb3770605258ee4a345272d2e",
-      "module_sha": "345c1d51515e8801f5dfea2448913087d1a1df0cee8bdc61005e3e74dec19978",
+      "module_sha": "3267edd63a5ced6aecb544b8ef2c7a984e23d93600e3db1b2cd47136e5a3b006",
       "status": "ok",
       "notes": [
-        "[script-type] L17: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^http?:\\/\\/(114\\.115\\.217\\.129)|(home\\.umetrip\\.…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "节点检测工具",
@@ -4821,6 +5257,7 @@
         "[script-generic] L15: generic 脚本在 Surge 里没有 Loon 的节点上下文，请自行确认",
         "[script-attribute-alias] L16: 属性名归一 img_url → img-url"
       ],
+      "converter": "2.1.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×3"
       ],
@@ -4842,12 +5279,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MangoTV_remove_ads.lpx",
       "lpx_sha": "664b1822eafb2499da025c09ba479ea82c560073c6738ac9147781350655d4a2",
-      "module_sha": "edff74ac8aff80c0a1b01f886f22f1f8818e649d044c5de108dc94546b1ce531",
+      "module_sha": "7112dfa458ff099d17364cf49abf806e17760e8b46345bcd72d5ee65567ab6c1",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "菜鸟去广告",
@@ -4862,12 +5300,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Cainiao_remove_ads.lpx",
       "lpx_sha": "43df4ff17af92aae48952d6898f86e66e80348cb603cdad095d5fc98f6ab4bd8",
-      "module_sha": "8b99f04ea634ea3fca3ab52d07efae9644fd1011adf7d8503b2dedfab3c347f5",
+      "module_sha": "da8466a7432cd86b491d74c4f0d04fe7d7bfab80d4abb550b85a2ddcd03d1432",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "萌娘百科去广告",
@@ -4887,7 +5326,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "萝卜快跑去广告",
@@ -4907,7 +5347,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "萤石云视频去广告",
@@ -4927,7 +5368,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "薄荷健康去广告",
@@ -4942,12 +5384,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/BooHee_remove_ads.lpx",
       "lpx_sha": "06a520ca907628fd42115e46e3ec0fcfbafbb9d7ed7e26d1b58177856bb30224",
-      "module_sha": "30fd3461045de36d928442286bff70fb5b69b82ed66fd72c6f20fb53a454efa6",
+      "module_sha": "e86769c453131f29083f94eb77b1b5b132229d5272c0c7b135b47e37faf66870",
       "status": "ok",
       "notes": [
-        "[script-type] L33: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/api\\.boohee\\.com\\/meta-interface\\/v1\\…",
+        "[script-attribute-alias] L33: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -4968,7 +5414,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "虎扑去广告",
@@ -4983,14 +5430,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/HUPU_remove_ads.lpx",
       "lpx_sha": "b794ccc0a54393318941eaac22ac80826d7d4d631e1df363d7dd1ea9d484c361",
-      "module_sha": "0bc535de7aa6bca32b9a4b0c8ec52b0558229f05b29cc985bd1f3638e9ca5921",
+      "module_sha": "dd901a9da1f8fae0a7fdf00fd7a55f21d09b1e73d3af244487cee25889f7ec27",
       "status": "ok",
       "notes": [
-        "[script-type] L24: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/fairy\\.mobileapi\\.hupu\\.com\\/mang\\/pr…",
-        "[script-type] L25: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/bbs\\.mobileapi\\.hupu\\.com\\/\\d\\/\\d\\.\\d…",
-        "[script-type] L26: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/games\\.mobileapi\\.hupu\\.com\\/\\d\\/\\d\\.…",
-        "[script-type] L27: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/games\\.mobileapi\\.hupu\\.com\\/\\d\\/\\d\\.…",
-        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+        "[script-attribute-alias] L24: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L25: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L25: 脚本重名，已改名为 移除虎扑广告-2（Surge 里同名脚本会被后者覆盖，只留一条生效）",
+        "[script-attribute-alias] L26: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L26: 脚本重名，已改名为 移除虎扑广告-3（Surge 里同名脚本会被后者覆盖，只留一条生效）"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×4",
+        "重名脚本自动加后缀 ×3"
       ]
     },
     {
@@ -5011,7 +5463,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "蜻蜓FM去广告",
@@ -5026,12 +5479,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/QtingFM_remove_ads.lpx",
       "lpx_sha": "7b84505d174b458876068090de55b39edb7f6b3bcc47afb38ca626aa155b61ff",
-      "module_sha": "f72ea981099790e37d90825c7ad50c98d7cb1eaed602a1f33e2f5cdfee8391cc",
+      "module_sha": "7116acc9549ecfff8ce06831e03c3cbddf9e59c1a534c6cb26c174ef0437dc13",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "行者户外去广告",
@@ -5046,12 +5500,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/OnTheWay_remove_ads.lpx",
       "lpx_sha": "1a0888cf708921ac4cacbc2dd90538506726ed2bebd6913c7cf85348f67c599e",
-      "module_sha": "ebbf119849ac477bd3af616be8cd27863333ea94ae0358d08a7cea62c478f684",
+      "module_sha": "74a6f8ce9d2bdd690d4c7d72f36211380fd9067bc4694f12f14da3367326f661",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "触站去广告",
@@ -5066,12 +5521,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Chuzhan_remove_ads.lpx",
       "lpx_sha": "010e40276fe4ef8a23cecf315b1c92fc0d156dce4f494eeeb157e4658579fa3e",
-      "module_sha": "14db7ab7a8fe6bf026622c1f9156dff6c07709cbb4f5c55877c9618386d8f254",
+      "module_sha": "c38530eccdbe1d6e34e51d40b3e160669ef3e5e1e796fab1b73717c9075f7532",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "豆瓣去广告",
@@ -5091,7 +5547,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "豆瓣阅读去广告",
@@ -5111,7 +5568,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "贝壳找房去广告",
@@ -5126,12 +5584,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Beike_remove_ads.lpx",
       "lpx_sha": "9a2cef125f27aaa517e00bba7028f7bfcb249f4a44be238c6c777b78cd83800a",
-      "module_sha": "df8ad7d8ba5fe4745275abf69922ec5ac63516f8bdd5ba30b10230b57c16ca6f",
+      "module_sha": "b773e1e2954a00a8c3d6a86a93042acb827d7d470c46fd6947f7c650ddd4f6ae",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "财新去广告",
@@ -5146,14 +5605,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/CaixinMedia_remove_ads.lpx",
       "lpx_sha": "bec532b12dcb94e9bac660b3c437036be85087aed832dd5e9f64982aceabcc3c",
-      "module_sha": "9c86764c65609f527cfabab1584c171b98e73fbaa7395e02a383d37c3f88375f",
+      "module_sha": "5a3e4c0e2314a1599e383d0ab95fd0e4a893412695c4220cdd96a985658d0353",
       "status": "ok",
       "notes": [
-        "[script-type] L24: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/entities\\.caixin\\.com\\/api\\/dataplus\\…",
-        "[script-type] L26: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/gateway\\.caixin\\.com\\/api\\/app-api\\/(…",
-        "[script-type] L28: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/gateway\\.caixin\\.com\\/api\\/app-conten…",
-        "[script-type] L30: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/gg\\.caixin\\.com\\/s\\?z=caixin&op=\\d/i …",
-        "[script-type] L32: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/mappsv5\\.caixin\\.com\\/articlev5\\/\\d+\\…"
+        "[script-attribute-alias] L24: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L26: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L28: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L30: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L32: 属性名归一 requires_body → requires-body"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×6",
+        "重名脚本自动加后缀"
       ]
     },
     {
@@ -5174,7 +5638,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "超级课程表去广告",
@@ -5194,7 +5659,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "车来了去广告",
@@ -5209,14 +5675,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Chelaile_remove_ads.lpx",
       "lpx_sha": "90f17cc715088c64f7f1bee7a23997b6160437f3e4c538ec12e05197588b044b",
-      "module_sha": "6e9a3a526f152e8c9b72a20cfa4a8fe907773535101d5d4004ac1d7e19e4ce62",
+      "module_sha": "595b76a49a986dfec8f8a54ecb63b11e90a0ed8b64cb5e73d4528116fe99b251",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L17: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.chelaile\\.net\\.cn\\/goocity\\/flow…",
-        "[rewrite-body] L19: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.chelaile\\.net\\.cn\\/goocity\\/flow…",
-        "[rewrite-body] L21: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/web\\.chelaile\\.net\\.cn\\/api\\/operativ…",
-        "[rewrite-body] L27: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.chelaile\\.net\\.cn\\/led-weather\\/…",
-        "[rewrite-body] L29: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/api\\.chelaile\\.net\\.cn\\/goocity\\/conf…"
+        "[script-attribute-alias] L34: 属性名归一 requires_body → requires-body",
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
+        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -5232,15 +5700,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/ZhuanZhuan_remove_ads.lpx",
       "lpx_sha": "40478aa9b4ab5ec361eff30b79d981b4c968de82d32fb43e478916c679d78ed3",
-      "module_sha": "7e21a48fba45bf5151f72b3e4d66d278112afb844185b8e992a6c23297f58100",
+      "module_sha": "231ba4ea32136dab80d6f66e1b6aa310f484e096950e401c0587a291c9bf36d4",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L30: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/app\\.zhuanzhuan\\.com\\/zzopen\\/ptsimpl…",
-        "[rewrite-body] L32: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/app\\.zhuanzhuan\\.com\\/zz\\/v2\\/zzinfos…",
-        "[rewrite-body] L38: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/app\\.zhuanzhuan\\.com\\/zz\\/v2\\/zzinfos…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "迅雷去广告",
@@ -5255,12 +5721,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/XunLei_remove_ads.lpx",
       "lpx_sha": "f7dda29da8603d999e2a1593de0740bbf08b161d87f64d2b80db6031d73786de",
-      "module_sha": "ec2e21955dd0d1cf4e0cdc2d36190f14315119a306750b16d83560c709b16c34",
+      "module_sha": "b98fe4e0dfe86dbac30e32cbde7159be5f9b0627f9b0cb1715f119334a105ac2",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "配音秀去广告",
@@ -5275,12 +5742,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/DubbingShow_remove_ads.lpx",
       "lpx_sha": "1ab7c72165b830314be614e7493e171afac36d6dd9f1b99dcfebdd1a00de468a",
-      "module_sha": "48d21cc70ed82bd59c51c9f3f1ad0f63a5cf0b633f1bb4f92f0e05a83f6f10ac",
+      "module_sha": "3fc0bf6bb474689130268321cb056dc005ad0f52d4afcabb71456e3d84680abd",
       "status": "ok",
       "notes": [
-        "[script-type] L23: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/iosapi\\.peiyinxiu\\.com\\/Api\\/Film\\/Ge…",
+        "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -5297,12 +5768,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/CoolApk_remove_ads.lpx",
       "lpx_sha": "d77533ccb0adfe3039705d560ff9f784310093b522df8d6117cd05d4ad49f36a",
-      "module_sha": "3b24a7f1e80b3f688f40a0eda8047cef007ecae8b4c66f103a76a1f606afb3bc",
+      "module_sha": "d458751ab6a6c438a5e0a88ff31a5823148dd8641fc9a3adc8afbb93144ac272",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "酷我音乐去广告",
@@ -5317,12 +5789,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Kuwo_remove_ads.lpx",
       "lpx_sha": "d1ac6bdf20e90196fe1de89736362ff93d4c99bdcb2f8f5608ac9c1be56540b9",
-      "module_sha": "ef90577042d5d0e192199e1bc6384cd49180e084e6da400117cc01e5fe48b4ae",
+      "module_sha": "9e60617eb6431ad2f63428942a1ac2d4e7c7cbeef6a3dc085bfd17b58cc89449",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "酷狗概念版去广告",
@@ -5337,12 +5810,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/KuGouYouth_remove_ads.lpx",
       "lpx_sha": "14c49fe53ed93fba2f33b0cce02a84f4d5c09141e93c8b83e7a66d7b33a8607a",
-      "module_sha": "df30cd01b9b50fa92b6fb3c77ddef5d80150cc57d974b08fdeb55a17c681ccda",
+      "module_sha": "95b0139f9df0eebd005519a4771de493c88ce500dc7a255e308d127a1e67f15c",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "酷狗铃声去广告",
@@ -5362,7 +5836,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "酷狗音乐去广告",
@@ -5377,12 +5852,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/KuGou_remove_ads.lpx",
       "lpx_sha": "39f97929d07a1400995c787670600c3954b3b929d59f1a23dcd09d4d93f0387b",
-      "module_sha": "44e874823cadb1ce0c370f8597bdefbe23ebdbd721320d009cbd0e431a6a76a4",
+      "module_sha": "38a3242c4893816e7e77c0de42cf6e610c3b94c404b36b23af0f95cb67a1ce82",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "金十数据去广告",
@@ -5402,7 +5878,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "金山文档去广告",
@@ -5422,7 +5899,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "闪动校园去广告",
@@ -5437,12 +5915,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/ShandongSchool_remove_ads.lpx",
       "lpx_sha": "fcb4338e38558d58bfda0df16e42a602294ffe1432128565b0441a88cc10c0e5",
-      "module_sha": "22b65301be22e3df8920a1aca25f773b4fb51414e03ce673ea16f1e2b8f19341",
+      "module_sha": "30a7c69d1a1304366a9fa9d51eddc62cdbc0a11f99c7dd0626db21163113629e",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "闲鱼去广告",
@@ -5457,12 +5936,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/FleaMarket_remove_ads.lpx",
       "lpx_sha": "b8e2c9b5df750c060895472ca9b8308e1a84e4ed2b22ae0af18b97dbb2cd51c2",
-      "module_sha": "6ccc5a2d55f2e0b82dca4bea9aa9d33b3773813aeee6a1264070757230191b0d",
+      "module_sha": "a486932a04f4fc469fd4f6e2ed4bdb3aabf4eb3f49cda34be75a9e06acae6bad",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "阅友去广告",
@@ -5482,7 +5962,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "阿里云盘去广告",
@@ -5497,13 +5978,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/AliYunDrive_remove_ads.lpx",
       "lpx_sha": "e95aa82e1d1f1b0ec83c1bb99a26a87fd1be90fb89a1a75288f62e5854a22169",
-      "module_sha": "236b39528bb6fc80653818f0c784339919660b6497985ae271c580c98933c1f4",
+      "module_sha": "58bdce460c68feea1c2117bebf717adbdc68650f977639ee387f01989fea71da",
       "status": "ok",
       "notes": [
-        "[script-type] L22: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/(biz)?api\\.alipan\\.com\\/apps\\/v\\d\\/us…",
-        "[script-type] L23: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/member\\.alipan\\.com\\/v1\\/users\\/onboa…",
+        "[script-attribute-alias] L22: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body",
+        "[script-name-shared] L23: 脚本重名，已改名为 移除阿里云盘广告-2（Surge 里同名脚本会被后者覆盖，只留一条生效）",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2",
+        "重名脚本自动加后缀"
       ]
     },
     {
@@ -5524,7 +6011,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "雪球去广告",
@@ -5544,7 +6032,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "顺丰速运去广告",
@@ -5559,13 +6048,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/SF-Express_remove_ads.lpx",
       "lpx_sha": "fdc1c6a5ff266785c1c2bf38ecbf7600f2fbe142f966400b6c8468b9a307262d",
-      "module_sha": "94594aac2789e2ff5dd427c8e3df26a5d171756ff11e557d36728d0846a8fc11",
+      "module_sha": "cc565ca1ab319f5599b78c69f4e023f38ccdb4f748fc56e79da3f79048340852",
       "status": "ok",
       "notes": [
-        "[rewrite-body] L18: 不支持的 body 动作：mock → 已注释：response if ${url} ~= /^https:\\/\\/ucmp(-static)?\\.sf-express\\.com\\/prox…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "风鸟去广告",
@@ -5580,12 +6069,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/RiskBird_remove_ads.lpx",
       "lpx_sha": "ed4944c91b2d5168fffeeb9c38428ce455fb7491fa5736076f9621f660981fa3",
-      "module_sha": "1a81cc5c9e2dbbe4d0d4d28f1c5cbfb8676e8732a49ae0c44fd25366a4807fc1",
+      "module_sha": "42ad8f92422e82b39e8a6e14ff010bfcf647b78cf43c43018764f2a60a87b425",
       "status": "ok",
       "notes": [
-        "[script-type] L19: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/m\\.riskbird\\.com\\/prod-qbb-api\\/query…",
+        "[script-attribute-alias] L19: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符）"
       ]
     },
     {
@@ -5601,13 +6094,17 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/FlyerTea_remove_ads.lpx",
       "lpx_sha": "9af4aeab6492311c3770256a02eea43fa1b9721efd5b9e5f1fa68ff5d413cdae",
-      "module_sha": "f66de50a2a7f8597b4611a3a6baae16d7e653dc7712d83269d0d2d6ec02e0c8b",
+      "module_sha": "ad25dfa9eb99bff025b2ae8d378d0c0a6881500fb5aed78361f4b8784c6418e0",
       "status": "ok",
       "notes": [
-        "[script-type] L20: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/www\\.flyert\\.com\\.cn\\/api\\/mobile\\/in…",
-        "[script-type] L21: 不支持的脚本类型：response → 已注释：response if ${url} ~= /^https:\\/\\/www\\.flyert\\.com\\.cn\\/api\\/mobile\\/in…",
+        "[script-attribute-alias] L20: 属性名归一 requires_body → requires-body",
+        "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "adapted": [
+        "属性名归一（下划线转连字符） ×2"
       ]
     },
     {
@@ -5628,7 +6125,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "香港抖音去广告",
@@ -5643,12 +6141,16 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/HKDouYin_remove_ads.lpx",
       "lpx_sha": "a65adf9303017ac10bcfb70decb25598372e55b67bb2509b8863d2c3a51699d1",
-      "module_sha": "5767e5646a32dc9e8d0e34a03957c8b96d53197eb3115dc066878e6a05f550ad",
+      "module_sha": "82ae896a2708ac18c9ff14a725a1c175e4c162a7b15a897e86f1767c2620a56c",
       "status": "ok",
       "notes": [
         "[json-path] L34: 不支持的下标：\\\"/service/settings/v3/\\\" → 已注释：response if ${url} ~= /^https:\\/\\/(aweme\\.snssdk\\.com|api5-normal-m\\.am…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -5669,7 +6171,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "马蜂窝去广告",
@@ -5684,12 +6187,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MaFengWo_remove_ads.lpx",
       "lpx_sha": "29fd2cad640dedfdfb4d1f7d335d92717cfa75c57132eaf6b2447352fcec5d13",
-      "module_sha": "7d01dbe27b8b651349549bef06c4dbc2fd1fad0bce3fa0a1e0dca90d6d4a32d3",
+      "module_sha": "728f1e2e96534f8685fbaf629c8e3615ef238f6e78f1a9638b642ad1212f5fec",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "驾校一点通去广告",
@@ -5709,7 +6213,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "驾考宝典去广告",
@@ -5729,7 +6234,8 @@
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
-      ]
+      ],
+      "converter": "2.1.0"
     },
     {
       "stem": "高德地图去广告",
@@ -5744,13 +6250,17 @@
       "date": "2026-10-19 23:24:57",
       "url": "https://kelee.one/Tool/Loon/Lpx/Amap_remove_ads.lpx",
       "lpx_sha": "17aea055bd7ad50be3507d4d39db8b4191167be7c30ea5018db427d83e765eb0",
-      "module_sha": "dcf40b8a5fc5cf8210609369216c78bca221bb18a5141a5543ad67e2ac2ace44",
+      "module_sha": "6deffe82d1cfe07391739e4fba90e62c670aaaf5491c6f91fc21235e6746cc2a",
       "status": "ok",
       "notes": [
         "[rewrite-json] L18: 不支持的 json 动作：jq_file → 已注释：response if ${url} ~= /^https:\\/\\/m5\\.amap\\.com\\/ws\\/shield\\/frogserver…",
         "[rewrite-json] L52: 不支持的 json 动作：jq_file → 已注释：response if ${url} ~= /^https:\\/\\/info\\.amap\\.com\\/ws\\/shield\\/search\\/…",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "converter": "2.1.0",
+      "review": [
+        "2 行无法自动转换，原文注释在文件末尾"
       ]
     }
   ]

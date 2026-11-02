@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=6008000
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
 
 [Rule]
 DOMAIN,apimall.qbb6.com,REJECT,extended-matching,pre-matching
@@ -25,9 +24,9 @@ DOMAIN,apimall.qbb6.com,REJECT,extended-matching,pre-matching
 (?i:^https:\/\/apimall\.qbb6\.com\/mall\/v\d\/goods\/count\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/apimall\.qbb6\.com\/mall\/homepage\/data\/get\/v\d$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+精简我的页面 = type=http-response, pattern=(?i:^https:\/\/api\.qbb6\.com\/commons\/self\/button\/group\/get\/v\d\?), script-path=https://kelee.one/Resource/JavaScript/Qbb/my.js, requires-body=true, timeout=10
+精简育儿页面 = type=http-response, pattern=(?i:^https:\/\/apipt\.qbb6\.com\/parenting\/pt\/homepage\/get\/v\d\?), script-path=https://kelee.one/Resource/JavaScript/Qbb/homepage.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% api.qbb6.com, apicommunity.qbb6.com, apipt.qbb6.com, apiuser.qbb6.com, apimall.qbb6.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/api\.qbb6\.com\/commons\/self\/button\/group\/get\/v\d\?/i then script("https://kelee.one/Resource/JavaScript/Qbb/my.js") with tag="精简我的页面", requires_body=true
-# response if ${url} ~= /^https:\/\/apipt\.qbb6\.com\/parenting\/pt\/homepage\/get\/v\d\?/i then script("https://kelee.one/Resource/JavaScript/Qbb/homepage.js") with tag="精简育儿页面", requires_body=true

@@ -8,13 +8,13 @@
 #!homepage=https://hub.kelee.one
 #!date=2026-10-02 13:57:49
 #!requirement=CORE_VERSION>=20
+#!arguments=app:tg
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
+
+[URL Rewrite]
+^https:\/\/t\.me\/([A-Za-z][A-Za-z0-9_]{3,30}[A-Za-z0-9])\/?$ {{{app}}}://resolve?domain=$1 307
+^https:\/\/t\.me\/\+([A-Za-z0-9_-]+)\/?$ {{{app}}}://join?invite=$1 307
 
 [MITM]
 hostname = %APPEND% t.me
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# request if ${url} ~= /^https:\/\/t\.me\/([A-Za-z][A-Za-z0-9_]{3,30}[A-Za-z0-9])\/?$/ as item then redirect(307, "${app}://resolve?domain=${item.1}")
-# request if ${url} ~= /^https:\/\/t\.me\/\+([A-Za-z0-9_-]+)\/?$/ as item then redirect(307, "${app}://join?invite=${item.1}")

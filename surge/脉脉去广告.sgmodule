@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=6008000
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
 
 [Body Rewrite]
 http-response-jq (?i:^https:\/\/(h3\.)?open\.taou\.com\/maimai\/feed\/v6\/detail_recommend_feeds\?) 'delpaths([["feeds"]])'
@@ -20,8 +19,8 @@ http-response-jq (?i:^https:\/\/(h3\.)?open\.taou\.com\/maimai\/feed\/v6\/detail
 (?i:^https:\/\/(h3\.)?open\.taou\.com\/maimai\/pay\/v5\/check_gift\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/(h3\.)?open\.taou\.com\/maimai\/go_gossip_darwin\/external\/v2\/query_flow_cards\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除信息流和评论区大块广告 = type=http-response, pattern=(?i:^https:\/\/(h3\.)?open\.taou\.com\/maimai\/(feed|gossip)\/v\d\/(focus_feed|gossip_detail_comment|feed_detail_comment?)\?), script-path=https://kelee.one/Resource/JavaScript/MaiMai/MaiMai_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% open.taou.com, h3.open.taou.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/(h3\.)?open\.taou\.com\/maimai\/(feed|gossip)\/v\d\/(focus_feed|gossip_detail_comment|feed_detail_comment?)\?/i then script("https://kelee.one/Resource/JavaScript/MaiMai/MaiMai_remove_ads.js") with tag="移除信息流和评论区大块广告", requires_body=true

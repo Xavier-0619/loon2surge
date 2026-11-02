@@ -10,11 +10,10 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
+
+[Script]
+移除开屏广告 = type=http-response, pattern=(?i:^https:\/\/jzts\.cmpassport\.com\/personalized\/getPushContent), script-path=https://kelee.one/Resource/JavaScript/mobileClouds/mobileClouds_remove_ads.js, requires-body=true, timeout=10
+移除应用内广告 = type=http-response, pattern=(?i:^https:\/\/ad\.mcloud\.139\.com\/advertapi\/adv-filter\/), script-path=https://kelee.one/Resource/JavaScript/mobileClouds/mobileClouds_remove_ads.js, requires-body=true, timeout=10
 
 [MITM]
 hostname = %APPEND% jzts.cmpassport.com, ad.mcloud.139.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/jzts\.cmpassport\.com\/personalized\/getPushContent/i then script("https://kelee.one/Resource/JavaScript/mobileClouds/mobileClouds_remove_ads.js") with tag="移除开屏广告", requires_body=true
-# response if ${url} ~= /^https:\/\/ad\.mcloud\.139\.com\/advertapi\/adv-filter\//i then script("https://kelee.one/Resource/JavaScript/mobileClouds/mobileClouds_remove_ads.js") with tag="移除应用内广告", requires_body=true

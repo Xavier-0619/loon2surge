@@ -10,10 +10,9 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
+
+[Script]
+微信外部链接解锁 = type=http-response, pattern=(?i:^https\:\/\/(weixin110\.qq|security.wechat)\.com\/cgi-bin\/mmspamsupport-bin\/newredirectconfirmcgi\?), script-path=https://kelee.one/Resource/JavaScript/Weixin/Weixin_external_links_unlock.js, requires-body=true, timeout=10
 
 [MITM]
 hostname = %APPEND% weixin110.qq.com, security.wechat.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https\:\/\/(weixin110\.qq|security.wechat)\.com\/cgi-bin\/mmspamsupport-bin\/newredirectconfirmcgi\?/i then script("https://kelee.one/Resource/JavaScript/Weixin/Weixin_external_links_unlock.js") with tag="微信外部链接解锁", requires_body=true

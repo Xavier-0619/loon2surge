@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/www\.flyert\.com\.cn\/api\/mobile\/index\.php\?module=advis) data-type=text data="" status-code=404
@@ -18,9 +17,9 @@
 (?i:^https:\/\/ptf\.flyertrip\.com\/static\/img\/common\/ic_plate_mine_button\.png) data-type=tiny-gif status-code=200
 (?i:^https:\/\/www\.flyert\.com\.cn\/api\/mobile\/index\.php\?module=getdata) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除板块广告 = type=http-response, pattern=(?i:^https:\/\/www\.flyert\.com\.cn\/api\/mobile\/index\.php\?version=5), script-path=https://kelee.one/Resource/JavaScript/FlyerTea/FlyerTea_remove_ads.js, requires-body=true, timeout=10
+移除签到弹窗广告 = type=http-response, pattern=(?i:^https:\/\/www\.flyert\.com\.cn\/api\/mobile\/index\.php\?module=plugin&id=k_misign:sign), script-path=https://kelee.one/Resource/JavaScript/FlyerTea/FlyerTea_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% www.flyert.com.cn, ptf.flyertrip.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/www\.flyert\.com\.cn\/api\/mobile\/index\.php\?version=5/i then script("https://kelee.one/Resource/JavaScript/FlyerTea/FlyerTea_remove_ads.js") with tag="移除板块广告", requires_body=true
-# response if ${url} ~= /^https:\/\/www\.flyert\.com\.cn\/api\/mobile\/index\.php\?module=plugin&id=k_misign:sign/i then script("https://kelee.one/Resource/JavaScript/FlyerTea/FlyerTea_remove_ads.js") with tag="移除签到弹窗广告", requires_body=true

@@ -10,14 +10,16 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 5 行无法自动转换，见文件末尾注释
+# 有 1 行无法自动转换，见文件末尾注释
+
+[Script]
+前端界面 = type=http-request, pattern=(?i:^https?:\/\/script\.hub\/($|edit\/|reload)), script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-hub.js, timeout=300
+Rewrite转换 = type=http-request, pattern=(?i:^https?:\/\/script\.hub\/file\/_start_\/.+type=(?:qx-rewrite|surge-module|loon-plugin|all-module)), script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/Rewrite-Parser.js, timeout=300
+Rule转换 = type=http-request, pattern=(?i:^https?:\/\/script\.hub\/file\/_start_\/.+type=rule-set), script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/rule-parser.js, timeout=300
+JavaScript转换 = type=http-request, pattern=(?i:^https?:\/\/script\.hub\/convert\/), script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-converter.js, timeout=300
 
 [MITM]
 hostname = %APPEND% script.hub, *.script.hub
 
 # ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
 # DOMAIN, scripthub.vercel.app, PROXY
-# request if ${url} ~= /^https?:\/\/script\.hub\/($|edit\/|reload)/i then script("https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-hub.js") with tag="前端界面", timeout=300
-# request if ${url} ~= /^https?:\/\/script\.hub\/file\/_start_\/.+type=(?:qx-rewrite|surge-module|loon-plugin|all-module)/i then script("https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/Rewrite-Parser.js") with tag="Rewrite转换", timeout=300
-# request if ${url} ~= /^https?:\/\/script\.hub\/file\/_start_\/.+type=rule-set/i then script("https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/rule-parser.js") with tag="Rule转换", timeout=300
-# request if ${url} ~= /^https?:\/\/script\.hub\/convert\//i then script("https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-converter.js") with tag="JavaScript转换", timeout=300

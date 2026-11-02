@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/mall\.meituan\.com\/api\/c\/homepage\/splash) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
@@ -21,8 +20,8 @@
 (?i:^https:\/\/mall\.meituan\.com\/api\/c\/poi\/\d+\/personal\/recommend) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/businessapi\.ksedt\.com\/signupindex\/jxlist) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除下发广告 = type=http-response, pattern=(?i:^https:\/\/portal-portm\.meituan\.com\/horn_ios\/mergeRequest), script-path=https://kelee.one/Resource/JavaScript/iMaiCai/iMaiCai_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% portal-portm.meituan.com, mall.meituan.com, businessapi.ksedt.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/portal-portm\.meituan\.com\/horn_ios\/mergeRequest/i then script("https://kelee.one/Resource/JavaScript/iMaiCai/iMaiCai_remove_ads.js") with tag="移除下发广告", requires_body=true

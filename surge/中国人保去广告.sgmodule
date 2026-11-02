@@ -10,16 +10,15 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/zgrb\.epicc\.com\.cn\/G-HAPP\/h\/headlines\/queryHeadlines) data-type=text data="" status-code=404
 (?i:^https:\/\/zgrb\.epicc\.com\.cn\/G-HAPP\/a\/update\/startupPage\/v1) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/zgrb\.epicc\.com\.cn\/G-HAPP\/a\/config\/guessYouLike\/v3) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除主页推广 = type=http-response, pattern=(?i:^https:\/\/zgrb\.epicc\.com\.cn\/G-HAPP\/a\/config\/homeInit\/v3), script-path=https://kelee.one/Resource/JavaScript/PICC_Insurance/PICC_Insurance_remove_ads.js, requires-body=true, timeout=10
+移除我的页面推广 = type=http-response, pattern=(?i:^https:\/\/zgrb\.epicc\.com\.cn\/G-HAPP\/mpageconfig\/myPageConfigList\/v3), script-path=https://kelee.one/Resource/JavaScript/PICC_Insurance/PICC_Insurance_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% zgrb.epicc.com.cn
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/zgrb\.epicc\.com\.cn\/G-HAPP\/a\/config\/homeInit\/v3/i then script("https://kelee.one/Resource/JavaScript/PICC_Insurance/PICC_Insurance_remove_ads.js") with tag="移除主页推广", requires_body=true
-# response if ${url} ~= /^https:\/\/zgrb\.epicc\.com\.cn\/G-HAPP\/mpageconfig\/myPageConfigList\/v3/i then script("https://kelee.one/Resource/JavaScript/PICC_Insurance/PICC_Insurance_remove_ads.js") with tag="移除我的页面推广", requires_body=true

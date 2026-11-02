@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 4 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/games\.mobileapi\.hupu\.com\/\d\/\d\.\d\.\d+\/bplapi\/reddot\/v1\/app\/getReddot) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
@@ -22,11 +21,11 @@
 (?i:^https:\/\/games\.mobileapi\.hupu\.com\/3\/8\.0\.86\/bplcommentapi\/bpl\/score_tab\/groups) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/games\.mobileapi\.hupu\.com\/3\/8\.0\.86\/bplapi\/banner\/getLocationBanners) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+移除虎扑广告 = type=http-response, pattern=(?i:^https:\/\/fairy\.mobileapi\.hupu\.com\/mang\/preview\/banners), script-path=https://kelee.one/Resource/JavaScript/HUPU/HUPU_remove_ads.js, requires-body=true, timeout=10
+移除虎扑广告-2 = type=http-response, pattern=(?i:^https:\/\/bbs\.mobileapi\.hupu\.com\/\d\/\d\.\d\.\d+\/bbsallapi\/lego\/data), script-path=https://kelee.one/Resource/JavaScript/HUPU/HUPU_remove_ads.js, requires-body=true, timeout=10
+移除虎扑广告-3 = type=http-response, pattern=(?i:^https:\/\/games\.mobileapi\.hupu\.com\/\d\/\d\.\d\.\d+\/buffer\/hotList), script-path=https://kelee.one/Resource/JavaScript/HUPU/HUPU_remove_ads.js, requires-body=true, timeout=10
+移除虎扑广告-4 = type=http-response, pattern=(?i:^https:\/\/games\.mobileapi\.hupu\.com\/\d\/\d\.\d\.\d+\/bplapi\/user\/v1\/more), script-path=https://kelee.one/Resource/JavaScript/HUPU/HUPU_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% games.mobileapi.hupu.com, fairy.mobileapi.hupu.com, bbs.mobileapi.hupu.com, goblin.hupu.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/fairy\.mobileapi\.hupu\.com\/mang\/preview\/banners/i then script("https://kelee.one/Resource/JavaScript/HUPU/HUPU_remove_ads.js") with tag="移除虎扑广告", requires_body=true
-# response if ${url} ~= /^https:\/\/bbs\.mobileapi\.hupu\.com\/\d\/\d\.\d\.\d+\/bbsallapi\/lego\/data/i then script("https://kelee.one/Resource/JavaScript/HUPU/HUPU_remove_ads.js") with tag="移除虎扑广告", requires_body=true
-# response if ${url} ~= /^https:\/\/games\.mobileapi\.hupu\.com\/\d\/\d\.\d\.\d+\/buffer\/hotList/i then script("https://kelee.one/Resource/JavaScript/HUPU/HUPU_remove_ads.js") with tag="移除虎扑广告", requires_body=true
-# response if ${url} ~= /^https:\/\/games\.mobileapi\.hupu\.com\/\d\/\d\.\d\.\d+\/bplapi\/user\/v1\/more/i then script("https://kelee.one/Resource/JavaScript/HUPU/HUPU_remove_ads.js") with tag="移除虎扑广告", requires_body=true

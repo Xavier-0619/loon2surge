@@ -12,7 +12,7 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/api\.huachenjie\.com\/run-front\/home\/homePage\/config$) '.data.functionEntries |= map(select(.name == \"运动\" or .name == \"空间\")) | del(.data.seaview)'
+http-response-jq (?i:^https:\/\/api\.huachenjie\.com\/run-front\/home\/homePage\/config$) '.data.functionEntries |= map(select(.name == "运动" or .name == "空间")) | del(.data.seaview)'
 http-response-jq (?i:^https:\/\/api\.huachenjie\.com\/run-front\/api\/user\/cs\/index$) 'delpaths([["data","bannerList"]])'
 http-response-jq (?i:^https:\/\/api\.huachenjie\.com\/run-front\/common\/bottom-bar\/redDot$) 'delpaths([["data","inspiration"]])'
 

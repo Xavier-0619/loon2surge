@@ -10,10 +10,9 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 1 行无法自动转换，见文件末尾注释
+
+[Script]
+去广告 = type=http-response, pattern=(?i:^https:\/\/api\.dianyinduoduo\.com\/v4\/config\.php\?), script-path=https://kelee.one/Resource/JavaScript/DjDuoDuo/DjDuoDuo_remove_ads.js, requires-body=true, timeout=10
 
 [MITM]
 hostname = %APPEND% api.dianyinduoduo.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/api\.dianyinduoduo\.com\/v4\/config\.php\?/i then script("https://kelee.one/Resource/JavaScript/DjDuoDuo/DjDuoDuo_remove_ads.js") with tag="去广告", requires_body=true

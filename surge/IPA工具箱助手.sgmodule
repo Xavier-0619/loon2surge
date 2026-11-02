@@ -10,11 +10,10 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
+
+[Script]
+App Store API = type=http-request, pattern=(?i:^https:\/\/apple-api\.com), script-path=https://kelee.one/Resource/JavaScript/IPATool/AppStoreAPI.js, requires-body=true, timeout=10
+安装器 = type=http-request, pattern=(?i:^https:\/\/xiaobai\.app), script-path=https://kelee.one/Resource/JavaScript/IPATool/Installer.js, timeout=10
 
 [MITM]
 hostname = %APPEND% apple-api.com, xiaobai.app
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# request if ${url} ~= /^https:\/\/apple-api\.com/i then script("https://kelee.one/Resource/JavaScript/IPATool/AppStoreAPI.js") with tag="App Store API", requires_body=true
-# request if ${url} ~= /^https:\/\/xiaobai\.app/i then script("https://kelee.one/Resource/JavaScript/IPATool/Installer.js") with tag="安装器"

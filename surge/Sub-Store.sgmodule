@@ -8,15 +8,18 @@
 #!homepage=https://hub.kelee.one
 #!date=2026-10-02 13:57:49
 #!requirement=CORE_VERSION>=20
+#!arguments=cron:55 23 * * *
 
 # 由 loon2surge 自动转换
-# 有 4 行无法自动转换，见文件末尾注释
+# 有 1 行无法自动转换，见文件末尾注释
+
+[Script]
+Sub-Store Core = type=http-request, pattern=(?i:^https?:\/\/sub\.store\/((download)|api\/(preview|sync|(utils\/node-info)))), script-path=https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-1.min.js, requires-body=true, timeout=120
+Sub-Store Simple = type=http-request, pattern=(?i:^https?:\/\/sub\.store), script-path=https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-0.min.js, requires-body=true, timeout=120
+Sub-Store Sync = type=cron, cronexp="{{{cron}}}", script-path=https://github.com/sub-store-org/Sub-Store/releases/latest/download/cron-sync-artifacts.min.js, timeout=120
 
 [MITM]
 hostname = %APPEND% sub.store
 
 # ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
 # DOMAIN, sub-store.vercel.app, PROXY
-# request if ${url} ~= /^https?:\/\/sub\.store\/((download)|api\/(preview|sync|(utils\/node-info)))/i then script("https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-1.min.js") with tag="Sub-Store Core", timeout=120, requires_body=true
-# request if ${url} ~= /^https?:\/\/sub\.store/i then script("https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-0.min.js") with tag="Sub-Store Simple", timeout=120, requires_body=true
-# cron ${cron} then script("https://github.com/sub-store-org/Sub-Store/releases/latest/download/cron-sync-artifacts.min.js") with tag="Sub-Store Sync", timeout=120

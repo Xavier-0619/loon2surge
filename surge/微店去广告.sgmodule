@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 2 行无法自动转换，见文件末尾注释
 
 [Map Local]
 (?i:^https:\/\/thor\.weidian\.com\/ares\/home\.splash\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
@@ -26,9 +25,9 @@
 (?i:^https:\/\/thor\.weidian\.com\/ares\/recommend\.getSpecialFocusList\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/thor\.weidian\.com\/ares\/collect\.recommendShop\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 
+[Script]
+配置修改 = type=http-response, pattern=(?i:^https:\/\/thor\.weidian\.com\/appconf\/getAppConfig\/), script-path=https://kelee.one/Resource/JavaScript/Weidian/getAppConfig.js, requires-body=true, binary-body-mode=true, timeout=10
+精简钱包区 = type=http-response, pattern=(?i:^https:\/\/thor\.weidian\.com\/wgs\/wallet\.query\.order\.entrance\/), script-path=https://kelee.one/Resource/JavaScript/Weidian/wallet.js, requires-body=true, binary-body-mode=true, timeout=10
+
 [MITM]
 hostname = %APPEND% thor.weidian.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/thor\.weidian\.com\/appconf\/getAppConfig\//i then script("https://kelee.one/Resource/JavaScript/Weidian/getAppConfig.js") with tag="配置修改", requires_body=true, binary_body_mode=true
-# response if ${url} ~= /^https:\/\/thor\.weidian\.com\/wgs\/wallet\.query\.order\.entrance\//i then script("https://kelee.one/Resource/JavaScript/Weidian/wallet.js") with tag="精简钱包区", requires_body=true, binary_body_mode=true

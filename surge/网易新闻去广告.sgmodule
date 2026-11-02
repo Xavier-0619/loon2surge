@@ -10,7 +10,6 @@
 #!requirement=CORE_VERSION>=20
 
 # 由 loon2surge 自动转换
-# 有 3 行无法自动转换，见文件末尾注释
 
 [Rule]
 DOMAIN,nex.163.com,DIRECT,extended-matching
@@ -25,10 +24,10 @@ DOMAIN,gw.m.163.com,DIRECT,extended-matching
 (?i:^https?:\/\/support\.you\.163\.com\/xhr\/boot\/getBootMedia\.json) data-type=text data="" status-code=404
 (?i:^https?:\/\/interface3?\.music\.163\.com\/eapi\/(ad|abtest|sp|hot|store|search\/(specialkeyword|defaultkeyword|hot))) data-type=text data="" status-code=404
 
+[Script]
+移除网易新闻广告 = type=http-response, pattern=(?i:^https:\/\/nex\.163\.com\/q), script-path=https://kelee.one/Resource/JavaScript/NeteaseNews/NeteaseNews_remove_ads.js, requires-body=true, timeout=10
+移除网易新闻广告-2 = type=http-response, pattern=(?i:^https:\/\/gw\.m\.163\.com\/nc\/api\/v1\/feed\/dynamic\/headline-list\?), script-path=https://kelee.one/Resource/JavaScript/NeteaseNews/NeteaseNews_remove_ads.js, requires-body=true, timeout=10
+移除网易新闻广告-3 = type=http-response, pattern=(?i:^https:\/\/gw\.m\.163\.com\/nc\/api\/v1\/search\/hot-word), script-path=https://kelee.one/Resource/JavaScript/NeteaseNews/NeteaseNews_remove_ads.js, requires-body=true, timeout=10
+
 [MITM]
 hostname = %APPEND% nex.163.com, interface.music.163.com, c.m.163.com, client.mail.163.com, g1.163.com, support.you.163.com, interface3?.music.163.com, gw.m.163.com
-
-# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
-# response if ${url} ~= /^https:\/\/nex\.163\.com\/q/i then script("https://kelee.one/Resource/JavaScript/NeteaseNews/NeteaseNews_remove_ads.js") with tag="移除网易新闻广告", requires_body=true
-# response if ${url} ~= /^https:\/\/gw\.m\.163\.com\/nc\/api\/v1\/feed\/dynamic\/headline-list\?/i then script("https://kelee.one/Resource/JavaScript/NeteaseNews/NeteaseNews_remove_ads.js") with tag="移除网易新闻广告", requires_body=true
-# response if ${url} ~= /^https:\/\/gw\.m\.163\.com\/nc\/api\/v1\/search\/hot-word/i then script("https://kelee.one/Resource/JavaScript/NeteaseNews/NeteaseNews_remove_ads.js") with tag="移除网易新闻广告", requires_body=true

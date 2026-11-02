@@ -12,7 +12,7 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/95598\.csg\.cn\/mp\/mpaas\/mgw\.htm$) 'if .info | contains(\"RUBIK-TRACEID:\") then .scene.page.areas |= map(select(.areaId | test(\"kingkong_|9grid_|message_|nearmap_|recommend_\"))) else . end'
+http-response-jq (?i:^https:\/\/95598\.csg\.cn\/mp\/mpaas\/mgw\.htm$) 'if .info | contains("RUBIK-TRACEID:") then .scene.page.areas |= map(select(.areaId | test("kingkong_|9grid_|message_|nearmap_|recommend_"))) else . end'
 
 [Map Local]
 (?i:^https:\/\/95598\.csg\.cn\/mp\/ucs\/ma\/zt\/content\/queryHotInformations$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

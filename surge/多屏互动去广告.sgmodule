@@ -12,7 +12,7 @@
 # 由 loon2surge 自动转换
 
 [Body Rewrite]
-http-response-jq (?i:^https:\/\/tcast-o\.api\.leiniao\.com\/tcast\/v\d\/config\/function\?) '.data |= map(select(.module == \"tools\"))'
+http-response-jq (?i:^https:\/\/tcast-o\.api\.leiniao\.com\/tcast\/v\d\/config\/function\?) '.data |= map(select(.module == "tools"))'
 
 [Map Local]
 (?i:^https:\/\/tcast-o\.api\.leiniao\.com\/tcast\/ads\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
