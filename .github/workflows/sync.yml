@@ -1,0 +1,122 @@
+name: 🔄 可莉插件自动同步
+
+# 每天北京时间 02:00 拉一次可莉插件中心，把 Loon 插件转成 Surge 模块并提交。
+# cron 用 UTC，18:00 UTC 正好是次日 02:00（东八区）。
+
+on:
+  schedule:
+    - cron: "0 18 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "运行模式"
+        type: choice
+        options:
+          - 同步并提交
+          - 只做连通性自检
+        default: 同步并提交
+      limit:
+        description: "只处理前 N 个插件（0 表示全部，调试用）"
+        type: number
+        default: 0
+
+permissions:
+  contents: write
+
+# 上一轮没跑完时不要叠着跑，排队等它结束
+concurrency:
+  group: kelee-sync
+  cancel-in-progress: false
+
+env:
+  GOFLAGS: -trimpath
+  CGO_ENABLED: 0
+
+jobs:
+  sync:
+    name: 📦 同步并转换
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 📥 检出仓库
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🐹 准备 Go 环境
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      - name: 🧪 转换器自检
+        run: |
+          go vet ./...
+          go test ./... -count=1
+
+      - name: 🔨 编译转换器
+        run: go build -o bin/loon2surge .
+
+      - name: 📡 上游连通性自检
+        if: inputs.mode == '只做连通性自检'
+        env:
+          KLEE_MIRROR: ${{ vars.KLEE_MIRROR }}
+        run: ./bin/loon2surge sync --probe
+
+      - name: 🔄 拉取插件并转换
+        id: sync
+        if: inputs.mode != '只做连通性自检'
+        continue-on-error: true
+        env:
+          # 可选：自家镜像前缀，例如 https://mirror.example.com
+          # 在仓库 Settings → Secrets and variables → Actions → Variables 里加 KLEE_MIRROR
+          KLEE_MIRROR: ${{ vars.KLEE_MIRROR }}
+          LIMIT: ${{ inputs.limit }}
+        run: |
+          set -o pipefail
+          ARGS="--jobs 8 --delay 0.2"
+          if [ -n "$LIMIT" ] && [ "$LIMIT" != "0" ]; then
+            ARGS="$ARGS --limit $LIMIT"
+          fi
+          ./bin/loon2surge sync $ARGS | tee sync.log
+
+      - name: 📊 汇总仓库现状
+        if: inputs.mode != '只做连通性自检'
+        run: |
+          plugins=$(find loon -name '*.lpx' 2>/dev/null | wc -l)
+          modules=$(find surge -name '*.sgmodule' 2>/dev/null | wc -l)
+          {
+            echo ""
+            echo "### 📊 仓库现状"
+            echo ""
+            echo "| 项目 | 数量 |"
+            echo "| --- | --- |"
+            echo "| 🧩 Loon 插件 | $plugins |"
+            echo "| 📦 Surge 模块 | $modules |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 🚀 提交并推送
+        if: inputs.mode != '只做连通性自检'
+        run: |
+          DATE=$(TZ=Asia/Shanghai date +%F)
+          STATS=$(grep -o '统计：.*' sync.log | tail -1 || true)
+
+          git add -A
+          if git diff --cached --quiet; then
+            echo "✅ 上游没有变化，本轮不提交" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "🔄 自动更新 $DATE" -m "${STATS:-本轮有插件变更}"
+          git push
+
+          echo "🚀 已推送：\`🔄 自动更新 $DATE\`" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 🩺 汇报失败
+        if: inputs.mode != '只做连通性自检' && steps.sync.outcome == 'failure'
+        run: |
+          echo "同步步骤失败，详见上方日志与本次运行的 Summary。" >&2
+          exit 1

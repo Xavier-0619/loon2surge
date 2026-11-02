@@ -1,0 +1,16 @@
+.workbuddy/
+
+# 编译产物与本地调试目录
+/loon2surge
+/loon2surge.exe
+/bin/
+/build/
+/.tooling/
+/.verify/
+sync.log
+*.test
+
+# 编辑器
+.idea/
+.vscode/
+.DS_Store

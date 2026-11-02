@@ -1,2 +1,2 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# 仓库里存的是上游文件的逐字节镜像，任何换行转换都会让哈希对不上
+* -text
