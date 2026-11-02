@@ -1,0 +1,28 @@
+#!name=京东去广告
+#!desc=移除京东开屏广告，精简我的页面产品推广。
+#!author=RuCu6[https://github.com/RuCu6], Maasea[https://github.com/Maasea]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/JD.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id414245413
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+# 有 1 行无法自动转换，见文件末尾注释
+
+[Rule]
+URL-REGEX,"^http:\/\/\w{32}\.jddebug\.com\/diagnose\?",REJECT,extended-matching,pre-matching
+
+[Body Rewrite]
+http-response-jq (?i:^https:\/\/api\.m\.jd\.com\/client\.action\?functionId=basicConfig) 'try setpath(["data.JDMessage.socketmonitor.isSocketEstablishedAhead\", \"data.JDMessage.socketmonitor.isSocketReport\", \"data.JDHttpToolKit.httpdns.httpdns"]; [0, 0, 0]) catch .'
+
+[Map Local]
+(?i:^https:\/\/api\.m\.jd\.com\/client\.action\?functionId=(searchBoxWord|stationPullService|uniformRecommend[06])) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[MITM]
+hostname = %APPEND% api.m.jd.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# response if ${url} ~= /^https:\/\/api\.m\.jd\.com\/client\.action\?functionId=(deliverLayer|getTabHomeInfo|myOrderInfo|orderTrackBusiness|personinfoBusiness|start|welcomeHome)/i then script("https://kelee.one/Resource/JavaScript/JD/JD_remove_ads.js") with tag="移除京东广告", requires_body=true

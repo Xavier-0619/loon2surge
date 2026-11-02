@@ -1,0 +1,37 @@
+#!name=香港抖音去广告
+#!desc=精简左右侧边栏、移除底栏切换，其余内容后续再完善。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TikTok.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id1142110895
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+# 有 1 行无法自动转换，见文件末尾注释
+
+[Rule]
+AND,((IP-CIDR,101.126.58.201/32, no-resolve,no-resolve),(DEST-PORT,6443)),REJECT,pre-matching
+AND,((IP-CIDR,110.249.199.75/32, no-resolve,no-resolve),(DEST-PORT,6443)),REJECT,pre-matching
+AND,((IP-CIDR,111.225.147.191/32, no-resolve,no-resolve),(DEST-PORT,6443)),REJECT,pre-matching
+AND,((IP-CIDR,111.63.61.101/32, no-resolve,no-resolve),(DEST-PORT,6443)),REJECT,pre-matching
+AND,((IP-CIDR,220.243.141.0/32, no-resolve,no-resolve),(DEST-PORT,6443)),REJECT,pre-matching
+AND,((OR,((DOMAIN-SUFFIX,bytegecko.com,extended-matching),(DOMAIN-SUFFIX,byteeffecttos.com,extended-matching))),(DOMAIN-KEYWORD,ncdn,extended-matching)),REJECT,pre-matching
+
+[Body Rewrite]
+http-response-jq (?i:^https:\/\/((aweme\.snssdk\.com|api5-normal-m\.amemv\.com)|api5-normal-m\.amemv\.com)\/aweme\/homepage\/sidebar_data\/\?) 'delpaths([["data_map","recently_apps"],["data_map","recently_users"]])'
+http-response-jq (?i:^https:\/\/(aweme\.snssdk\.com|api5-normal-m\.amemv\.com)\/aweme\/homepage\/render\/\?) 'delpaths([["data","tab_config"]])'
+http-response-jq (?i:^https:\/\/(aweme\.snssdk\.com|api5-normal-m\.amemv\.com)\/aweme\/homepage\/render\/\?) '.data.tab_list[]? |= (if .extra.side_bar.modules != null then .extra.side_bar.modules[]?.items[]? |= (if .data.first_page_module?.module_title == \"常用功能\" then .data={} else . end) else . end) | .data.tab_list |= map(if .extra.tab_list != null then .extra.tab_list |= map(select(.tab_id | IN(\"homepage_tablive\", \"homepage_follow\", \"homepage_hot_container\"))) else . end) | .data.tab_list |= map(select(.extra.tab_list != null and (.extra.tab_list | length > 0)))'
+
+[Map Local]
+(?i:^https:\/\/api5-normal-lq\.amemv\.com\/api\/ad\/) data-type=text data="" status-code=404
+(?i:^https:\/\/(aweme\.snssdk\.com|api5-normal-m\.amemv\.com)\/api\/ad\/) data-type=text data="" status-code=404
+(?i:^https:\/\/zlink\.ugsdk\.cn\/ad\/) data-type=text data="" status-code=404
+
+[MITM]
+hostname = %APPEND% aweme.snssdk.com, api5-normal-m.amemv.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# response if ${url} ~= /^https:\/\/(aweme\.snssdk\.com|api5-normal-m\.amemv\.com)\/tfe\/api\/request_combine\/v1\/\?need_personal_recommend/i then response.json.replace(["data[\"/service/settings/v3/\"].body.data.settings.homepage_two_session_tab_skin_2025", "data[\"/service/settings/v3/\"].body.data.settings.homepage_tab_skin_enable"], [false, false])

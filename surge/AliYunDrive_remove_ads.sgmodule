@@ -1,0 +1,27 @@
+#!name=阿里云盘去广告
+#!desc=移除首页广告横幅、弹窗和顶部奖励。
+#!author=RuCu6[https://github.com/RuCu6]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/AliYunDrive.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id1494661473
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+# 有 2 行无法自动转换，见文件末尾注释
+
+[Rule]
+IP-CIDR,203.107.1.1/24,REJECT,no-resolve,pre-matching
+
+[Map Local]
+(?i:^https:\/\/member\.alipan\.com\/v2\/activity\/sign_in_luckyBottle) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.alipan\.com\/adrive\/v1\/file\/getTopFolders) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[MITM]
+hostname = %APPEND% api.alipan.com, member.alipan.com, bizapi.alipan.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# response if ${url} ~= /^https:\/\/(biz)?api\.alipan\.com\/apps\/v\d\/users?\/home\/(news|widgets)/i then script("https://kelee.one/Resource/JavaScript/AliYunDrive/AliYunDrive_remove_ads.js") with tag="移除阿里云盘广告", requires_body=true
+# response if ${url} ~= /^https:\/\/member\.alipan\.com\/v1\/users\/onboard_list/i then script("https://kelee.one/Resource/JavaScript/AliYunDrive/AliYunDrive_remove_ads.js") with tag="移除阿里云盘广告", requires_body=true

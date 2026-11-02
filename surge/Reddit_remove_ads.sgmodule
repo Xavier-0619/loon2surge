@@ -1,0 +1,19 @@
+#!name=Reddit去广告
+#!desc=过滤应用内推广，阻止NSFW提示。
+#!author=xream[https://github.com/xream]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Reddit.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id1064216828
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=20
+
+# 由 loon2surge 自动转换
+# 有 1 行无法自动转换，见文件末尾注释
+
+[MITM]
+hostname = %APPEND% gql.reddit.com, gql-fed.reddit.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# response if ${url} ~= /^https?:\/\/gql(-fed)?\.reddit\.com/i then response.json.jq_file("https://kelee.one/Resource/JQLang/Reddit/Reddit_remove_ads.jq")

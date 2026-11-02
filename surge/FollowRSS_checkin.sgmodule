@@ -1,0 +1,19 @@
+#!name=Follow每日签到
+#!desc=Follow每日签到，需要进入此插件的主页链接，阅读使用说明操作。
+#!author=gideonsenku[https://github.com/gideonsenku], 可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/FollowRSS.png
+#!category=可莉插件
+#!openUrl=https://follow.is
+#!tag=签到
+#!homepage=https://github.com/luestr/ProxyResource/blob/main/Resource/Markdown/FollowRSS/README.md
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=20
+
+# 由 loon2surge 自动转换
+# 有 1 行无法自动转换，见文件末尾注释
+
+[MITM]
+hostname = %APPEND% api.follow.is
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# cron ${cron} then script("https://kelee.one/Resource/JavaScript/FollowRSS/FollowRSS_checkin.js", {${token}, ${cookie}}) with tag="Follow每日签到", timeout=120

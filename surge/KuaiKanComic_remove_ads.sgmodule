@@ -1,0 +1,48 @@
+#!name=快看漫画去广告
+#!desc=移除开屏广告、悬浮窗、漫画广告、社区广告、各类弹窗，精简顶部标签、我的页面。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KuaiKanComic.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id906936224
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+# 有 4 行无法自动转换，见文件末尾注释
+
+[Rule]
+DOMAIN,ad.v3mh.com,REJECT,extended-matching,pre-matching
+DOMAIN,ipv6.kkmh.com,REJECT,extended-matching,pre-matching
+DOMAIN,ipv4.kkmh.com,REJECT,extended-matching,pre-matching
+
+[Map Local]
+(?i:^https:\/\/(cdn-)?api\.kkmh\.com\/v\d\/ad\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?h5\.kuaikanmanhua\.com\/user\/scene\/api\/new_user\/sign_in\/list) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?api\.kkmh\.com\/v\d\/business\/activities\/get) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?api\.kkmh\.com\/v\d\/business\/mine\/business_config) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?topic\.kkmh\.com\/gamecard\/v\d\/activityModule\/userSignInInfo\?activitySignInConfigId) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?topic\.kkmh\.com\/gamecard\/v\d\/activityModule\/fetchButtonInfo\?buttonConfigId) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?topic\.kkmh\.com\/gamecard\/v\d\/activityText\/getUserActivityTextInfo\?activityTextConfigId) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?pay\.kkmh\.com\/v\d\/kb\/comic_page_banner\/detail) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?api\.kkmh\.com\/v\d\/business\/fake_push\/info) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?shop\.kkmh\.com\/mbff\/popup_administration\/page_management_popup_administration$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?api\.kkmh\.com\/v\d\/business\/mine\/business_config) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?pay\.kkmh\.com\/v\d\/vip\/banner_tip_list) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?pay\.kkmh\.com\/v\d\/vip\/charge_tip_list) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/h5\.kuaikanmanhua\.com\/v\d\/kb\/recharge_good\/list_h5) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?pay\.kkmh\.com\/v\d\/kb\/wallet) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?api\.kkmh\.com\/v\d\/checkin\/api\/new_user\/tab_info$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/h5\.kuaikanmanhua\.com\/game-h5\/new-user-welfare\/index\.html) data-type=text data="" status-code=200
+(?i:^https:\/\/(cdn-)?pay\.kkmh\.com\/v\d\/vip\/platform_base\/popups_display$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(cdn-)?api\.kkmh\.com\/v\d\/checkin\/task_center\/get_by_task_type) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[MITM]
+hostname = %APPEND% api.kkmh.com, cdn-api.kkmh.com, social.kkmh.com, cdn-social.kkmh.com, h5.kuaikanmanhua.com, cdn-h5.kuaikanmanhua.com, pay.kkmh.com, cdn-pay.kkmh.com, shop.kkmh.com, cdn-shop.kkmh.com, topic.kkmh.com, cdn-topic.kkmh.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# response if ${url} ~= /^https:\/\/(cdn-)?api\.kkmh\.com\/v\d\/ironman\/comic\/recommend/i then script("https://kelee.one/Resource/JavaScript/KuaiKanComic/KuaiKanComic_remove_ads.js") with tag="修改广告参数", requires_body=true
+# response if ${url} ~= /^https:\/\/(cdn-)?api\.kkmh\.com\/v\d\/ironman\/discovery_v\d\/tab_list_v\d/i then script("https://kelee.one/Resource/JavaScript/KuaiKanComic/KuaiKanComic_remove_ads.js") with tag="精简首页热门标签", requires_body=true
+# response if ${url} ~= /^https:\/\/(cdn-)?social\.kkmh\.com\/v\d\/graph\/homepage\/comicVideo\/v\d\/configs/i then script("https://kelee.one/Resource/JavaScript/KuaiKanComic/KuaiKanComic_remove_ads.js") with tag="精简社区标签", requires_body=true
+# response if ${url} ~= /^https:\/\/(cdn-)?social\.kkmh\.com\/v\d\/graph\/unified_feed$/i then script("https://kelee.one/Resource/JavaScript/KuaiKanComic/KuaiKanComic_remove_ads.js") with tag="精简社区信息流", requires_body=true
