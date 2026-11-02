@@ -23,7 +23,7 @@ import (
 	"loon2surge/internal/lpx"
 )
 
-const version = "2.1.0"
+const version = "2.2.0"
 
 const usage = `loon2surge %s —— Loon 插件 → Surge 模块
 
