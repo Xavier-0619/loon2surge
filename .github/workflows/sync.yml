@@ -2,6 +2,11 @@ name: 🔄 可莉插件自动同步
 
 # 每天北京时间 02:00 拉一次可莉插件中心，把 Loon 插件转成 Surge 模块并提交。
 # cron 用 UTC，18:00 UTC 正好是次日 02:00（东八区）。
+#
+# 为什么要重试：上游挂在 Cloudflare 后面，GitHub 托管 runner 的出口 IP 是抽签的。
+# 同一个 IP 上三轮都拿不到数据，基本说明这个 IP 被拒了；换一台 runner 就是换 IP。
+# 实测上游自己的同款项目，10 次运行里有 2 次是这么失败的，不是代码问题。
+# 重试只在失败时发生，正常日子只跑一次。
 
 on:
   schedule:
@@ -34,9 +39,9 @@ env:
 
 jobs:
   sync:
-    name: 📦 同步并转换
+    name: 📦 同步并转换（第 1 次）
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     steps:
       - name: 📥 检出仓库
@@ -55,68 +60,87 @@ jobs:
           go vet ./...
           go test ./... -count=1
 
-      - name: 🔨 编译转换器
-        run: go build -o bin/loon2surge .
+      - name: 🔄 抓取并转换
+        uses: ./.github/actions/sync
+        with:
+          mirror: ${{ vars.KLEE_MIRROR }}
+          limit: ${{ inputs.limit }}
+          probe: ${{ inputs.mode == '只做连通性自检' }}
 
-      - name: 📡 上游连通性自检
-        if: inputs.mode == '只做连通性自检'
-        env:
-          KLEE_MIRROR: ${{ vars.KLEE_MIRROR }}
-        run: ./bin/loon2surge sync --probe
+  retry:
+    name: 🔁 换台 runner 重试（第 2 次）
+    needs: [sync]
+    # 只在第一台没成功时才换台重跑，成功就到此为止
+    if: always() && needs.sync.result != 'success' && inputs.mode != '只做连通性自检'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
 
-      - name: 🔄 拉取插件并转换
-        id: sync
-        if: inputs.mode != '只做连通性自检'
-        continue-on-error: true
-        env:
-          # 可选：自家镜像前缀，例如 https://mirror.example.com
-          # 在仓库 Settings → Secrets and variables → Actions → Variables 里加 KLEE_MIRROR
-          KLEE_MIRROR: ${{ vars.KLEE_MIRROR }}
-          LIMIT: ${{ inputs.limit }}
+    steps:
+      - name: 📥 检出仓库
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔄 抓取并转换
+        uses: ./.github/actions/sync
+        with:
+          mirror: ${{ vars.KLEE_MIRROR }}
+          limit: ${{ inputs.limit }}
+
+  retry2:
+    name: 🔁 再换一台重试（第 3 次）
+    needs: [sync, retry]
+    if: always() && needs.sync.result != 'success' && needs.retry.result != 'success' && inputs.mode != '只做连通性自检'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: 📥 检出仓库
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔄 抓取并转换
+        uses: ./.github/actions/sync
+        with:
+          mirror: ${{ vars.KLEE_MIRROR }}
+          limit: ${{ inputs.limit }}
+
+  report:
+    name: 🩺 汇报结果
+    needs: [sync, retry, retry2]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🩺 汇总本次运行
         run: |
-          set -o pipefail
-          ARGS="--jobs 8 --delay 0.2"
-          if [ -n "$LIMIT" ] && [ "$LIMIT" != "0" ]; then
-            ARGS="$ARGS --limit $LIMIT"
-          fi
-          ./bin/loon2surge sync $ARGS | tee sync.log
+          first="${{ needs.sync.result }}"
+          second="${{ needs.retry.result }}"
+          third="${{ needs.retry2.result }}"
 
-      - name: 📊 汇总仓库现状
-        if: inputs.mode != '只做连通性自检'
-        run: |
-          plugins=$(find loon -name '*.lpx' 2>/dev/null | wc -l)
-          modules=$(find surge -name '*.sgmodule' 2>/dev/null | wc -l)
           {
             echo ""
-            echo "### 📊 仓库现状"
+            echo "### 🩺 本次运行"
             echo ""
-            echo "| 项目 | 数量 |"
+            echo "| 尝试 | 结果 |"
             echo "| --- | --- |"
-            echo "| 🧩 Loon 插件 | $plugins |"
-            echo "| 📦 Surge 模块 | $modules |"
+            echo "| 第 1 台 runner | ${first} |"
+            echo "| 第 2 台 runner | ${second} |"
+            echo "| 第 3 台 runner | ${third} |"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: 🚀 提交并推送
-        if: inputs.mode != '只做连通性自检'
-        run: |
-          DATE=$(TZ=Asia/Shanghai date +%F)
-          STATS=$(grep -o '统计：.*' sync.log | tail -1 || true)
-
-          git add -A
-          if git diff --cached --quiet; then
-            echo "✅ 上游没有变化，本轮不提交" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$first" = "success" ] || [ "$second" = "success" ] || [ "$third" = "success" ]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "✅ 本轮同步成功。" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "🔄 自动更新 $DATE" -m "${STATS:-本轮有插件变更}"
-          git push
-
-          echo "🚀 已推送：\`🔄 自动更新 $DATE\`" >> "$GITHUB_STEP_SUMMARY"
-
-      - name: 🩺 汇报失败
-        if: inputs.mode != '只做连通性自检' && steps.sync.outcome == 'failure'
-        run: |
-          echo "同步步骤失败，详见上方日志与本次运行的 Summary。" >&2
+          {
+            echo ""
+            echo "❌ 三台 runner 都没拿到数据。"
+            echo ""
+            echo "最常见的原因是这个时段的出口 IP 都被上游拒了（403），不是仓库配置问题。"
+            echo "可以过几小时手动重跑一次；想彻底不依赖运气，就在仓库 Variables 里"
+            echo "加一个 `KLEE_MIRROR` 指向自己的镜像。"
+          } >> "$GITHUB_STEP_SUMMARY"
           exit 1

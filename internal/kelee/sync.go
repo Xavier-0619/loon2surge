@@ -40,6 +40,7 @@ const (
 	// 只有 Loon 的 UA 拿得到文件（实测同一 IP 下 403 与 200 只差这一个头）。
 	// 所以这行不是"随便伪装一下"，改成浏览器 UA 会整个同步挂掉。
 	UserAgent = "Loon/860 CFNetwork/3826.500.111.2.2 Darwin/24.4.0"
+	// 请求上只带 UA / Accept / Accept-Language 三个头，细节见 http.go 顶部注释。
 
 	// StatusOK 表示插件与模块都已就绪。
 	StatusOK = "ok"
@@ -429,6 +430,7 @@ type config struct {
 	maxFailures int
 	dryRun      bool
 	probe       bool
+	stale       bool // 本轮用的是仓库里的旧列表，不是刚拉到的
 }
 
 // Main 是 `loon2surge sync` 的入口。
@@ -465,25 +467,35 @@ func runSync(cfg config) int {
 	}
 
 	list, err := readList(sources, cfg)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "✗ 拿不到插件列表：%v\n", err)
-		writeSummary([]string{"## 同步失败", "", fmt.Sprintf("读不到 `%s`：`%v`", cfg.indexURL, err)})
-		return 3
+	previous := vault.ReadState()
+
+	var remotes []Remote
+	if err == nil {
+		remotes, err = loadRemotes(list)
 	}
 
-	remotes, err := loadRemotes(list)
+	// 在线列表拿不到时，退回仓库里上一轮的 index.json：可能旧一天，
+	// 但插件文件还能对齐，总比整轮什么都不做强。这时一律不删文件。
+	stale := false
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "✗ 列表解析失败：%v\n", err)
-		return 3
+		if len(previous) == 0 {
+			fmt.Fprintf(os.Stderr, "✗ 拿不到插件列表：%v\n", err)
+			writeSummary([]string{"## 同步失败", "", fmt.Sprintf("读不到 `%s`：`%v`", cfg.indexURL, err)})
+			return 3
+		}
+		remotes = remotesFromState(previous)
+		stale = true
+		fmt.Fprintf(os.Stderr, "! 拿不到在线列表（%v），改用仓库里上一轮的 index.json，本轮不删插件\n", err)
 	}
+
 	remotes = filterRemotes(remotes, cfg)
 	if len(remotes) == 0 {
 		fmt.Fprintln(os.Stderr, "✗ 列表为空，什么都不做")
 		return 3
 	}
 
-	previous := vault.ReadState()
-	partial := cfg.only != "" || cfg.limit > 0
+	partial := cfg.only != "" || cfg.limit > 0 || stale
+	cfg.stale = stale
 	syncer := newSyncer(vault, sources, cfg.jobs, cfg.delay)
 	entries := syncer.run(remotes, previous, !cfg.dryRun, !partial)
 
@@ -529,6 +541,22 @@ func readList(sources *Sources, cfg config) ([]byte, error) {
 		return os.ReadFile(cfg.indexFile)
 	}
 	return sources.Fetch(cfg.indexURL)
+}
+
+// remotesFromState 把上一轮的 index.json 还原成待办列表，供索引拉取失败时兜底。
+func remotesFromState(state map[string]Entry) []Remote {
+	remotes := make([]Remote, 0, len(state))
+	for _, entry := range state {
+		if entry.URL == "" || entry.Name == "" {
+			continue
+		}
+		remotes = append(remotes, Remote{
+			Stem: entry.Stem, Name: entry.Name, Desc: entry.Desc,
+			Tags: entry.Tags, Authors: entry.Authors, Date: entry.Date, URL: entry.URL,
+		})
+	}
+	sort.Slice(remotes, func(i, j int) bool { return remotes[i].Stem < remotes[j].Stem })
+	return remotes
 }
 
 func filterRemotes(remotes []Remote, cfg config) []Remote {
@@ -579,8 +607,9 @@ func probe(sources *Sources, cfg config) int {
 	}
 
 	if !ok {
-		fmt.Fprintln(os.Stderr, "\n若报 403：kelee.one 会用 Cloudflare 拦机房 IP。"+
-			"请改用自建镜像（--mirror 或仓库变量 KLEE_MIRROR），或在能直连的机器上本地跑。")
+		fmt.Fprintln(os.Stderr, "\n若报 403：上游挂在 Cloudflare 后面，会按出口 IP 拒掉一部分机房地址。"+
+			"\n请求头已经按上游同款实现对齐过，剩下的就是这台机器的 IP 抽签。"+
+			"\nworkflow 里失败会自动换一台 runner 重试；想彻底不靠运气，就用自建镜像（--mirror 或仓库变量 KLEE_MIRROR）。")
 	}
 	verdict := "通过"
 	if !ok {
@@ -638,6 +667,9 @@ func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
 		fmt.Sprintf("- 插件总数：**%d**", len(entries)),
 		fmt.Sprintf("- 新增 %d · 更新 %d · 删除 %d · 转换失败 %d", len(added), len(updated), len(removed), len(bad)),
 		"- 同步时间：" + syncedAt,
+	}
+	if cfg.stale {
+		summary = append(summary, "", "> ℹ️ 本轮没拉到在线列表，用的是仓库里上一轮的 `index.json`，因此没有删除任何插件。")
 	}
 	if blocked {
 		summary = append(summary, "", "> ⚠️ 上游拒绝访问（403），本轮没有下到新内容。见 README「被 Cloudflare 拦截怎么办」。")

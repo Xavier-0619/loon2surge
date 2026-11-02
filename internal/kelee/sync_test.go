@@ -319,6 +319,56 @@ func TestSyncKeepsFilesWhenBlocked(t *testing.T) {
 	}
 }
 
+// TestRequestShapeMatchesLoonClient 锁住另一类事故的经验：
+// 只有"UA = Loon + 只发三个头 + 只走 HTTP/1.1 + 不要 gzip"这一套能在 runner 上拿到 200。
+// 任何一项被"优化"回去（换浏览器 UA、加 Referer、默认走 h2、自动加 Accept-Encoding），
+// 表现都是整轮 403，而不是某一条失败，所以值得钉死。
+func TestRequestShapeMatchesLoonClient(t *testing.T) {
+	var seen http.Header
+	var proto string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		seen = r.Header.Clone()
+		proto = r.Proto
+		_, _ = w.Write([]byte("ok"))
+	}))
+	defer server.Close()
+
+	sources := NewSources("")
+	if _, err := sources.Fetch(server.URL + "/Tool/Loon/Lpx/a.lpx"); err != nil {
+		t.Fatalf("请求失败：%v", err)
+	}
+
+	if got := seen.Get("User-Agent"); got != UserAgent {
+		t.Errorf("UA 被改了：%q", got)
+	}
+	if got := seen.Get("Referer"); got != "" {
+		t.Errorf("不该带 Referer：%q", got)
+	}
+	if got := seen.Get("Accept-Encoding"); got != "" {
+		t.Errorf("不该发 Accept-Encoding：%q", got)
+	}
+	if got := seen.Get("Accept-Language"); got != AcceptLanguage {
+		t.Errorf("Accept-Language 是 %q，想要 %q", got, AcceptLanguage)
+	}
+	if proto != "HTTP/1.1" {
+		t.Errorf("应只走 HTTP/1.1，实际 %s", proto)
+	}
+
+	transport, ok := sources.client.Transport.(*http.Transport)
+	if !ok {
+		t.Fatal("传输层被换掉了，请求特征不再可控")
+	}
+	if transport.ForceAttemptHTTP2 {
+		t.Errorf("ForceAttemptHTTP2 被打开了，Go 的 h2 指纹更容易被判成爬虫")
+	}
+	if transport.TLSNextProto == nil {
+		t.Errorf("TLSNextProto 应是空表（明确关掉 ALPN 协商 h2），nil 会回到默认行为")
+	}
+	if !transport.DisableCompression {
+		t.Errorf("自动 gzip 没关掉，会多出一个 Accept-Encoding 头")
+	}
+}
+
 // TestCandidatesKeepOriginalHost 锁住一次真实事故：
 // 早期实现会把索引地址 hub.kelee.one/list.json 改写成 kelee.one/list.json，
 // 那是另一个服务，只会返回 404，于是整轮同步在第一步就失败。

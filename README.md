@@ -90,8 +90,19 @@ Git 里不会出现"只改时间戳"的空提交。
 
 ### 被 Cloudflare 拦住怎么办
 
-`kelee.one` 挂着 Cloudflare 的机器人防护，**机房 IP 是直接 403 拒绝**（不是人机验证）。
-GitHub 托管 runner 正是机房 IP，所以第一次跑很可能就撞上。先自检：
+`kelee.one` 挂着 Cloudflare 的机器人防护，放行与否同时看**出口 IP** 和**客户端特征**，
+被拒时是直接 403（不是人机验证）。请求这一侧已经照上游同款实现的成功配置对齐：
+
+| 项 | 取值 | 为什么 |
+| --- | --- | --- |
+| UA | `Loon/860 … Darwin/24.4.0` | 站点按 UA 放行，浏览器 UA 反而 403 |
+| 协议 | 只走 HTTP/1.1 | Go 默认的 h2 指纹更容易被判成爬虫 |
+| 请求头 | 只有 UA / Accept / Accept-Language | 不发 Referer，也不发 Accept-Encoding |
+| 并发 | 每个域名最多 4 条连接 | 不要在 Cloudflare 面前形成突发 |
+| 重试 | 网络类错误退避重试 3 次，403 立刻停 | 403 是整台机器的判决，原地重试只是浪费 |
+
+剩下的就是**出口 IP 抽签**：同一份代码，有的 runner 一次过，有的全 403。所以 workflow
+失败会自动换一台 runner 重来，最多三台。先自检：
 
 ```bash
 ./loon2surge sync --probe
@@ -105,8 +116,9 @@ GitHub 托管 runner 正是机房 IP，所以第一次跑很可能就撞上。�
 | 自托管 runner | 家里那台机器装 runner，出口是家宽，直接能下 |
 | 本地跑 | 同一份命令：`./loon2surge sync` 然后 `git push`；`--dry-run` 先看差异 |
 
-对 403 有记忆：一轮里撞过墙的域名不反复重试，**不删已有文件、不写空索引**，
-在 Job Summary 写警告并以退出码 3 结束。
+万一连 `list.json` 都被拒：程序会退回仓库里上一轮的 `index.json`，继续对齐已有插件，
+**不删任何文件、不写空索引**，并在 Job Summary 里注明本轮用的是旧列表；连旧索引都没有
+才以退出码 3 结束。对 403 也有记忆——一轮里撞过墙的域名不反复重试。
 
 ## 转换规则
 
@@ -175,7 +187,7 @@ internal/lpx/
   convert.go        [Argument]/[General]/[IP Rewrite]/[MITM] + 组装输出
   convert_test.go   23 个用例 + 整篇金标准比对 + 基准测试
 internal/kelee/
-  http.go           多来源抓取、403 记忆、退避重试
+  http.go           朴素客户端（HTTP/1.1 + 三个头）、多来源、403 记忆、退避重试
   store.go          索引读写、INDEX.md、内容不变就不写盘
   sync.go           哈希比对、并发下载、删除保护、报告
 internal/cliargs/   标志与位置参数分离

@@ -1,0 +1,90 @@
+name: 同步插件并转换
+description: 拉取可莉插件中心的 Loon 插件、转换成 Surge 模块，有变更就提交推送
+
+# 抽成 composite action 的原因：抓取能不能成，取于这台 runner 的出口 IP 有没有被
+# Cloudflare 拒。失败时整份流程要换一台 runner 再跑一遍，步骤不能写两遍。
+
+inputs:
+  mirror:
+    description: 可选镜像前缀，官方站被拒时按同路径回退
+    required: false
+    default: ""
+  limit:
+    description: 只处理前 N 个插件，0 表示全部（调试用）
+    required: false
+    default: "0"
+  probe:
+    description: 只做上游连通性自检，不落盘
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - name: 🐹 准备 Go 环境
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
+        cache: false
+
+    - name: 🔨 编译转换器
+      shell: bash
+      run: go build -o bin/loon2surge .
+
+    - name: 📡 上游连通性自检
+      if: inputs.probe == 'true'
+      shell: bash
+      env:
+        KLEE_MIRROR: ${{ inputs.mirror }}
+      run: ./bin/loon2surge sync --probe
+
+    - name: 🔄 拉取插件并转换
+      if: inputs.probe != 'true'
+      shell: bash
+      env:
+        KLEE_MIRROR: ${{ inputs.mirror }}
+        LIMIT: ${{ inputs.limit }}
+      run: |
+        set -o pipefail
+        ARGS="--jobs 8 --delay 0.2"
+        case "$LIMIT" in
+          ""|0) ;;
+          *) ARGS="$ARGS --limit $LIMIT" ;;
+        esac
+        ./bin/loon2surge sync $ARGS | tee sync.log
+
+    - name: 📊 汇总仓库现状
+      if: inputs.probe != 'true'
+      shell: bash
+      run: |
+        plugins=$(find loon -name '*.lpx' 2>/dev/null | wc -l)
+        modules=$(find surge -name '*.sgmodule' 2>/dev/null | wc -l)
+        {
+          echo ""
+          echo "### 📊 仓库现状"
+          echo ""
+          echo "| 项目 | 数量 |"
+          echo "| --- | --- |"
+          echo "| 🧩 Loon 插件 | $plugins |"
+          echo "| 📦 Surge 模块 | $modules |"
+        } >> "$GITHUB_STEP_SUMMARY"
+
+    - name: 🚀 提交并推送
+      if: inputs.probe != 'true'
+      shell: bash
+      run: |
+        DATE=$(TZ=Asia/Shanghai date +%F)
+        STATS=$(grep -o '统计：.*' sync.log | tail -1 || true)
+
+        git add -A
+        if git diff --cached --quiet; then
+          echo "✅ 上游没有变化，本轮不提交" >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+        fi
+
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git commit -m "🔄 自动更新 $DATE" -m "${STATS:-本轮有插件变更}"
+        git push
+
+        echo "🚀 已推送：\`🔄 自动更新 $DATE\`" >> "$GITHUB_STEP_SUMMARY"
