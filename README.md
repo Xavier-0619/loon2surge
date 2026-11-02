@@ -5,6 +5,21 @@
 
 设计原则只有一条：**宁可少转一行并告诉你，也不生成能导入但行为不对的模块。**
 
+## 模块网站
+
+打开 [**Loon2Surge 模块库**](https://xavier-0619.github.io/loon2surge/)，即可搜索、
+按分类浏览并一键导入 Surge；也可以查看每个模块的转换诊断、复制模块链接。
+网站是纯静态页面，无需后端，模块文件直接从本仓库的 Raw 地址加载。
+
+首次部署时，在仓库 **Settings → Pages → Build and deployment** 中将 Source 选为
+**GitHub Actions**。推送到 `main` 后，`🌐 发布模块网站` 工作流会自动发布 `docs/`，
+并在每次 `index.json` 更新后同步网站数据。本地预览：
+
+```bash
+python -m http.server 8080 --directory docs
+# 打开 http://127.0.0.1:8080
+```
+
 ## 目录速览
 
 ```
@@ -16,7 +31,8 @@ loon/  surge/          Loon 原始插件 / 转换后的 Surge 模块（按插件
 index.json             每个插件的哈希、状态与诊断（自动生成）
 INDEX.md               给人看的插件索引（自动生成）
 tools/                 上游监听脚本（只在 CI 里跑）
-.github/workflows/     每日同步 / PR 校验 / 上游监听
+docs/                  GitHub Pages 模块网站（静态 HTML / CSS / JS）
+.github/workflows/     每日同步 / PR 校验 / 上游监听 / Pages 发布
 AGENTS.md              开发约定与踩过的坑（改代码前先看）
 RULES.md               转换规则与"为什么这一行不转"
 ```

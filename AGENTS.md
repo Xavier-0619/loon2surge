@@ -15,8 +15,9 @@
 | `internal/lpx/` | 转换引擎：`convert.go` 调度，`rule.go`/`rewrite.go`/`script.go` 各管一段，`syntax.go` 是共用的顶层切分与引号处理，`validate.go` 是产物自检 |
 | `internal/kelee/` | 同步流水线：抓取（`http.go`/`transport.go`）、落盘（`store.go`）、提交信息（`commit.go`）、文件命名（`name.go`）、远程脚本审计（`audit.go`） |
 | `internal/cliargs/` | 让 flag 和位置参数可以混着写 |
+| `docs/` | GitHub Pages 模块网站；`data/index.json` 是发布用索引副本，由 `pages.yml` 在部署时更新 |
 | `loon/`、`surge/`、`index.json`、`INDEX.md` | 生成物，**不要手改** |
-| `.github/workflows/` | 每日同步、PR 校验、上游监听、上游 PR 审核 |
+| `.github/workflows/` | 每日同步、PR 校验、上游监听、上游 PR 审核、Pages 发布 |
 | `tools/` | 上游监听用的脚本（Python，只在 CI 里跑） |
 
 ## 五条铁律
