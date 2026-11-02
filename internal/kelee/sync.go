@@ -34,9 +34,12 @@ const (
 	IndexURL = "https://hub.kelee.one/list.json"
 	// Canonical 是插件文件所在的官方站点。
 	Canonical = "https://kelee.one"
-	// UserAgent 伪装成手机 Safari，站点对默认 UA 更不友好。
-	UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) " +
-		"AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1"
+	// UserAgent 必须是 Loon 客户端自己的 UA。
+	//
+	// kelee.one 按 UA 放行：手机 Safari、curl、Go 默认 UA 一律 403，
+	// 只有 Loon 的 UA 拿得到文件（实测同一 IP 下 403 与 200 只差这一个头）。
+	// 所以这行不是"随便伪装一下"，改成浏览器 UA 会整个同步挂掉。
+	UserAgent = "Loon/860 CFNetwork/3826.500.111.2.2 Darwin/24.4.0"
 
 	// StatusOK 表示插件与模块都已就绪。
 	StatusOK = "ok"

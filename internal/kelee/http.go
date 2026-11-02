@@ -24,45 +24,66 @@ func (e *FetchError) Error() string { return e.Reason }
 
 // Sources 按顺序尝试多个站点，并记住哪个已经拒绝过，免得一轮里反复撞墙。
 type Sources struct {
-	hosts  []string
-	client *http.Client
-	mu     sync.Mutex
-	dead   map[string]string
+	hosts   []string
+	mirrors []string
+	client  *http.Client
+	mu      sync.Mutex
+	dead    map[string]string
 }
 
 // NewSources 组装来源列表：官方站 + 可选镜像。
 func NewSources(mirror string) *Sources {
-	hosts := []string{Canonical}
-	if strings.TrimSpace(mirror) != "" {
-		hosts = append(hosts, strings.TrimRight(strings.TrimSpace(mirror), "/"))
+	var mirrors []string
+	if trimmed := strings.TrimRight(strings.TrimSpace(mirror), "/"); trimmed != "" {
+		mirrors = append(mirrors, trimmed)
 	}
+	hosts := append([]string{Canonical}, mirrors...)
 	return &Sources{
-		hosts:  hosts,
-		client: &http.Client{Timeout: 40 * time.Second},
-		dead:   map[string]string{},
+		hosts:   hosts,
+		mirrors: mirrors,
+		client:  &http.Client{Timeout: 40 * time.Second},
+		dead:    map[string]string{},
 	}
 }
 
+// hostKey 把地址归一成小写主机名，作为"这轮撞过墙"的记录键。
+func hostKey(raw string) string {
+	if parsed, err := url.Parse(raw); err == nil && parsed.Host != "" {
+		return strings.ToLower(parsed.Hostname())
+	}
+	return strings.ToLower(raw)
+}
+
+// alive 表示还有没被拒绝的来源。索引在外链域名上、文件在官方站上，
+// 所以要按真实主机名逐一对账，不能拿已拒绝的数量去比配置的数量。
 func (s *Sources) alive() bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return len(s.dead) < len(s.hosts)
+	for _, host := range s.hosts {
+		if _, dead := s.dead[hostKey(host)]; !dead {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *Sources) isDead(host string) bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	_, dead := s.dead[host]
+	_, dead := s.dead[hostKey(host)]
 	return dead
 }
 
 func (s *Sources) kill(host, reason string) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.dead[host] = reason
+	s.dead[hostKey(host)] = reason
 }
 
-// candidates 把 kelee.one 的地址改写成各来源的同路径地址；外链（如 GitHub）不动。
+// candidates 返回尝试顺序：原始地址优先，其次才是各镜像的同路径地址。
+//
+// 这里刻意不把原始域名改写成 Canonical：索引在 hub.kelee.one、文件在 kelee.one，
+// 是两个不同的服务，把 hub 的路径搬到 kelee.one 上去只会得到 404。
 func (s *Sources) candidates(raw string) []string {
 	parsed, err := url.Parse(raw)
 	if err != nil || parsed.Host == "" || !strings.HasSuffix(parsed.Hostname(), "kelee.one") {
@@ -72,9 +93,10 @@ func (s *Sources) candidates(raw string) []string {
 	if parsed.RawQuery != "" {
 		tail += "?" + parsed.RawQuery
 	}
-	out := make([]string, 0, len(s.hosts))
-	for _, host := range s.hosts {
-		out = append(out, host+tail)
+	out := make([]string, 1, 1+len(s.mirrors))
+	out[0] = raw
+	for _, mirror := range s.mirrors {
+		out = append(out, mirror+tail)
 	}
 	return out
 }

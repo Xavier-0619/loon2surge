@@ -318,3 +318,29 @@ func TestSyncKeepsFilesWhenBlocked(t *testing.T) {
 		t.Errorf("被拦截时不该动已有模块")
 	}
 }
+
+// TestCandidatesKeepOriginalHost 锁住一次真实事故：
+// 早期实现会把索引地址 hub.kelee.one/list.json 改写成 kelee.one/list.json，
+// 那是另一个服务，只会返回 404，于是整轮同步在第一步就失败。
+func TestCandidatesKeepOriginalHost(t *testing.T) {
+	sources := NewSources("")
+	got := sources.candidates(IndexURL)
+	if len(got) != 1 || got[0] != IndexURL {
+		t.Fatalf("索引地址被改写成 %v，hub 的路径不能搬到 kelee.one 上", got)
+	}
+
+	withMirror := NewSources("https://mirror.example")
+	got = withMirror.candidates("https://kelee.one/Tool/Loon/Lpx/a.lpx")
+	want := []string{
+		"https://kelee.one/Tool/Loon/Lpx/a.lpx",
+		"https://mirror.example/Tool/Loon/Lpx/a.lpx",
+	}
+	if len(got) != len(want) {
+		t.Fatalf("候选数量不对：%v", got)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("第 %d 个候选是 %q，想要 %q", i, got[i], want[i])
+		}
+	}
+}
