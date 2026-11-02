@@ -29,6 +29,11 @@ type Entry struct {
 	ModuleSHA string   `json:"module_sha"`
 	Status    string   `json:"status"`
 	Notes     []string `json:"notes"`
+	// MergedInto 指向并进的那个模块，status 为 merged 时才有值。
+	MergedInto string `json:"merged_into,omitempty"`
+	// Merged 是这个模块融合了哪些插件（只有主源才有），用来判断要不要重转：
+	// 插件字节没变但组里多了一个同名插件，模块必须重做。
+	Merged []string `json:"merged,omitempty"`
 	// Converter 是生成这个模块时的转换器版本。插件没变但这个值变了，
 	// 说明规则升级过，必须重新生成，不能继续用旧产物。
 	Converter string `json:"converter,omitempty"`
@@ -114,9 +119,14 @@ func renderTable(entries []Entry, syncedAt string) string {
 		switch entry.Status {
 		case StatusOK:
 			module = fmt.Sprintf("[module](%s)", linkPath("surge", entry.Stem+".sgmodule"))
+			if len(entry.Merged) > 0 {
+				module += fmt.Sprintf("（融合 %d 份同名插件）", len(entry.Merged)+1)
+			}
 		case StatusExcluded:
 			// 不是故障，只是 Surge 模块装不下这个插件的内容，别打警告符号。
 			module = "Loon 专用"
+		case StatusMerged:
+			module = "并入「" + entry.MergedInto + "」"
 		default:
 			mark = " ⚠️"
 		}

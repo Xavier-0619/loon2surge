@@ -14,8 +14,8 @@
 | --- | --- |
 | `cmd/loon2surge/` | 进程入口，只有一行 `os.Exit(cli.Run(...))` |
 | `internal/cli/` | 参数解析、退出码、各子命令的编排；`args.go` 让 flag 和位置参数可以混着写 |
-| `internal/lpx/` | 转换引擎：`convert.go` 调度，`rule.go`/`rewrite.go`/`script.go` 各管一段，`syntax.go`/`parse.go` 是共用的切分与解析，`validate.go` 是产物自检 |
-| `internal/upstream/` | 同步流水线：抓取（`fetch.go`/`transport.go`）、落盘（`state.go`）、入口（`run.go`）、摘要（`summary.go`）、提交信息（`commit.go`）、文件命名（`names.go`）、远程脚本审计（`audit.go`） |
+| `internal/lpx/` | 转换引擎：`convert.go` 调度，`rule.go`/`rewrite.go`/`script.go` 各管一段，`syntax.go`/`parse.go` 是共用的切分与解析，`merge.go` 把同名插件合成一版，`validate.go` 是产物自检 |
+| `internal/upstream/` | 同步流水线：抓取（`fetch.go`/`transport.go`）、定名与合流（`sync.go`）、落盘（`state.go`）、入口（`run.go`）、摘要（`summary.go`）、提交信息（`commit.go`）、文件命名（`names.go`）、远程脚本审计（`audit.go`） |
 | `internal/external/` | 并入第三方仓库（ios151/Rewrite）现成的 Surge 模块：抓取、按 Surge 语法整理（`tidy.go`）、按 `#!name` 去重（`names.go`）、写清单（`manifest.go`） |
 | `internal/fsutil/` | 统一落盘：内容没变就不写，写入走临时文件 + rename |
 | `docs/` | GitHub Pages 模块网站；`data/index.json` 是发布用索引副本，由 `pages.yml` 在部署时更新 |
@@ -119,6 +119,12 @@ go run ./cmd/loon2surge convert internal/lpx/testdata/zhihu.lpx --category 可�
 
 ## 踩过的坑
 
+- **同名插件要合成一个模块，不能按文件名分开写。** 上游会把同一个 App 的规则拆成几份
+  但都写同一个 `#!name`（可莉的「挖财记账去广告」就是两份）。各写一份会互相覆盖，
+  加 `-2` 分开写则要用户装两次、还各留一份重复规则。`convert` 和 `sync` 都必须走
+  `lpx.ConvertSources` 这条路径，否则两条命令对同一个目录会产出不同的模块。
+- **改了转换逻辑记得递增 `const Version`。** 同步层拿它当缓存键，不递增的话老模块
+  不会重转；机器检查也会拦下来。
 - **Body Rewrite 不是 `http-response-replace-regex`。** Surge 的写法是
   `http-response <url> <正则> <替换>`。写错能导入、但整行不生效，而且很难看出来。
 - **Surge 的 Body Rewrite 默认按行锚定 `^`/`$`。** Loon 不是。所以 flags 必须写全

@@ -19,11 +19,12 @@ import (
 //
 // 新增一种 section：写一个方法，在 run() 里排一次队即可。
 
-// Version 是转换行为的版本号。
+// Version 是转换行为的版本号，和 cli.Version（发布版本号）是两件事。
 //
 // 只改输出结果时才递增：插件本身没变、但转换规则变了，同步流程必须重转一遍。
 // 同步层把它记进 index.json，版本不同就丢掉缓存重新生成。
-const Version = "2.1.1"
+// 2.2.0：同名插件由「各写一份 / 加 -2 后缀」改为融合成一个模块。
+const Version = "2.2.0"
 
 // Surge 模块头部认识的 #! 字段，其余字段丢弃并写进报告。
 var surgeMeta = map[string]bool{
@@ -52,11 +53,7 @@ type Converter struct {
 
 // ConvertText 把插件正文转成模块。
 func ConvertText(source string, options Options) Result {
-	plugin := parsePlugin(strings.TrimPrefix(source, "\ufeff"))
-	ctx := newCtx(options)
-	ctx.platform = plugin.Meta["system"]
-	converter := &Converter{plugin: plugin, ctx: ctx}
-	return converter.run()
+	return ConvertSources([]Source{{Text: source}}, options)
 }
 
 // ConvertFile 读取文件并转换。
@@ -69,6 +66,7 @@ func ConvertFile(path string, options Options) (Result, error) {
 }
 
 func (c *Converter) run() Result {
+	c.merged()
 	c.arguments()
 	c.general()
 	c.ipRewrite()
@@ -93,6 +91,8 @@ func (c *Converter) run() Result {
 			c.ctx.Fail("product-invalid", "产物自检未通过："+problem.String(), 0)
 		}
 	}
+	// 诊断全部产生之后再定位来源，晚一步就会漏掉 render 补的那些。
+	c.locate()
 	name := c.plugin.Meta["name"]
 	if name == "" {
 		name = "Untitled"
@@ -104,6 +104,7 @@ func (c *Converter) run() Result {
 		Sections: sections,
 		Order:    order,
 		Skipped:  len(c.skipped),
+		Sources:  c.plugin.sources,
 	}
 }
 
@@ -252,6 +253,13 @@ func (c *Converter) rule() {
 }
 
 func (c *Converter) rewrite() {
+	// 融合多个插件时才做产物去重：同一个接口常被两份各写一遍，动作也一模一样，
+	// 落成两行等价的 Map Local 只是噪音。单源不动——那是上游原文自己重复，
+	// 逐行对应才对得上，顺手删掉会让一批无关模块凭空出现在 diff 里。
+	var seen map[string]bool
+	if len(c.plugin.sources) > 1 {
+		seen = map[string]bool{}
+	}
 	for _, line := range c.plugin.Lines("Rewrite") {
 		text := stripComment(line.Text)
 		if text == "" {
@@ -263,6 +271,13 @@ func (c *Converter) rewrite() {
 			continue
 		}
 		for _, emit := range produced {
+			if seen != nil {
+				if seen[emit.Text] {
+					c.ctx.Warn("rewrite-duplicate", "重复改写已合并："+shorten(emit.Text), line.No)
+					continue
+				}
+				seen[emit.Text] = true
+			}
 			c.ctx.Emit(emit.Section, emit.Text)
 		}
 	}

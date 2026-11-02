@@ -1,5 +1,5 @@
 #!name=挖财记账去广告
-#!desc=移除弹窗广告、推广语横幅和右下角悬浮广告。
+#!desc=移除弹窗广告、推广语横幅和右下角悬浮广告；移除开屏广告、横幅广告，顶部推广、活动配置
 #!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
 #!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WaCaiJiZhang.png
 #!category=可莉插件
@@ -15,6 +15,9 @@
 (?i:^https:\/\/jz\.wacaijizhang\.com\/api\/banners\/ribbon\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/jz\.wacaijizhang\.com\/api\/banners\/list\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 (?i:^https:\/\/jz\.wacaijizhang\.com\/api\/resource\/universal\/fetch$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/jz\.wacaijizhang\.com\/sensor\/config\/iOS\.conf\?) data-type=text data="json" status-code=200
+(?i:^https:\/\/jz\.wacaijizhang\.com\/api\/banners\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/jz\.wacaijizhang\.com\/activity\/) data-type=text data="" status-code=404
 
 [MITM]
 hostname = %APPEND% jz.wacaijizhang.com

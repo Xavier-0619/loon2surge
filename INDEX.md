@@ -1,6 +1,6 @@
 # 插件索引
 
-共 275 个插件，同步于 2026-11-02 16:56:57 UTC。
+共 275 个插件，同步于 2026-11-02 19:46:51 UTC。
 
 原始 Loon 插件在 [`loon/`](loon)，转换后的 Surge 模块在 [`surge/`](surge)。
 本文件由 `loon2surge sync` 生成，请勿手改。
@@ -157,8 +157,8 @@
 | 慧生活798去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`慧生活798去广告`](loon/%E6%85%A7%E7%94%9F%E6%B4%BB798%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E6%85%A7%E7%94%9F%E6%B4%BB798%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 成分喵去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`成分喵去广告`](loon/%E6%88%90%E5%88%86%E5%96%B5%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E6%88%90%E5%88%86%E5%96%B5%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 拼多多去广告 | 去广告 | ZenmoFeiShi、可莉🅥 | 2026-10-02 13:57:49 | [`拼多多去广告`](loon/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E6%8B%BC%E5%A4%9A%E5%A4%9A%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
-| 挖财记账去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`挖财记账去广告`](loon/%E6%8C%96%E8%B4%A2%E8%AE%B0%E8%B4%A6%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E6%8C%96%E8%B4%A2%E8%AE%B0%E8%B4%A6%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
-| 挖财记账去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`挖财记账去广告-2`](loon/%E6%8C%96%E8%B4%A2%E8%AE%B0%E8%B4%A6%E5%8E%BB%E5%B9%BF%E5%91%8A-2.lpx) · [module](surge/%E6%8C%96%E8%B4%A2%E8%AE%B0%E8%B4%A6%E5%8E%BB%E5%B9%BF%E5%91%8A-2.sgmodule) |
+| 挖财记账去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`挖财记账去广告`](loon/%E6%8C%96%E8%B4%A2%E8%AE%B0%E8%B4%A6%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E6%8C%96%E8%B4%A2%E8%AE%B0%E8%B4%A6%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule)（融合 2 份同名插件） |
+| 挖财记账去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`挖财记账去广告-2`](loon/%E6%8C%96%E8%B4%A2%E8%AE%B0%E8%B4%A6%E5%8E%BB%E5%B9%BF%E5%91%8A-2.lpx) · 并入「挖财记账去广告」 |
 | 掌上无畏契约去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`掌上无畏契约去广告`](loon/%E6%8E%8C%E4%B8%8A%E6%97%A0%E7%95%8F%E5%A5%91%E7%BA%A6%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E6%8E%8C%E4%B8%8A%E6%97%A0%E7%95%8F%E5%A5%91%E7%BA%A6%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 掌上英雄联盟去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`掌上英雄联盟去广告`](loon/%E6%8E%8C%E4%B8%8A%E8%8B%B1%E9%9B%84%E8%81%94%E7%9B%9F%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E6%8E%8C%E4%B8%8A%E8%8B%B1%E9%9B%84%E8%81%94%E7%9B%9F%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 掌阅去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`掌阅去广告`](loon/%E6%8E%8C%E9%98%85%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E6%8E%8C%E9%98%85%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |

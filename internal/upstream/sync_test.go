@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -403,18 +404,32 @@ func TestSyncFollowsPluginName(t *testing.T) {
 	}
 }
 
-func TestSyncDedupesIdenticalNames(t *testing.T) {
-	// 可莉那边真有两个"挖财记账去广告"，不能都写成同一个文件
+func TestSyncMergesIdenticalNames(t *testing.T) {
+	// 可莉那边真有两个"挖财记账去广告"，各补一半接口。它们该合成一个模块：
+	// 各写一个文件要装两次，写成同一个文件则后转的覆盖前一份。
+	first := namedPlugin("挖财记账去广告")
+	second := strings.Replace(namedPlugin("挖财记账去广告"), `a\.com\/ad`, `b\.com\/ad`, 1)
 	site := newFakeSite(t, map[string]string{
-		"/Tool/Loon/Lpx/WaCaiJiZhang_remove_ads.lpx": namedPlugin("挖财记账去广告"),
-		"/Tool/Loon/Lpx/Wacai_remove_ads.lpx":        namedPlugin("挖财记账去广告"),
+		"/Tool/Loon/Lpx/WaCaiJiZhang_remove_ads.lpx": first,
+		"/Tool/Loon/Lpx/Wacai_remove_ads.lpx":        second,
 	})
 	vault := NewVault(t.TempDir())
+
+	// 上一轮按旧行为留下的另一个模块文件，融合后应该被收掉
+	stale := vault.modulePath("挖财记账去广告-2")
+	if err := os.MkdirAll(filepath.Dir(stale), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(stale, []byte("#!name=旧版\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	entries := newSyncer(vault, site.sources(), 2, 0).run(site.remotes(t), map[string]Entry{}, true, true)
 	if len(entries) != 2 {
 		t.Fatalf("应有两个条目：%+v", entries)
 	}
+
+	// 落盘文件仍然要分开：loon/ 是上游原文，文件名不能撞
 	if entries[0].Stem == entries[1].Stem {
 		t.Fatalf("同名插件落进了同一个文件：%s", entries[0].Stem)
 	}
@@ -422,13 +437,47 @@ func TestSyncDedupesIdenticalNames(t *testing.T) {
 		t.Errorf("重名应加后缀：%s", entries[1].Stem)
 	}
 
-	// 再来一轮必须得到同样的名字，否则每轮都会改名
+	// 模块只产出一个，且两个源的规则都在里面
+	if entries[0].Status != StatusOK {
+		t.Fatalf("主源应产出模块：%+v", entries[0])
+	}
+	if !slices.Equal(entries[0].Merged, []string{"挖财记账去广告-2"}) {
+		t.Errorf("主源应记下融合了谁：%v", entries[0].Merged)
+	}
+	if entries[1].Status != StatusMerged || entries[1].MergedInto != "挖财记账去广告" {
+		t.Errorf("另一个应为并入状态：%+v", entries[1])
+	}
+
+	modules, err := filepath.Glob(filepath.Join(vault.root, "surge", "挖财记账去广告*.sgmodule"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(modules) != 1 {
+		t.Fatalf("应只剩一个模块文件：%v", modules)
+	}
+	text := readFile(t, modules[0])
+	for _, host := range []string{`a\.com\/ad`, `b\.com\/ad`} {
+		if !strings.Contains(text, host) {
+			t.Errorf("模块里缺 %s：\n%s", host, text)
+		}
+	}
+	if fsutil.Exists(stale) {
+		t.Error("上一轮遗留的重复模块应被收掉")
+	}
+
+	// 再来一轮：名字和状态都不能变，内容没变也不该重转
 	previous := stateOf(entries)
 	again := newSyncer(vault, site.sources(), 2, 0).run(site.remotes(t), previous, true, true)
 	for i := range entries {
 		if again[i].Stem != entries[i].Stem {
 			t.Fatalf("同一份列表两轮名字不一致：%s / %s", entries[i].Stem, again[i].Stem)
 		}
+		if again[i].Status != entries[i].Status {
+			t.Fatalf("同一份列表两轮状态不一致：%s / %s", entries[i].Status, again[i].Status)
+		}
+	}
+	if again[0].ModuleSHA != entries[0].ModuleSHA {
+		t.Error("插件没变，模块不该重转")
 	}
 }
 

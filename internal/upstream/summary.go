@@ -7,6 +7,7 @@ package upstream
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 )
 
@@ -16,11 +17,14 @@ func report(syncer *Syncer, entries []Entry, cfg Config, syncedAt string) {
 
 	// 排除（Surge 表达不了）与失败（真出问题）分开列，否则每轮都有一堆"失败"。
 	// 另外两类单独数：转换器替我们改写过的，和还没能自动处理、要人看一眼的。
-	var bad, loonOnly, reviewed, adapted []Entry
+	var bad, loonOnly, reviewed, adapted, merged []Entry
 	for _, entry := range entries {
 		switch {
 		case entry.Status == StatusExcluded:
 			loonOnly = append(loonOnly, entry)
+		case entry.Status == StatusMerged:
+			// 并进同名模块，不是故障，也不该算进"插件总数里有几个模块"。
+			merged = append(merged, entry)
 		case entry.Status != StatusOK && !syncer.failedKeys[entryKey(entry)]:
 			bad = append(bad, entry)
 		}
@@ -36,12 +40,12 @@ func report(syncer *Syncer, entries []Entry, cfg Config, syncedAt string) {
 	if cfg.DryRun {
 		prefix = "（dry-run，未写入）"
 	}
-	fmt.Printf("%s共 %d 个插件：新增 %d，更新 %d，重命名 %d，删除 %d，失败 %d，Loon 专用 %d，需人工确认 %d，已适配 %d\n",
+	fmt.Printf("%s共 %d 个插件：新增 %d，更新 %d，重命名 %d，删除 %d，失败 %d，Loon 专用 %d，并入 %d，需人工确认 %d，已适配 %d\n",
 		prefix, len(entries), len(result.added), len(result.updated), len(result.renamed),
-		len(result.removed), len(result.failed), len(loonOnly), len(reviewed), len(adapted))
-	fmt.Printf("统计：新增 %d · 更新 %d · 重命名 %d · 删除 %d · 失败 %d · Loon 专用 %d · 需人工确认 %d · 已适配 %d · 合计 %d\n",
+		len(result.removed), len(result.failed), len(loonOnly), len(merged), len(reviewed), len(adapted))
+	fmt.Printf("统计：新增 %d · 更新 %d · 重命名 %d · 删除 %d · 失败 %d · Loon 专用 %d · 并入 %d · 需人工确认 %d · 已适配 %d · 合计 %d\n",
 		len(result.added), len(result.updated), len(result.renamed), len(result.removed),
-		len(result.failed), len(loonOnly), len(reviewed), len(adapted), len(entries))
+		len(result.failed), len(loonOnly), len(merged), len(reviewed), len(adapted), len(entries))
 
 	for _, group := range []struct {
 		label string
@@ -69,6 +73,16 @@ func report(syncer *Syncer, entries []Entry, cfg Config, syncedAt string) {
 			len(result.added), len(result.updated), len(result.renamed), len(result.removed), len(bad), len(loonOnly)),
 		fmt.Sprintf("- 需人工确认 %d · 已自动适配 %d", len(reviewed), len(adapted)),
 		"- 同步时间：" + syncedAt,
+	}
+	if len(merged) > 0 {
+		// 插件总数里含这些，但它们不占文件，说明一下否则"总数 275 / 模块 274"对不上。
+		names := make([]string, 0, len(merged))
+		for _, entry := range headEntries(merged, 10) {
+			names = append(names, fmt.Sprintf("`%s`→`%s`", entry.Stem, entry.MergedInto))
+		}
+		summary = slices.Insert(summary, 3, fmt.Sprintf(
+			"- 已并入同名模块 **%d** 个（规则合进主模块，不单独产出文件）：%s",
+			len(merged), strings.Join(names, "、")))
 	}
 	if len(result.renamed) > 0 {
 		summary = append(summary, "", fmt.Sprintf("### 文件改名 %d（文件名跟随插件里的 #!name）", len(result.renamed)), "")

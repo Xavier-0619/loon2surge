@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"cmp"
 	"flag"
 	"fmt"
 	"io"
@@ -56,15 +57,16 @@ func runConvert(argv []string) int {
 		return 2
 	}
 
-	results := convertAll(files, options)
-	records := make([]moduleRecord, 0, len(files))
+	batches := loadBatches(files)
+	results := convertBatches(batches, options)
+	records := make([]moduleRecord, 0, len(batches))
 	failed := 0
 
-	for index, path := range files {
+	for index, item := range batches {
 		result := results[index]
 		target := ""
 		if !*check {
-			target = targetPath(path, *output, result.Name)
+			target = targetPath(item.paths[0], *output, result.Name)
 			if result.OK() {
 				if _, err := fsutil.WriteString(target, result.Text); err != nil {
 					fmt.Fprintf(os.Stderr, "写入失败 %s：%v\n", target, err)
@@ -73,15 +75,15 @@ func runConvert(argv []string) int {
 				}
 			}
 		}
-		printResult(path, target, result)
+		printResult(item, target, result)
 		if !result.OK() {
 			failed++
 		}
-		records = append(records, toRecord(path, result))
+		records = append(records, toRecord(item, result))
 	}
 
 	if *reportPath != "" {
-		payload := reportFile{Tool: "loon2surge", Total: len(files), Failed: failed, Modules: records}
+		payload := reportFile{Tool: "loon2surge", Total: len(batches), Sources: len(files), Failed: failed, Modules: records}
 		if _, err := fsutil.WriteJSON(*reportPath, payload); err != nil {
 			fmt.Fprintf(os.Stderr, "报告写入失败 %s：%v\n", *reportPath, err)
 		} else {
@@ -111,39 +113,124 @@ func convertStdin(output string, options lpx.Options, check bool) int {
 			return 2
 		}
 	}
-	printResult("stdin", output, result)
+	printResult(batch{}, output, result)
 	if !result.OK() {
 		return 1
 	}
 	return 0
 }
 
-// convertAll 并行转换；文件都很小，瓶颈在读盘和正则，多核能直接吃到收益。
-func convertAll(files []string, options lpx.Options) []lpx.Result {
-	results := make([]lpx.Result, len(files))
-	queue := make(chan int)
+// batch 是一组同名插件：转换后只产出一个模块。
+//
+// 上游会把同一个 App 的去广告规则拆成几份、都写同一个 #!name（挖财记账就是
+// 两份，各补一半接口）。按名字各自落盘会互相覆盖，只留最后转出的那份；
+// 所以同名的一律归成一组，交给 lpx 合并。
+type batch struct {
+	paths   []string
+	sources []lpx.Source
+	err     error // 读盘失败，此时 sources 为空
+}
+
+// loadBatches 读完所有插件，按 #!name 归组，保持输入顺序。
+func loadBatches(files []string) []batch {
+	texts := make([]string, len(files))
+	errs := make([]error, len(files))
 
 	var wg sync.WaitGroup
-	for range min(runtime.NumCPU(), len(files)) {
+	for index := range files {
+		wg.Go(func() {
+			data, err := os.ReadFile(files[index])
+			texts[index], errs[index] = string(data), err
+		})
+	}
+	wg.Wait()
+
+	batches := make([]batch, 0, len(files))
+	at := make(map[string]int, len(files))
+	for index, file := range files {
+		if errs[index] != nil {
+			batches = append(batches, batch{paths: []string{file}, err: errs[index]})
+			continue
+		}
+		source := lpx.Source{Name: filepath.Base(file), Text: texts[index]}
+		// 没有 #!name 就无从判断是不是同一个插件，各转各的。
+		key := strings.ToLower(lpx.PluginName(texts[index]))
+		if key == "" {
+			batches = append(batches, batch{paths: []string{file}, sources: []lpx.Source{source}})
+			continue
+		}
+		if slot, ok := at[key]; ok {
+			batches[slot].paths = append(batches[slot].paths, file)
+			batches[slot].sources = append(batches[slot].sources, source)
+			continue
+		}
+		at[key] = len(batches)
+		batches = append(batches, batch{paths: []string{file}, sources: []lpx.Source{source}})
+	}
+	for index := range batches {
+		preferName(&batches[index])
+	}
+	return batches
+}
+
+// preferName 把最贴近 #!name 的文件排到最前。
+//
+// 同步落盘时第一个插件拿原名、后面的原始 .lpx 依次加 -2/-3，所以文件名
+// 最短的那份就是最先收录的主源。合并以它为准，desc 和 icon 才不会随目录
+// 遍历顺序漂移。（-2 后缀现在只出现在 loon/ 的原始快照里，模块已合一。）
+func preferName(item *batch) {
+	if len(item.sources) < 2 {
+		return
+	}
+	order := make([]int, len(item.sources))
+	for index := range order {
+		order[index] = index
+	}
+	slices.SortStableFunc(order, func(a, b int) int {
+		return cmp.Compare(len(item.paths[a]), len(item.paths[b]))
+	})
+
+	paths := make([]string, len(item.paths))
+	sources := make([]lpx.Source, len(item.sources))
+	for slot, from := range order {
+		paths[slot] = item.paths[from]
+		sources[slot] = item.sources[from]
+	}
+	item.paths, item.sources = paths, sources
+}
+
+// convertBatches 并行转换；插件都很小，瓶颈在读盘和正则，多核能直接吃到收益。
+func convertBatches(batches []batch, options lpx.Options) []lpx.Result {
+	results := make([]lpx.Result, len(batches))
+	if len(batches) == 0 {
+		return results
+	}
+
+	queue := make(chan int)
+	var wg sync.WaitGroup
+	for range min(runtime.NumCPU(), len(batches)) {
 		wg.Go(func() {
 			for index := range queue {
-				result, err := lpx.ConvertFile(files[index], options)
-				if err != nil {
-					result = lpx.Result{
-						Name:  filepath.Base(files[index]),
-						Notes: []lpx.Note{{Code: "read-error", Message: err.Error(), Fatal: true}},
-					}
-				}
-				results[index] = result
+				results[index] = convertBatch(batches[index], options)
 			}
 		})
 	}
-	for index := range files {
+	for index := range batches {
 		queue <- index
 	}
 	close(queue)
 	wg.Wait()
 	return results
+}
+
+func convertBatch(item batch, options lpx.Options) lpx.Result {
+	if item.err != nil {
+		return lpx.Result{
+			Name:  filepath.Base(item.paths[0]),
+			Notes: []lpx.Note{{Code: "read-error", Message: item.err.Error(), Fatal: true}},
+		}
+	}
+	return lpx.ConvertSources(item.sources, options)
 }
 
 // collect 展开输入：文件直接收下，目录递归挑出插件后缀。
@@ -203,10 +290,10 @@ func safeFilename(name string) string {
 	return cleaned
 }
 
-func printResult(source, target string, result lpx.Result) {
-	head := result.Name
+func printResult(item batch, target string, result lpx.Result) {
+	head := describeSources(item)
 	if target != "" {
-		head = filepath.Base(source) + " → " + filepath.Base(target)
+		head += " → " + filepath.Base(target)
 	}
 	if result.OK() {
 		fmt.Printf("✓ %s\n", head)
@@ -228,8 +315,24 @@ func printResult(source, target string, result lpx.Result) {
 	}
 }
 
+// describeSources 写清这组插件由哪些文件合出来。
+func describeSources(item batch) string {
+	if len(item.paths) == 0 {
+		return "stdin"
+	}
+	names := make([]string, 0, len(item.paths))
+	for _, path := range item.paths {
+		names = append(names, filepath.Base(path))
+	}
+	if len(names) > 2 {
+		return fmt.Sprintf("%s + %s 等 %d 个", names[0], names[1], len(names))
+	}
+	return strings.Join(names, " + ")
+}
+
 type moduleRecord struct {
 	Source   string         `json:"source"`
+	Sources  []string       `json:"sources,omitempty"`
 	Name     string         `json:"name"`
 	Sections map[string]int `json:"sections"`
 	Warnings map[string]int `json:"warnings"`
@@ -239,12 +342,13 @@ type moduleRecord struct {
 
 type reportFile struct {
 	Tool    string         `json:"tool"`
-	Total   int            `json:"total"`
+	Total   int            `json:"total"`   // 产出的模块数
+	Sources int            `json:"sources"` // 输入文件数，融合时比 total 多
 	Failed  int            `json:"failed"`
 	Modules []moduleRecord `json:"modules"`
 }
 
-func toRecord(path string, result lpx.Result) moduleRecord {
+func toRecord(item batch, result lpx.Result) moduleRecord {
 	sections := make(map[string]int, len(result.Sections))
 	for name, lines := range result.Sections {
 		sections[name] = len(lines)
@@ -257,12 +361,16 @@ func toRecord(path string, result lpx.Result) moduleRecord {
 	for _, note := range result.Notes {
 		notes = append(notes, note.String())
 	}
-	return moduleRecord{
-		Source:   path,
+	record := moduleRecord{
 		Name:     result.Name,
 		Sections: sections,
 		Warnings: lpx.CountByCode(result.Warnings()),
 		Fatal:    fatal,
 		Notes:    notes,
 	}
+	if len(item.paths) > 0 {
+		record.Source = item.paths[0]
+		record.Sources = item.paths
+	}
+	return record
 }

@@ -6,6 +6,7 @@
 // 文件分工：
 //
 //	parse.go     .lpx 顶层结构解析
+//	merge.go     多个同名插件合成一份
 //	syntax.go    只在"顶层"动手的切分与引号处理
 //	convert.go   调度 + 头部渲染 + 组装
 //	rule.go      [Rule]（含 AND/OR/NOT 逻辑规则）
@@ -80,7 +81,10 @@ type Note struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
 	Line    int    `json:"line,omitempty"`
-	Fatal   bool   `json:"fatal,omitempty"`
+	// Source 是这条诊断来自哪个源文件，只有多个同名插件被融合后才有值。
+	// 合并后的行号是重排的，不带来源就会指错文件。
+	Source string `json:"source,omitempty"`
+	Fatal  bool   `json:"fatal,omitempty"`
 	// Action 取 ActionAdapted / ActionReview，空表示只是记录，不需要人管。
 	Action string `json:"action,omitempty"`
 	// Skipped 表示这一行没能转换、以注释形式留在了文件末尾。
@@ -88,10 +92,14 @@ type Note struct {
 }
 
 func (n Note) String() string {
-	if n.Line > 0 {
-		return fmt.Sprintf("[%s] L%d: %s", n.Code, n.Line, n.Message)
+	where := ""
+	if n.Source != "" {
+		where = n.Source + " "
 	}
-	return fmt.Sprintf("[%s] %s", n.Code, n.Message)
+	if n.Line > 0 {
+		return fmt.Sprintf("[%s] %sL%d: %s", n.Code, where, n.Line, n.Message)
+	}
+	return fmt.Sprintf("[%s] %s%s", n.Code, where, n.Message)
 }
 
 // Line 是源文件里的一行，带行号便于定位诊断。
@@ -106,6 +114,11 @@ type Plugin struct {
 	MetaKeys []string // 保持文件里的出现顺序，输出才稳定
 	Sections map[string][]Line
 	Order    []string // section 的出现顺序
+
+	// origin 记录每一行来自哪个源，只有多个同名插件融合时才有值。
+	origin map[int]string
+	// sources 是参与融合的来源名，按合并顺序；单源时为空。
+	sources []string
 }
 
 // Lines 返回某个 section 的所有行（section 名不区分大小写与写法）。
@@ -126,6 +139,8 @@ type Result struct {
 	Order    []string
 	// Skipped 是无法转换、以注释形式留在文件末尾的行数。
 	Skipped int
+	// Sources 是参与融合的来源名，多于一个说明这个模块由多份同名插件合成。
+	Sources []string
 }
 
 // Fatal 返回致命诊断。

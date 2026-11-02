@@ -75,6 +75,13 @@ function tagList(module, limit = Infinity) {
   return (module.tags ?? []).slice(0, limit);
 }
 
+/** 同名插件融合后，主源会记下被并入的插件；在卡片上点明"一份顶多份"。 */
+function mergedBadge(module) {
+  const count = (module.merged?.length ?? 0) + 1;
+  if (count < 2) return "";
+  return `<span class="card-tag card-merged" title="由 ${count} 份同名插件融合，规则已合并">融合 ${count} 份</span>`;
+}
+
 export function cardMarkup(module, index) {
   const name = module.name || module.stem;
   const authors = authorText(module);
@@ -100,6 +107,7 @@ export function cardMarkup(module, index) {
       <div class="card-tags">
         ${tags.map((tag) => `<span class="card-tag">${escapeHTML(tag)}</span>`).join("")}
         ${extra ? `<span class="card-tag">+${extra}</span>` : ""}
+        ${mergedBadge(module)}
       </div>
       <div class="card-footer">
         <span class="card-date">${escapeHTML(date)}</span>
@@ -139,7 +147,7 @@ export function detailsMarkup(module) {
       <div><h2 id="dialog-title">${escapeHTML(name)}</h2><p>by ${escapeHTML(authors)}</p></div>
     </div>
     <p class="dialog-description">${escapeHTML(module.desc || "暂无模块描述。")}</p>
-    <div class="dialog-tags">${tags}${statusMarkup(module)}</div>
+    <div class="dialog-tags">${tags}${mergedBadge(module)}${statusMarkup(module)}</div>
     <div class="dialog-actions">
       <a class="button button-primary" href="${escapeHTML(installUrl(module))}" data-install="${escapeHTML(name)}"><svg class="icon"><use href="#i-download"/></svg>一键导入 Surge</a>
       <button class="button button-quiet" type="button" data-dialog-copy="${escapeHTML(module.stem)}"><svg class="icon"><use href="#i-copy"/></svg>复制模块链接</button>

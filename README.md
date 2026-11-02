@@ -60,8 +60,8 @@ Surge 模块，所以每天转换完之后会再跑一次 `loon2surge external`�
 ```
 cmd/loon2surge/        进程入口（只有 main，参数交给 internal/cli）
 internal/cli/          命令行：参数解析、退出码、各子命令的编排
-internal/lpx/          转换引擎：规则 / 改写 / 脚本 / 头部 / 组装 / 产物自检
-internal/upstream/     同步：拉列表、比哈希、下载、转换、写索引、远程脚本审计
+internal/lpx/          转换引擎：同名融合 / 规则 / 改写 / 脚本 / 头部 / 组装 / 产物自检
+internal/upstream/     同步：拉列表、比哈希、下载、按名字合流、写索引、远程脚本审计
 internal/external/     并入第三方仓库现成的 Surge 模块（按 #!name 去重）
 internal/fsutil/       统一落盘：内容不变不写、临时文件 + rename
 loon/  surge/          Loon 原始插件 / 转换后的 Surge 模块（按插件里的 #!name 命名）
@@ -171,8 +171,10 @@ loon/51Job_remove_ads.lpx  ──►  #!name=前程无忧去广告  ──►  l
 上游只改名字也会让文件跟着改名（提交信息里记一条"重命名"），不会变成"删一个 + 加一个"。
 定名时挡掉了文件名不该有的东西：`/ \ : * ? " < > |`、控制字符、首尾空白与句点、
 长度超过 200 字节的截断（按 UTF-8 边界切，不会切碎汉字）、Windows 设备名（`CON` 之类）。
-真出现同名（可莉那边有两个"挖财记账去广告"）就按插件地址排序，后来的加 `-2`——
-排序基准是地址而不是下载顺序，所以同一份列表每轮算出的名字一定相同，不会天天改名。
+真出现同名（可莉那边有两个"挖财记账去广告"）就按插件地址排序：`loon/` 里后来的
+原始文件加 `-2` 留档，但**模块只产出一份**——两份规则合成一个模块（见
+[RULES.md](RULES.md) 的「同名插件融合」）。排序基准是地址而不是下载顺序，
+所以同一份列表每轮算出的名字一定相同，不会天天改名。
 
 **改名靠地址认人**：`index.json` 用插件地址当键，`stem` 只是当时的文件名。
 这样改一次名不会被误判成"旧插件下架 + 新插件上线"。
@@ -438,7 +440,7 @@ cmd/loon2surge/main.go  只有一行：把 os.Args 交给 cli.Run
 internal/cli/
   cli.go            版本号、用法文本、子命令分发、退出码
   args.go           标志与位置参数分离（可以混着写）
-  convert.go        convert：并行批处理、控制台进度与 JSON 报告
+  convert.go        convert：按 #!name 分组、并行批处理、控制台进度与 JSON 报告
   sync.go           sync → upstream.Config
   validate.go       validate：把成品再校验一遍，按清单放行豁免项
   audit.go          audit → upstream.AuditOptions
@@ -447,6 +449,7 @@ internal/lpx/
   model.go          section / meta 顺序、Note / Result、诊断过滤
   args.go           [Argument] 定义与值表
   ctx.go            转换上下文：告警、适配、复查、失败
+  merge.go          同名插件融合：section 并集、头部合并、诊断标来源
   syntax.go         顶层切分、正则字面量、引号、注释、分词
   parse.go          #! 头部与 .lpx 解析
   jq.go             JQ 单引号 → 合法 JSON 字面量
@@ -456,10 +459,11 @@ internal/lpx/
   convert.go        [General]/[IP Rewrite]/[MITM] + 组装输出
   validate.go       产物自检：语法残留、策略、状态码、section 顺序
   convert_test.go   用例 + 整篇金标准比对 + 基准测试
+  merge_test.go     融合：并集去重、头部合并、诊断来源、单源等价
 internal/upstream/
   run.go            同步入口：读取配置、探测可用性、汇总结果
-  sync.go           哈希比对、并发下载、删除保护
-  state.go          index.json / INDEX.md 读写
+  sync.go           定名、并发下载、按 #!name 合流、删除保护
+  state.go          index.json / INDEX.md 读写（含 merged 状态）
   source.go         来源列表、命名、条目键
   fetch.go          多来源、403 记忆、退避重试、把 403 分成"质询"与"IP 拒绝"
   transport.go      下载通道：python3（默认，借 OpenSSL TLS 栈）/ Go 原生（兜底）

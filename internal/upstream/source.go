@@ -36,6 +36,9 @@ const (
 	// StatusExcluded 表示插件本身没问题，只是 Surge 模块表达不了（例如规则用 PROXY）。
 	// 这类不生成模块，但在报告里与"转换失败"分开写，免得天天报警。
 	StatusExcluded = "loon-only"
+	// StatusMerged 表示这个插件没有自己的模块：规则已并进另一个同名插件。
+	// 文件照样跟踪（地址、哈希都在），只是不再单独产出一个文件。
+	StatusMerged = "merged"
 	// StatusFailed 表示下载或转换失败，没有可用模块。
 	StatusFailed = "convert-failed"
 )

@@ -1,9 +1,13 @@
 package upstream
 
-// 一轮同步的执行者：并发下载 → 串行定名/落盘/转换 → 收拾旧文件。
+// 一轮同步的执行者：并发下载 → 串行定名/落盘 → 同名合流转换 → 收拾旧文件。
 //
 // 顺序是刻意的：文件名取自插件里的 #!name，不先拿到内容就定不了名；
 // 而"谁拿原名"必须可复现，所以定名阶段串行、按地址排序，不靠谁先跑完。
+//
+// 转换切成"定名(stage)"与"合流(produce)"两段，是因为上游会把同一个 App 的
+// 规则拆成几个插件、都写同一个 #!name。它们该合成一个模块，而不是互相覆盖
+// 或各占一个文件，见 groupStaged。
 
 import (
 	"cmp"
@@ -65,6 +69,16 @@ type fetched struct {
 // usable 表示拿到了正文且确实是插件（不是拦截页）。
 func (f fetched) usable() bool { return f.err == nil && looksLikePlugin(f.data) }
 
+// staged 是一个已经定名、还没转换的插件。
+type staged struct {
+	entry   Entry
+	source  string // 插件正文；下载失败时为空
+	title   string // 正文里的 #!name，同名插件按它合流
+	old     *Entry
+	changed bool
+	renamed bool
+}
+
 func (s *Syncer) run(remotes []Remote, previous map[string]Entry, write, prune bool) []Entry {
 	downloads := s.fetchAll(remotes)
 
@@ -93,15 +107,33 @@ func (s *Syncer) run(remotes []Remote, previous map[string]Entry, write, prune b
 		return strings.Compare(remotes[a].key(), remotes[b].key())
 	})
 
-	entries := make([]Entry, len(remotes))
+	items := make([]staged, len(remotes))
 	for _, index := range order {
-		entries[index] = s.finish(remotes[index], downloads[index], old[index], write, used)
+		items[index] = s.stage(remotes[index], downloads[index], old[index], write, used)
 	}
 
+	// 同名的插件在这里合流：一个模块只由一次转换产出，组内其余记为已并入。
+	//
+	// 注意 --only / --limit 只下了一部分时组可能不完整，这会被当成单插件转换，
+	// 主源这一轮只带自己那份规则。调试模式本来就不写索引，可以接受。
+	groups := groupStaged(items, order)
+	primaries := make(map[string]bool, len(groups))
+	for _, group := range groups {
+		if group[0].source != "" {
+			primaries[strings.ToLower(group[0].entry.Stem)] = true
+		}
+	}
+	for _, group := range groups {
+		s.produce(group, primaries, write)
+	}
+
+	entries := make([]Entry, len(items))
+	for index, item := range items {
+		entries[index] = item.entry
+	}
 	if write && prune {
 		s.sweep(entries, previous)
 	}
-
 	sortEntries(entries)
 	return entries
 }
@@ -148,84 +180,157 @@ func (s *Syncer) fetch(remote Remote) fetched {
 	return fetched{data: data}
 }
 
-// finish 定名 + 落盘 + 转换，一个插件一条龙走完，省掉第二遍遍历。
-func (s *Syncer) finish(remote Remote, got fetched, old *Entry, write bool, used map[string]bool) Entry {
+// stage 定名 + 落盘，把转换留给合流后的 produce。
+func (s *Syncer) stage(remote Remote, got fetched, old *Entry, write bool, used map[string]bool) staged {
 	if !got.usable() {
-		return s.keep(old, remote, got.err, used)
+		return staged{entry: s.keep(old, remote, got.err, used), old: old}
 	}
 
 	source := decode(got.data)
+	title := lpx.PluginName(source)
 	entry := Entry{
 		Name: remote.Name, Desc: remote.Desc, Icon: lpx.PluginIcon(source), Tags: remote.Tags,
 		Authors: remote.Authors, Date: remote.Date, URL: remote.URL,
-		Stem:   UniqueStem(fileStem(lpx.PluginName(source), remote.Stem), used),
+		Stem:   UniqueStem(fileStem(title, remote.Stem), used),
 		LpxSHA: hashOf(got.data),
 	}
 
-	changed := old == nil || old.LpxSHA != entry.LpxSHA
-	renamed := old != nil && old.Stem != entry.Stem
-	if (changed || renamed) && write {
+	item := staged{
+		entry:   entry,
+		source:  source,
+		title:   title,
+		old:     old,
+		changed: old == nil || old.LpxSHA != entry.LpxSHA,
+		renamed: old != nil && old.Stem != entry.Stem,
+	}
+	if (item.changed || item.renamed) && write {
 		if _, err := fsutil.WriteFile(s.vault.lpxPath(entry.Stem), got.data); err != nil {
 			fmt.Fprintf(os.Stderr, "  写入失败 %s：%v\n", entry.Stem, err)
-			return s.keep(old, remote, err, used)
+			return staged{entry: s.keep(old, remote, err, used), old: old}
+		}
+	}
+	return item
+}
+
+// groupStaged 把 #!name 相同的插件排到一组。
+//
+// 遍历顺序用定名时的 order（按地址），所以组内第一条就是拿到原名的那个，
+// 也就是最先收录的主源；合并结果不会随下载完成顺序漂移。
+func groupStaged(items []staged, order []int) [][]*staged {
+	at := make(map[string]int, len(items))
+	var groups [][]*staged
+	for _, index := range order {
+		item := &items[index]
+		// 没有 #!name 就无从判断是不是同一个插件，各转各的。
+		key := strings.ToLower(item.title)
+		if key == "" {
+			groups = append(groups, []*staged{item})
+			continue
+		}
+		if slot, ok := at[key]; ok {
+			groups[slot] = append(groups[slot], item)
+			continue
+		}
+		at[key] = len(groups)
+		groups = append(groups, []*staged{item})
+	}
+	return groups
+}
+
+// produce 把一组同名插件转成一个模块：主源产出文件，其余记为已并入。
+func (s *Syncer) produce(group []*staged, primaries map[string]bool, write bool) {
+	primary := group[0]
+
+	if len(group) == 1 {
+		if primary.source == "" {
+			return // 下载失败，沿用上一轮，不重转
+		}
+		if primary.old != nil && primary.old.Status == StatusMerged &&
+			!primaries[strings.ToLower(primary.old.MergedInto)] {
+			// 上一轮它并进了别人，这一轮主源没下到。此刻自立门户会多出一个
+			// 只含半套规则的模块，不如保持并入，等主源恢复。
+			s.adopt(primary, primary.old.MergedInto, write)
+			return
 		}
 	}
 
-	entry = s.convert(entry, got.data, old, write)
-	s.record(entry, old, changed, renamed)
-	return entry
+	sources := make([]lpx.Source, 0, len(group))
+	for _, item := range group {
+		sources = append(sources, lpx.Source{Name: item.entry.Stem, Text: item.source})
+	}
+
+	entry := primary.entry
+	entry.Merged = nil
+	if len(group) > 1 {
+		// 模块头部的 desc 已经把两份拼在一起；索引里的描述来自上游列表，
+		// 不跟着合的话网站会只显示主源那半句，用户以为另一半广告没去。
+		if desc := lpx.MergeDesc(sources); desc != "" {
+			entry.Desc = desc
+		}
+	}
+	contentChanged := false
+	for _, item := range group[1:] {
+		entry.Merged = append(entry.Merged, item.entry.Stem)
+	}
+	for _, item := range group {
+		contentChanged = contentChanged || item.changed
+	}
+	// 融合的组成变了也算变：插件字节没动，但这一轮多了一个同名插件，
+	// 模块内容会不一样，提交信息里得露出来。
+	grown := primary.old == nil || len(entry.Merged) > len(primary.old.Merged)
+
+	primary.entry = s.rebuild(entry, sources, primary.old, write, contentChanged || grown)
+	s.record(primary.entry, primary.old, contentChanged || grown, primary.renamed)
+
+	for _, item := range group[1:] {
+		s.adopt(item, primary.entry.Stem, write)
+	}
 }
 
-// record 归档这一条属于新增 / 更新 / 改名。
+// adopt 把一个插件记为"规则已并进目标模块"，并收掉它可能残留的旧模块文件。
+func (s *Syncer) adopt(item *staged, target string, write bool) {
+	item.entry.Status = StatusMerged
+	item.entry.MergedInto = target
+	item.entry.ModuleSHA = ""
+	item.entry.Notes = []string{"规则已并入「" + target + "」"}
+	if write {
+		// 上一轮它可能还有自己的模块，现在归主源了。
+		_ = os.Remove(s.vault.modulePath(item.entry.Stem))
+	}
+	s.record(item.entry, item.old, item.changed, item.renamed)
+}
+
+// rebuild 把一组源转成模块并落盘。
 //
-// 记账放在转换之后：只有真的产出了模块才算"新增/更新"。否则被排除的插件
-// （Surge 表达不了的）会出现在提交信息的模块清单里，指向一个不存在的文件。
-// 改名是文件层面的事实，与有没有模块无关，因此单独记。
-func (s *Syncer) record(entry Entry, old *Entry, changed, renamed bool) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	if renamed {
-		s.renamed = append(s.renamed, Rename{From: old.Stem, To: entry.Stem, Date: entry.Date})
-	}
-	if entry.Status != StatusOK || !changed {
-		return
-	}
-	if old == nil {
-		s.added = append(s.added, entry.Stem)
-		return
-	}
-	s.updated = append(s.updated, entry.Stem)
-}
-
-func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry {
+// fresh 为 false 表示插件字节没变、融合组也没变大，上一轮的结论可以照用。
+func (s *Syncer) rebuild(entry Entry, sources []lpx.Source, old *Entry, write, fresh bool) Entry {
 	entry.Status = StatusOK
-
-	// 排除的结论也可以复用：插件字节没变，结论就不会变，不必每轮重跑一遍解析。
-	if old != nil && old.LpxSHA == entry.LpxSHA && old.Status == StatusExcluded &&
-		old.Converter == lpx.Version {
-		entry.Status = StatusExcluded
-		entry.Notes = old.Notes
-		entry.Converter = lpx.Version
-		s.mu.Lock()
-		s.excluded = append(s.excluded, entry.Stem)
-		s.mu.Unlock()
-		return entry
-	}
-
 	entry.Converter = lpx.Version
-	// 转换器版本必须一起比：插件没变、规则变了的时候，旧模块是错的。
-	reusable := old != nil && old.LpxSHA == entry.LpxSHA &&
-		old.Status == StatusOK && old.Converter == lpx.Version
-	if reusable && (!write || fsutil.Exists(s.vault.modulePath(entry.Stem))) {
-		entry.ModuleSHA = old.ModuleSHA
-		entry.Notes = old.Notes
-		entry.Adapted = old.Adapted
-		entry.Review = old.Review
-		return entry
+
+	// 复用上一轮结论有两个前提：插件字节没变，参与的源也没变多。后者不能省——
+	// 昨天一个源、今天多了一个同名插件，字节不动但模块必须重做。
+	// 反过来"源变少了"（某个同名插件这轮没下到）要照旧：此刻重转会把它的规则
+	// 从模块里抹掉，而它在 loon/ 里的原文还好好的。
+	if !fresh && old != nil && old.Converter == lpx.Version {
+		entry.Merged = old.Merged
+		switch {
+		case old.Status == StatusExcluded:
+			entry.Status = StatusExcluded
+			entry.Notes = old.Notes
+			s.mu.Lock()
+			s.excluded = append(s.excluded, entry.Stem)
+			s.mu.Unlock()
+			return entry
+		case old.Status == StatusOK && (!write || fsutil.Exists(s.vault.modulePath(entry.Stem))):
+			entry.ModuleSHA = old.ModuleSHA
+			entry.Notes = old.Notes
+			entry.Adapted = old.Adapted
+			entry.Review = old.Review
+			return entry
+		}
 	}
 
-	result := lpx.ConvertText(decode(data), s.opts)
+	result := lpx.ConvertSources(sources, s.opts)
 	if !result.OK() {
 		if write {
 			_ = os.Remove(s.vault.modulePath(entry.Stem))
@@ -259,6 +364,28 @@ func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry
 		}
 	}
 	return entry
+}
+
+// record 归档这一条属于新增 / 更新 / 改名。
+//
+// 记账放在转换之后：只有真的产出了模块才算"新增/更新"。否则被排除的插件
+// （Surge 表达不了的）会出现在提交信息的模块清单里，指向一个不存在的文件。
+// 改名是文件层面的事实，与有没有模块无关，因此单独记。
+func (s *Syncer) record(entry Entry, old *Entry, changed, renamed bool) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if renamed {
+		s.renamed = append(s.renamed, Rename{From: old.Stem, To: entry.Stem, Date: entry.Date})
+	}
+	if entry.Status != StatusOK || !changed {
+		return
+	}
+	if old == nil {
+		s.added = append(s.added, entry.Stem)
+		return
+	}
+	s.updated = append(s.updated, entry.Stem)
 }
 
 // reviewSummary 把"要人看一眼"的诊断压成几行，没法转换的行数排在最前面。

@@ -1490,6 +1490,12 @@
     color: #777b70;
     background: #f8f9f5;
     font-size: 9px;
+
+    &.card-merged {
+      border-color: #cfe0d2;
+      background: #eef6ef;
+      color: #3f6b48;
+    }
   }
 
   .card-footer {
