@@ -76,6 +76,27 @@ jobs:
           listed = {e["stem"] for e in index["plugins"] if e.get("status") == "ok"}
           on_disk = {n[:-9] for n in os.listdir("surge") if n.endswith(".sgmodule")}
 
+          # 外部模块（ios151 Rewrite）不进 index.json，它们的账记在自己的清单里。
+          # 两边分别对账：可莉的看 index，外部的看 manifest，谁缺文件都要报出来。
+          external = set()
+          manifest_path = "ios151 Rewrite/manifest.json"
+          if os.path.exists(manifest_path):
+              manifest = json.load(open(manifest_path, encoding="utf-8"))
+              external = {e["stem"] for e in manifest["entries"]
+                          if e.get("status") == "merged" and e.get("stem")}
+              absent = sorted(stem for stem in external if stem not in on_disk)
+              if absent:
+                  print("### ❌ 清单里有、surge/ 里没有的外部模块", file=sys.stderr)
+                  for name in absent[:20]:
+                      print(f"  {name}", file=sys.stderr)
+                  sys.exit(1)
+
+          for name in external:
+              if name in listed:
+                  print(f"! {name} 同时出现在 index.json 和外部清单里", file=sys.stderr)
+                  sys.exit(1)
+
+          on_disk -= external
           missing = sorted(listed - on_disk)
           extra = sorted(on_disk - listed)
           if missing or extra:
@@ -86,7 +107,7 @@ jobs:
                   print(f"  文件在那儿、index 里没有：{name}", file=sys.stderr)
               sys.exit(1)
 
-          print(f"index.json 与 {len(on_disk)} 个模块一一对应")
+          print(f"index.json 与 {len(on_disk)} 个模块一一对应，另有 {len(external)} 个外部模块")
           PY
 
       - name: 📊 汇总
@@ -95,6 +116,7 @@ jobs:
         run: |
           modules=$(find surge -name '*.sgmodule' 2>/dev/null | wc -l)
           plugins=$(find loon -name '*.lpx' 2>/dev/null | wc -l)
+          external=$(python3 -c "import json;print(json.load(open('ios151 Rewrite/manifest.json',encoding='utf-8'))['merged'])" 2>/dev/null || echo 0)
           {
             echo ""
             echo "### 📊 校验结果"
@@ -103,4 +125,5 @@ jobs:
             echo "| --- | --- |"
             echo "| 🧩 Loon 插件 | $plugins |"
             echo "| 📦 Surge 模块 | $modules |"
+            echo "| 🌐 其中外部模块 | $external |"
           } >> "$GITHUB_STEP_SUMMARY"
