@@ -1,6 +1,6 @@
 {
   "source": "https://hub.kelee.one/list.json",
-  "synced_at": "2026-11-02 15:10:34 UTC",
+  "synced_at": "2026-11-02 16:03:44 UTC",
   "count": 275,
   "plugins": [
     {
@@ -291,16 +291,9 @@
       "url": "https://kelee.one/Tool/Loon/Lpx/Prevent_DNS_Leaks.lpx",
       "lpx_sha": "63e40fe056e9c53cd729d9dab0f51663f84b286bac8b61f19ae13461d59bc643",
       "module_sha": "",
-      "status": "convert-failed",
+      "status": "loon-only",
       "notes": [
-        "[rule-policy] L15: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN-SUFFIX, dnsleaktest.com, PROXY",
-        "[rule-policy] L16: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN-SUFFIX, dnsleak.com, PROXY",
-        "[rule-policy] L17: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN-SUFFIX, expressvpn.com, PROXY",
-        "[rule-policy] L18: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN-SUFFIX, nordvpn.com, PROXY",
-        "[rule-policy] L19: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN-SUFFIX, surfshark.com, PROXY",
-        "[rule-policy] L20: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN-SUFFIX, ipleak.net, PROXY",
-        "[rule-policy] L21: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN-SUFFIX, perfect-privacy.com, PROXY",
-        "[rule-policy] L22: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN-SUFFIX, browserleaks.com, PROXY"
+        "模块规则只能用 DIRECT/REJECT，原文用的是 PROXY"
       ]
     },
     {
@@ -1702,13 +1695,19 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/NodeLinkCheck.lpx",
       "lpx_sha": "4335d32f3e4d42e286392eb613dd03f7a3c859ac3c89373f9a27ce27e3b5267c",
-      "module_sha": "",
-      "status": "convert-failed",
+      "module_sha": "dcef4282d0e4242f10de32a719a9963013bb28af01935dea0e087f081fc7e032",
+      "status": "ok",
       "notes": [
-        "[script-path] L14: 缺少 script-path → 已注释：generic then script(\"https://kelee.one/Resource/JavaScript/NodeLinkChec…",
-        "[module-excluded] 没有任何可转换的内容，不生成模块",
+        "[script-attribute-alias] L14: 属性名归一 img_url → img-url",
+        "[script-generic] L14: generic 脚本在 Surge 里没有 Loon 的节点上下文，请自行确认",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+      ],
+      "adapted": [
+        "属性名归一（下划线转连字符）"
+      ],
+      "review": [
+        "generic 脚本没有节点上下文"
       ]
     },
     {
@@ -4760,17 +4759,20 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Auto_Join_TF.lpx",
       "lpx_sha": "f7bc52d747f371a9b423836e1531d5fa762b07d56476b14fc936f7b517f355da",
-      "module_sha": "",
-      "status": "convert-failed",
+      "module_sha": "df57b5cd4ea03f72ebc9d278dd610c0d9fa1a846ae8100e95c0ec528f5aee82e",
+      "status": "ok",
       "notes": [
         "[rule-policy] L22: Surge 模块 [Rule] 不允许 PROXY 策略 → 已注释：DOMAIN, testflight.apple.com, PROXY",
-        "[script-type] L25: 不支持的脚本类型：request → 已注释：request if ${url} ~= /^https?:\\/\\/testflight\\.apple\\.com\\/v3\\/accounts\\…",
-        "[script-path] L26: 缺少 script-path → 已注释：cron ${TaskCron} then script(\"https://kelee.one/Resource/JavaScript/Tes…",
-        "[script-path] L27: 缺少 script-path → 已注释：cron ${TaskMonitor} then script(\"https://kelee.one/Resource/JavaScript/…",
-        "[argument-unused] 参数 CaptureAccountToken 未被任何行引用，已删除",
-        "[argument-unused] 参数 RunTask 未被任何行引用，已删除",
-        "[argument-unused] 参数 RunMonitor 未被任何行引用，已删除",
-        "[argument-unused] 参数 TaskCron 未被任何行引用，已删除"
+        "[script-enable] L25: enable 已转为行前缀开关 {{{CaptureAccountToken}}}",
+        "[script-enable] L26: enable 已转为行前缀开关 {{{RunTask}}}",
+        "[script-enable] L27: enable 已转为行前缀开关 {{{RunMonitor}}}",
+        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
+      ],
+      "adapted": [
+        "enable 转为模块参数开关 ×3"
+      ],
+      "review": [
+        "1 行无法自动转换，原文注释在文件末尾"
       ]
     },
     {
@@ -4810,15 +4812,20 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Node_detection_tool.lpx",
       "lpx_sha": "517f05b0bc57f3376d0d78d916cea84c0dfb4f3411e2cef9b114f6540ce154d7",
-      "module_sha": "",
-      "status": "convert-failed",
+      "module_sha": "a149ebbabb8f7fa707e5e8a420abfab3bea9b7f6611ae487980dc76d791233ea",
+      "status": "ok",
       "notes": [
-        "[script-path] L14: 缺少 script-path → 已注释：generic then script(\"https://kelee.one/Resource/JavaScript/Node_detecti…",
-        "[script-path] L15: 缺少 script-path → 已注释：generic then script(\"https://kelee.one/Resource/JavaScript/Node_detecti…",
-        "[script-path] L16: 缺少 script-path → 已注释：generic then script(\"https://kelee.one/Resource/JavaScript/Node_detecti…",
-        "[module-excluded] 没有任何可转换的内容，不生成模块",
-        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
-        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+        "[script-attribute-alias] L14: 属性名归一 img_url → img-url",
+        "[script-generic] L14: generic 脚本在 Surge 里没有 Loon 的节点上下文，请自行确认",
+        "[script-attribute-alias] L15: 属性名归一 img_url → img-url",
+        "[script-generic] L15: generic 脚本在 Surge 里没有 Loon 的节点上下文，请自行确认",
+        "[script-attribute-alias] L16: 属性名归一 img_url → img-url"
+      ],
+      "adapted": [
+        "属性名归一（下划线转连字符） ×3"
+      ],
+      "review": [
+        "generic 脚本没有节点上下文 ×3"
       ]
     },
     {

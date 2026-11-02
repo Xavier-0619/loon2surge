@@ -1,0 +1,22 @@
+#!name=自动加入TestFlight
+#!desc=自动监控TestFlight名额，一旦有新的名额即刻加入。
+#!author=奶思[https://github.com/fmz200], DecoAri[https://github.com/DecoAri], xream[https://github.com/xream]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TestFlight.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id899247664
+#!tag=定时任务
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=20
+#!arguments=CaptureAccountToken:#,RunTask:#,RunMonitor:true,TaskCron:0 0/2 * * * ?,TaskMonitor:0 * * * * ?
+
+# 由 loon2surge 自动转换
+# 有 1 行无法自动转换，见文件末尾注释
+
+[Script]
+{{{CaptureAccountToken}}}获取账号令牌 = type=http-request, pattern=(?i:^https?:\/\/testflight\.apple\.com\/v3\/accounts\/.*\/apps$), script-path=https://kelee.one/Resource/JavaScript/TestFlight/CaptureAccountToken.js, timeout=10
+{{{RunTask}}}自动加入TF = type=cron, cronexp="{{{TaskCron}}}", script-path=https://kelee.one/Resource/JavaScript/TestFlight/AutoJoinTF.js, timeout=600
+{{{RunMonitor}}}监控TF位置 = type=cron, cronexp="{{{TaskMonitor}}}", script-path=https://kelee.one/Resource/JavaScript/TestFlight/AutoMonitorTF.js, timeout=30
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# DOMAIN, testflight.apple.com, PROXY

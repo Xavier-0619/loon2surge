@@ -1,6 +1,6 @@
 # 插件索引
 
-共 275 个插件，同步于 2026-11-02 15:10:34 UTC。
+共 275 个插件，同步于 2026-11-02 16:03:44 UTC。
 
 原始 Loon 插件在 [`loon/`](loon)，转换后的 Surge 模块在 [`surge/`](surge)。
 本文件由 `loon2surge sync` 生成，请勿手改。
@@ -20,7 +20,7 @@
 | BoxJs | 数据管理 | chavyleung | 2026-10-02 13:57:49 | [`BoxJs`](loon/BoxJs.lpx) · [module](surge/BoxJs.sgmodule) |
 | CC直播去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`CC直播去广告`](loon/CC%E7%9B%B4%E6%92%AD%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/CC%E7%9B%B4%E6%92%AD%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | DJ多多去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`DJ多多去广告`](loon/DJ%E5%A4%9A%E5%A4%9A%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/DJ%E5%A4%9A%E5%A4%9A%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
-| DNS防泄露 ⚠️ | DNS | 非正常人类研究中心 | 2026-10-02 13:57:49 | [`DNS防泄露`](loon/DNS%E9%98%B2%E6%B3%84%E9%9C%B2.lpx) · — |
+| DNS防泄露 | DNS | 非正常人类研究中心 | 2026-10-02 13:57:49 | [`DNS防泄露`](loon/DNS%E9%98%B2%E6%B3%84%E9%9C%B2.lpx) · Loon 专用 |
 | DREAME去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`DREAME去广告`](loon/DREAME%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/DREAME%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | Dlabel云标签去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`Dlabel云标签去广告`](loon/Dlabel%E4%BA%91%E6%A0%87%E7%AD%BE%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/Dlabel%E4%BA%91%E6%A0%87%E7%AD%BE%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | ECOVACS HOME去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`ECOVACS HOME去广告`](loon/ECOVACS%20HOME%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/ECOVACS%20HOME%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
@@ -86,7 +86,7 @@
 | 亲宝宝去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`亲宝宝去广告`](loon/%E4%BA%B2%E5%AE%9D%E5%AE%9D%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E4%BA%B2%E5%AE%9D%E5%AE%9D%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 什么值得买去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`什么值得买去广告`](loon/%E4%BB%80%E4%B9%88%E5%80%BC%E5%BE%97%E4%B9%B0%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E4%BB%80%E4%B9%88%E5%80%BC%E5%BE%97%E4%B9%B0%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 他趣去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`他趣去广告`](loon/%E4%BB%96%E8%B6%A3%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E4%BB%96%E8%B6%A3%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
-| 代理链路检测 ⚠️ | 节点检测 | I-am-R-E | 2026-10-02 13:57:49 | [`代理链路检测`](loon/%E4%BB%A3%E7%90%86%E9%93%BE%E8%B7%AF%E6%A3%80%E6%B5%8B.lpx) · — |
+| 代理链路检测 | 节点检测 | I-am-R-E | 2026-10-02 13:57:49 | [`代理链路检测`](loon/%E4%BB%A3%E7%90%86%E9%93%BE%E8%B7%AF%E6%A3%80%E6%B5%8B.lpx) · [module](surge/%E4%BB%A3%E7%90%86%E9%93%BE%E8%B7%AF%E6%A3%80%E6%B5%8B.sgmodule) |
 | 优酷视频去广告 | 去广告 | 可莉🅥、RuCu6 | 2026-10-02 13:57:49 | [`优酷视频去广告`](loon/%E4%BC%98%E9%85%B7%E8%A7%86%E9%A2%91%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E4%BC%98%E9%85%B7%E8%A7%86%E9%A2%91%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 健康160去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`健康160去广告`](loon/%E5%81%A5%E5%BA%B7160%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E5%81%A5%E5%BA%B7160%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 全民K歌去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`全民K歌去广告`](loon/%E5%85%A8%E6%B0%91K%E6%AD%8C%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E5%85%A8%E6%B0%91K%E6%AD%8C%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
@@ -234,9 +234,9 @@
 | 脉脉去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`脉脉去广告`](loon/%E8%84%89%E8%84%89%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E8%84%89%E8%84%89%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 腾讯文档去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`腾讯文档去广告`](loon/%E8%85%BE%E8%AE%AF%E6%96%87%E6%A1%A3%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E8%85%BE%E8%AE%AF%E6%96%87%E6%A1%A3%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 腾讯视频去广告 | 去广告 | RuCu6 | 2026-10-02 13:57:49 | [`腾讯视频去广告`](loon/%E8%85%BE%E8%AE%AF%E8%A7%86%E9%A2%91%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E8%85%BE%E8%AE%AF%E8%A7%86%E9%A2%91%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
-| 自动加入TestFlight ⚠️ | 定时任务 | 奶思、DecoAri、xream | 2026-10-02 13:57:49 | [`自动加入TestFlight`](loon/%E8%87%AA%E5%8A%A8%E5%8A%A0%E5%85%A5TestFlight.lpx) · — |
+| 自动加入TestFlight | 定时任务 | 奶思、DecoAri、xream | 2026-10-02 13:57:49 | [`自动加入TestFlight`](loon/%E8%87%AA%E5%8A%A8%E5%8A%A0%E5%85%A5TestFlight.lpx) · [module](surge/%E8%87%AA%E5%8A%A8%E5%8A%A0%E5%85%A5TestFlight.sgmodule) |
 | 航旅纵横去广告 | 去广告 | 佚名 | 2026-10-02 13:57:49 | [`航旅纵横去广告`](loon/%E8%88%AA%E6%97%85%E7%BA%B5%E6%A8%AA%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E8%88%AA%E6%97%85%E7%BA%B5%E6%A8%AA%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
-| 节点检测工具 ⚠️ | 节点检测 | xream、Keywos、KOP-XIAO、dcpengx | 2026-10-02 13:57:49 | [`节点检测工具`](loon/%E8%8A%82%E7%82%B9%E6%A3%80%E6%B5%8B%E5%B7%A5%E5%85%B7.lpx) · — |
+| 节点检测工具 | 节点检测 | xream、Keywos、KOP-XIAO、dcpengx | 2026-10-02 13:57:49 | [`节点检测工具`](loon/%E8%8A%82%E7%82%B9%E6%A3%80%E6%B5%8B%E5%B7%A5%E5%85%B7.lpx) · [module](surge/%E8%8A%82%E7%82%B9%E6%A3%80%E6%B5%8B%E5%B7%A5%E5%85%B7.sgmodule) |
 | 芒果TV去广告 | 去广告 | 可莉🅥、RuCu6 | 2026-10-02 13:57:49 | [`芒果TV去广告`](loon/%E8%8A%92%E6%9E%9CTV%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E8%8A%92%E6%9E%9CTV%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 菜鸟去广告 | 去广告 | 小白脸 | 2026-10-02 13:57:49 | [`菜鸟去广告`](loon/%E8%8F%9C%E9%B8%9F%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E8%8F%9C%E9%B8%9F%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
 | 萌娘百科去广告 | 去广告 | 可莉🅥 | 2026-10-02 13:57:49 | [`萌娘百科去广告`](loon/%E8%90%8C%E5%A8%98%E7%99%BE%E7%A7%91%E5%8E%BB%E5%B9%BF%E5%91%8A.lpx) · [module](surge/%E8%90%8C%E5%A8%98%E7%99%BE%E7%A7%91%E5%8E%BB%E5%B9%BF%E5%91%8A.sgmodule) |
