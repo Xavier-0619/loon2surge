@@ -94,14 +94,15 @@ loon/51Job_remove_ads.lpx  ──►  #!name=前程无忧去广告  ──►  l
 ```
 🔄 自动更新 2026-11-03
 
-新增 1 · 更新 2 · 重命名 1 · 删除 1 · 失败 0 · 合计 275
+新增 1 · 更新 3 · 重命名 1 · 删除 1 · 失败 0 · 需人工确认 1 · 合计 275
 
 新增模块 1 个：
 - 2026-10-02 13:57:49 · 前程无忧去广告.sgmodule
 
-更新模块 2 个：
+更新模块 3 个：
+- 2026-10-02 13:57:49 · 财新去广告.sgmodule · 已适配
 - 2026-10-02 13:57:49 · 流媒体解锁检测.sgmodule
-- 2026-10-19 23:24:57 · 知乎去广告.sgmodule
+- 2026-10-19 23:24:57 · 代理链路检测.sgmodule · ⚠️ 需人工确认 · 已适配
 
 重命名 1 个（文件名跟随 #!name）：
 - 2026-10-02 13:57:49 · Stream_Check → 流媒体解锁检测
@@ -109,11 +110,22 @@ loon/51Job_remove_ads.lpx  ──►  #!name=前程无忧去广告  ──►  l
 删除模块 1 个（上游已下架）：
 - 2026-10-02 13:57:49 · Old_Plugin.sgmodule
 
+⚠️ 需人工确认 1 个（转换器没能自动处理，请看一眼）：
+- 2026-10-19 23:24:57 · 代理链路检测.sgmodule · generic 脚本没有节点上下文
+
+已自动适配 2 个（转换器做了等价改写，功能不受影响）：
+- 2026-10-02 13:57:49 · 财新去广告.sgmodule · 属性名归一（下划线转连字符） ×6；重名脚本自动加后缀
+- 2026-10-19 23:24:57 · 代理链路检测.sgmodule · 属性名归一（下划线转连字符）
+
 同步时间：2026-11-03 02:31:05（北京时间）
 ```
 
 时间一律取可莉 `list.json` 里的 `date`，不是本机同步时刻；上游没给日期时写"未知时间"，
 也占住时间位，保证每行能竖着对齐扫。单个分组超过 60 条会折叠成 `… 其余 N 个略`。
+
+**角标说明**：模块名后面挂 `已适配` 表示转换器替它做了等价改写；挂 `⚠️ 需人工确认`
+表示有原始行没能自动处理，或者运行时行为和 Loon 不完全一样。正文末尾两节会把原因摊开写。
+只看本轮改动过的模块——历史欠账不会每天刷一遍；完整的存量清单在 Job Summary 里。
 
 **对比方式**：上游的 `date` 字段是站点重建时间（275 条里 273 条完全相同），当不了版本号。
 所以每轮都下载并算 SHA-256，哈希没变就不落盘、不重转，`index.json` 也不会重写——
@@ -198,6 +210,11 @@ Git 里不会出现"只改时间戳"的空提交。
 | `request.header.set` | `header-del` + `header-add` | Surge 没有 set |
 | `redirect(302, url)` | `[URL Rewrite] pattern url 302` | 只支持 302/307 |
 | `http-request <pattern> script-path=...` | `type=http-request, pattern=...` | 补 Loon 的默认 timeout |
+| V2：`request if ${url} ~= /re/i then script("url") with …` | `type=http-request, pattern=...` | `request`/`response` → `http-request`/`http-response`，路径取自 `script(…)` |
+| V2：`generic then script("url") with tag=…` | `type=generic, script-path=…` | `img_url` 等显示元数据丢弃 |
+| V2：`script("url", {${A}, ${B}}) with …` | `argument="{…}"` + `#!arguments` | Surge 没有位置参数，拼成 JSON 交给 `$argument` |
+| `requires_body=true` / `binary_body_mode` | `requires-body` / `binary-body-mode` | 下划线写法归一成连字符，`requires-body` 丢了脚本就读不到响应体 |
+| 同名 `tag` 出现多次 | 自动加 `-2`、`-3` 后缀 | Surge 里同名脚本只会留下一条生效 |
 | `cron {Cron} ...` | `type=cron, cronexp="{{{Cron}}}"` | |
 | `enable={Arg}` | 行前缀 `{{{Arg}}}` + 默认值 `#` | 参数默认值决定默认开关 |
 | `[MITM] hostname=` | `hostname = %APPEND%` | 多条合并，`%APPEND%` 只补一次 |
@@ -206,16 +223,100 @@ Git 里不会出现"只改时间戳"的空提交。
 
 ## 无法转换时怎么办
 
-分三档，都不会「悄悄丢掉」：
+先把两件事分开：**转换器替你改好了**，和**转换器没能处理、要你看一眼**。
+两者都会写进 `index.json`（`adapted` / `review` 两个字段）、提交信息、Job Summary，
+不靠翻日志。
 
-1. **单行注释 + 报告** — 例如 `url.replace`、非拒绝策略下的 `pre-matching`。
-   该行以 `#` 注释保留在文件末尾，模块其余部分照常可用。
-2. **策略级注释** — Surge 模块 `[Rule]` 只允许 `DIRECT/REJECT/REJECT-TINYGIF`，
-   出现 `PROXY` 等策略时只注释这一条规则，不让整个模块导入失败。
-3. **整模块失败** — 只有结构性错误（例如 `[IP Rewrite]` 写了非法地址）才拒绝产出，
-   此时不会覆盖上一版文件。
+| 档位 | 触发 | 结果 | 记录在哪 |
+| --- | --- | --- | --- |
+| 已自动适配 | `requires_body` 归一、重名脚本加后缀、V2 语法改写、参数清单转 `argument` | 模块照常产出，功能不受影响 | 提交信息「已自动适配」+ `adapted` 字段 |
+| **需人工确认** | 有行只能注释保留、`generic` 脚本运行时差异、缺 `[MITM]`、未声明的参数 | **模块照常产出**，原文注释在文件末尾 | 提交信息「⚠️ 需人工确认」+ `review` 字段 |
+| 整份排除（Loon 专用） | 去掉无法转换的部分后什么都不剩 | 不生成模块，保留 `.lpx` | 报告「未生成」，不算失败 |
+| 转换失败 | 源文件本身有毛病（`[Argument]` 缺默认值、非法地址） | 不覆盖上一版，单独列出等人处理 | 报告「转换失败」，退出码非 0 |
 
-诊断都带错误码（`rule-policy`、`rewrite-action`、`script-enable`…），`--report` 可输出 JSON 给 CI 判断。
+前三档的共同点是**不假装成功**：能改的改完并写清改了什么，改不了的留原文注释、把文件位置
+和人该看的东西一并标出来。
+
+### 那一行到底怎么处理
+
+遇到转不了的行，按这个顺序想，不要停在"注释掉"就完事：
+
+1. **能等价改写就改写** — `requires_body`→`requires-body`、V2 的 `script("url")`→`script-path=`、
+   `{${A}}`→`argument` JSON。这类改写写进 `adapted`，并加一条回归用例钉住。
+2. **整条规则装不进 Surge 就只注释这条** — `PROXY` 策略的规则注释掉，模块其余部分照常可用。
+3. **只剩注释就没意义就整份排除** — 见下一节。
+4. **运行时行为对不上就标「需人工确认」** — 例如 `generic` 脚本拿不到 Loon 的节点上下文。
+   模块是能导入的，但别让人以为它一定在工作。
+
+### 对照 deanxizian/loon_to_surge
+
+它把每处特殊处理都记进 `Surge/convert-report.json`，用 `kind` 分类，与"转换失败"严格分开：
+
+| 它的 kind | 是什么 | 这里的对应 |
+| --- | --- | --- |
+| `script-attribute-normalized`、`script-property-corrected` | 属性名/取值规整 | 已自动适配 |
+| `script-object-adapted` | `script("url", {${A}})` 参数清单改写 | 已自动适配 |
+| `generic-script-adapted` | `generic` 脚本改写 | 已自动适配 + ⚠️ 需人工确认（运行时差异） |
+| `source-repair-applied` | 源文件里 `response.json.replace` 之类补成可执行动作 | 直接转换（这里按语法映射，不需要"修"） |
+| `script-http-name-shared` | 脚本重名 | 已自动适配（自动加 `-2`；它只报不改，第二条会被第一条覆盖） |
+| `module-excluded` | 整份表达不出来 | 未生成（Loon 专用） |
+
+差别只有两处：
+- 它对「自动加入TestFlight」这类**部分可转**的插件整份排除；这里会把能转的脚本转出来，
+  只把 `PROXY` 规则留在文件末尾注释里——规则少一条能手动补，脚本没了就真没了。
+- 它检测到脚本重名但没改名，生成的模块里同名脚本只有一条生效；这里自动加后缀并记录。
+
+### 为什么有的插件天生没有 Surge 模块
+
+Surge 模块的 `[Rule]` 段只接受 `DIRECT`、`REJECT`、`REJECT-TINYGIF`——不能用策略组。
+而可莉有些插件的整份内容就是一串"这些域名走代理"：
+
+```
+[Rule]
+DOMAIN-SUFFIX, dnsleaktest.com, PROXY
+DOMAIN-SUFFIX, whoer.net, PROXY
+```
+
+这种插件在 Loon 里靠 `PROXY` 指代"当前选中的节点"，搬到模块里没有对等物。
+硬转只会得到一个空模块，看着装上其实什么也没拦——所以结论是**不生成**，
+但原始 `.lpx` 照常同步下来，在 Loon 里仍然可用。
+
+对照 [deanxizian/loon_to_surge](https://github.com/deanxizian/loon_to_surge)：
+它把这类记为 `module-excluded`（275 个里 18 个），与"转换失败"严格分开，
+并且明确不为此占住文件名。这里采用同一套语义，中文写作「未生成（Loon 专用）」。
+差别只有一处：若插件**除了**这些规则还有可用脚本（例如「自动加入TestFlight」），
+这里会把脚本转出来、把无法转换的规则留在文件末尾注释里，而不是整份丢掉。
+
+### 报告长什么样
+
+Job Summary 里每类分开列，一眼能看出哪个要管、哪个不用管：
+
+```
+- 新增 275 · 更新 0 · 重命名 0 · 删除 0 · 转换失败 0 · 未生成 1
+- 需人工确认 14 · 已自动适配 68
+
+### ⚠️ 需人工确认 14
+> 这些模块已经生成并能导入，但里面有转换器没能自动处理的原始行（注释在文件末尾），
+> 或者运行时行为和 Loon 不完全一样。改完源插件后下一轮会重新判定。
+
+- `代理链路检测`：generic 脚本没有节点上下文
+- `BoxJs`：1 行无法自动转换，原文注释在文件末尾
+
+### 已自动适配 68（不需要处理）
+> 转换器做了等价改写，功能不受影响，只是生成的模块和源文件长得不完全一样。
+
+- `财新去广告`：属性名归一（下划线转连字符） ×6；重名脚本自动加后缀
+
+### 未生成模块 1（Loon 专用，不是故障）
+> 这些插件的内容 Surge 模块表达不出来（通常是规则里写了 PROXY…）。
+> 原始 .lpx 已照常保存，可以在 Loon 里使用；这里不算失败，也不会让流水线变红。
+
+- `DNS防泄露`：模块规则只能用 DIRECT/REJECT，原文用的是 PROXY
+```
+
+（实测 273 个插件：需人工确认 14 个、已自动适配 68 个、未生成 1 个、转换失败 0 个。）
+
+诊断都带错误码（`rule-policy`、`rewrite-action`、`script-attribute-alias`…），`--report` 可输出 JSON 给 CI 判断。
 
 ## 性能
 
@@ -277,6 +378,8 @@ internal/cliargs/   标志与位置参数分离
 
 - `url.replace(a, b)` 不转换：Loon 是「URL 子串替换」，Surge 的 `[URL Rewrite]` 是「整条 URL 替换」，两者不等价，硬转会改坏跳转。
 - `[Script]` 的 `generic` 会照转但给出警告：Loon 有被选节点上下文，Surge 没有。
+  个别脚本还要 `$argument.policy` 之类的模块参数（如「代理链路检测」），那属于脚本级知识，
+  转换器不会替你猜，需要自己补 `#!arguments=Policy:PROXY` 和 `argument="policy={{{Policy}}}"`。
 - `network-changed` 触发器、`response.body.mock`、Loon 专属的 `img-url` 等暂无对应。
 - MITM 不会自动推断：源插件没写 `hostname` 但存在改写行时，只提示手动补。
 - 静态检查通过 ≠ 真机可用。远程脚本、正则引擎差异仍需在 Surge 里实测一遍。

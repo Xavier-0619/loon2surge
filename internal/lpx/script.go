@@ -38,6 +38,12 @@ var scriptDefaultTimeout = map[string]int{
 	"generic":       300,
 }
 
+// V2 触发器名与 Surge 的对应：Loon 写 request / response，Surge 要 http-request / http-response。
+var scriptKindAlias = map[string]string{
+	"request":  "http-request",
+	"response": "http-response",
+}
+
 var falsyValues = map[string]bool{"false": true, "0": true, "off": true, "no": true, "#": true, "": true}
 
 var (
@@ -49,11 +55,27 @@ var (
 type attrSet struct {
 	values map[string]string
 	order  []string
+	// renamed 记录被归一过的属性名（`requires_body` → `requires-body`）。
+	// 这不是美化：不归一就会被当成未知属性丢掉，而 requires-body 掉了
+	// 脚本就读不到响应体——模块能导入，但去广告静默失效。
+	renamed []string
 }
 
 func newAttrSet() *attrSet { return &attrSet{values: map[string]string{}} }
 
+// normalizeAttrKey 把 `requires_body`、`Requires-Body` 这类写法统一成 Surge 的连字符小写。
+//
+// 可莉的插件两种写法都在用（财新去广告整份用下划线），Loon 自己两种都吃，
+// Surge 只认连字符形式。
+func normalizeAttrKey(key string) string {
+	return strings.ReplaceAll(strings.ToLower(strings.TrimSpace(key)), "_", "-")
+}
+
 func (a *attrSet) set(key, value string) {
+	if normalized := normalizeAttrKey(key); normalized != key {
+		a.renamed = appendUnique(a.renamed, key+" → "+normalized)
+		key = normalized
+	}
 	if _, seen := a.values[key]; !seen {
 		a.order = append(a.order, key)
 	}
@@ -81,15 +103,45 @@ func convertScript(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 	if kind == "network-changed" {
 		return nil, unsupported("script-network-changed", "Surge 没有 network-changed 触发器")
 	}
+	if alias, ok := scriptKindAlias[kind]; ok {
+		kind = alias
+	}
 	defaultTimeout, known := scriptDefaultTimeout[kind]
 	if !known {
 		return nil, unsupported("script-type", "不支持的脚本类型：%s", kind)
+	}
+
+	// V2 的路径写在动作里：`generic then script("https://…/a.js") with tag=…`。
+	// 先把它摘出来，剩下的部分才按"匹配条件"解析。
+	pathFromAction := ""
+	var actionAttrs *attrSet
+	if head, action, found := splitThen(rest); found {
+		path, attrs, err := parseScriptAction(ctx, action)
+		if err != nil {
+			return nil, err
+		}
+		pathFromAction, actionAttrs, rest = path, attrs, head
 	}
 
 	condition, rest := splitCondition(rest)
 	pattern, attrs, err := splitPattern(rest)
 	if err != nil {
 		return nil, err
+	}
+	if actionAttrs != nil {
+		for _, key := range actionAttrs.order {
+			if value, ok := actionAttrs.values[key]; ok {
+				attrs.set(key, value)
+			}
+		}
+	}
+	// 属性名归一过就明说：这一条往往决定了脚本到底能不能跑。
+	renamed := append([]string{}, attrs.renamed...)
+	if actionAttrs != nil {
+		renamed = append(renamed, actionAttrs.renamed...)
+	}
+	for _, change := range appendUnique(nil, renamed...) {
+		ctx.Adapt("script-attribute-alias", "属性名归一 "+change, lineno)
 	}
 	if condition != "" {
 		pattern, err = urlPattern(condition)
@@ -103,6 +155,9 @@ func convertScript(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 
 	scriptPath, _ := attrs.pop("script-path")
 	if scriptPath == "" {
+		scriptPath = pathFromAction
+	}
+	if scriptPath == "" {
 		return nil, unsupported("script-path", "缺少 script-path")
 	}
 	if timeout, ok := attrs.get("timeout"); !ok || timeout == "" {
@@ -113,7 +168,11 @@ func convertScript(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 	if name == "" {
 		name = nameFromPath(scriptPath)
 	}
-	name = uniqueName(ctx, name)
+	name, renamedTo := uniqueName(ctx, name)
+	if renamedTo != "" {
+		ctx.Adapt("script-name-shared", "脚本重名，已改名为 "+renamedTo+
+			"（Surge 里同名脚本会被后者覆盖，只留一条生效）", lineno)
+	}
 
 	pieces := []string{"type=" + kind}
 	switch {
@@ -144,14 +203,16 @@ func convertScript(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 
 	enable, _ := attrs.get("enable")
 	for _, key := range attrs.order {
-		if _, left := attrs.values[key]; !left || key == "enable" || key == "img-url" {
+		if _, left := attrs.values[key]; !left || key == "enable" || isDisplayKey(key) {
 			continue
 		}
-		ctx.Warn("script-attribute", "忽略未知脚本属性 "+key, lineno)
+		// 丢掉一个不认识的属性可能是无声的功能缺失（当年 requires_body 就是这么丢的），
+		// 所以归到"请人看一眼"，不当作普通提示。
+		ctx.Review("script-attribute", "Surge 没有这个脚本属性，已丢弃："+key, lineno)
 	}
 
 	if kind == "generic" {
-		ctx.Warn("script-generic", "generic 脚本在 Surge 里没有 Loon 的节点上下文，请自行确认", lineno)
+		ctx.Review("script-generic", "generic 脚本在 Surge 里没有 Loon 的节点上下文，请自行确认", lineno)
 	}
 
 	body := name + " = " + strings.Join(pieces, ", ")
@@ -162,10 +223,163 @@ func convertScript(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 	return []Emit{{"Script", wrapped}}, nil
 }
 
+// isDisplayKey 是只在客户端列表里显示用的元数据，Surge 没有对应字段，静默丢弃。
+func isDisplayKey(key string) bool {
+	switch strings.ToLower(key) {
+	case "img-url", "img_url", "icon":
+		return true
+	}
+	return false
+}
+
+// splitThen 拆出 V2 的 ` then <动作>`；只认顶层，正则里的 then 不算。
+//
+// `generic then script(…)` 的 then 紧跟在触发器后面，切词后没有前导空格，也要认。
+func splitThen(text string) (head, action string, found bool) {
+	at := findTop(text, " then ", 0)
+	if at < 0 {
+		if len(text) >= 5 && strings.EqualFold(text[:5], "then ") {
+			return "", strings.TrimSpace(text[5:]), true
+		}
+		return text, "", false
+	}
+	return strings.TrimSpace(text[:at]), strings.TrimSpace(text[at+len(" then "):]), true
+}
+
+// parseScriptAction 解析 `script("url") with k=v, k=v`，取出路径与属性表。
+//
+// 还有一种带参数清单的写法：`script("url", {${A}, ${B}})`。清单里的名字在 Loon 里
+// 表示"把这两个参数传给脚本"，脚本用 $argument.A 取值；Surge 没有位置参数，
+// 只能传一条 argument=，所以拼成一个 JSON 对象塞进去——脚本里 $argument.A 照样取得到。
+func parseScriptAction(ctx *Ctx, action string) (string, *attrSet, error) {
+	const prefix = "script("
+	if len(action) < len(prefix) || !strings.EqualFold(action[:len(prefix)], prefix) {
+		return "", nil, unsupported("script-action", "无法识别的脚本动作：%s", action)
+	}
+
+	end := matchParen(action, len(prefix))
+	if end < 0 {
+		return "", nil, unsupported("script-action", "script( 没有闭合：%s", action)
+	}
+	path, names, err := splitScriptArgs(action[len(prefix):end])
+	if err != nil {
+		return "", nil, err
+	}
+
+	attrs := newAttrSet()
+	if len(names) > 0 {
+		attrs.set("argument", argumentJSON(ctx, names))
+	}
+
+	rest := strings.TrimSpace(action[end+1:])
+	if rest == "" {
+		return path, attrs, nil
+	}
+	if len(rest) < 4 || !strings.EqualFold(rest[:4], "with") {
+		return "", nil, unsupported("script-action", "script(…) 之后只支持 with 属性：%s", rest)
+	}
+	for _, chunk := range splitTop(strings.TrimSpace(rest[4:]), ",") {
+		if chunk == "" {
+			continue
+		}
+		key, value, found := strings.Cut(chunk, "=")
+		if !found {
+			return "", nil, unsupported("script-attribute", "属性缺少取值：%s", chunk)
+		}
+		attrs.set(strings.TrimSpace(key), unquote(value))
+	}
+	return path, attrs, nil
+}
+
+// splitScriptArgs 拆 script( 括号里的内容：路径 + 可选的 `{${A}, ${B}}` 参数清单。
+func splitScriptArgs(inside string) (string, []string, error) {
+	head, tail := takeToken(inside)
+	path := unquote(head)
+	tail = strings.TrimSpace(tail)
+	if tail == "" {
+		return path, nil, nil
+	}
+	if !strings.HasPrefix(tail, ",") {
+		return "", nil, unsupported("script-action", "script(…) 里除了路径只认参数清单：%s", tail)
+	}
+	tail = strings.TrimSpace(strings.TrimPrefix(tail, ","))
+	if !strings.HasPrefix(tail, "{") {
+		return "", nil, unsupported("script-action", "脚本参数清单要用 {} 包起来：%s", tail)
+	}
+	closeAt := strings.LastIndex(tail, "}")
+	if closeAt < 0 {
+		return "", nil, unsupported("script-action", "脚本参数清单没有闭合：%s", tail)
+	}
+
+	var names []string
+	for _, chunk := range splitTop(tail[1:closeAt], ",") {
+		name := strings.TrimSpace(chunk)
+		name = strings.TrimPrefix(name, "$")
+		name = strings.Trim(strings.TrimSpace(name), "{}")
+		if name = strings.TrimSpace(name); name != "" {
+			names = appendUnique(names, name)
+		}
+	}
+	return path, names, nil
+}
+
+// argumentJSON 把参数名清单拼成 Surge 的 argument= 取值。
+//
+// 键必须保持插件里的原样（`Weather.Provider`），脚本就是按这个名字取值的；
+// 值才是 `{{{声明名}}}`——[Argument] 里的点号会被换成下划线（Surge 参数名只认
+// 字母数字下划线），两边用 argName 对齐才不会一处有一处没有。
+//
+// 没声明过的参数留在 JSON 里给 null：Loon 那边它们本来就是 undefined，
+// 脚本自己会回落默认值。
+func argumentJSON(ctx *Ctx, names []string) string {
+	pieces := make([]string, 0, len(names))
+	var undeclared []string
+	for _, name := range names {
+		key := argName(name)
+		if _, declared := ctx.args.Defaults[key]; declared {
+			ctx.args.Used[key] = true
+			pieces = append(pieces, quoteValue(name)+":{{{"+key+"}}}")
+			continue
+		}
+		undeclared = append(undeclared, name)
+		pieces = append(pieces, quoteValue(name)+":null")
+	}
+	if len(undeclared) > 0 {
+		ctx.Review("script-argument", "参数没有在 [Argument] 里声明，按 null 传："+strings.Join(undeclared, ", "), 0)
+	}
+	ctx.Adapt("script-object-adapted", "脚本参数清单已转成 Surge 的 argument JSON", 0)
+	return "{" + strings.Join(pieces, ",") + "}"
+}
+
+// matchParen 从 start 开始找配对的右括号，跳过引号内的内容。
+func matchParen(text string, start int) int {
+	depth := 1
+	for i := start; i < len(text); i++ {
+		switch text[i] {
+		case '"', '\'':
+			i = skipQuoted(text, i) - 1
+		case '(':
+			depth++
+		case ')':
+			depth--
+			if depth == 0 {
+				return i
+			}
+		}
+	}
+	return -1
+}
+
 // splitCondition 把 V2 的 ` if ...` 尾巴拆出来。
+//
+// 两种写法都要认：`http-request script-path=… if …`（if 在属性之后），
+// 以及 `request if … then …`（if 紧跟触发器，前面没有空格可切）。
 func splitCondition(text string) (string, string) {
 	at := findTop(text, " if ", 0)
 	if at < 0 {
+		if len(text) >= 3 && strings.EqualFold(text[:3], "if ") {
+			return strings.TrimSpace(text[3:]), ""
+		}
 		return "", text
 	}
 	head := strings.TrimSpace(text[:at])
@@ -224,7 +438,7 @@ func applyEnable(ctx *Ctx, lineno int, body, raw string) (string, error) {
 		return body, nil
 	}
 	if falsyValues[strings.ToLower(value)] {
-		ctx.Warn("script-disabled", "脚本在源插件中默认关闭，已注释", lineno)
+		ctx.Review("script-disabled", "脚本在源插件中默认关闭，已注释；需要它生效请去掉行首的 #", lineno)
 		return "# " + body, nil
 	}
 
@@ -241,7 +455,7 @@ func applyEnable(ctx *Ctx, lineno int, body, raw string) (string, error) {
 	if falsyValues[strings.ToLower(strings.TrimSpace(defaultValue))] {
 		ctx.args.Defaults[param] = "#"
 	}
-	ctx.Warn("script-enable", "enable 已转为行前缀开关 {{{"+param+"}}}", lineno)
+	ctx.Adapt("script-enable", "enable 已转为行前缀开关 {{{"+param+"}}}", lineno)
 	return "{{{" + param + "}}}" + body, nil
 }
 
@@ -262,14 +476,17 @@ func enableParam(value string) (string, bool) {
 	return text, true
 }
 
-func uniqueName(ctx *Ctx, name string) string {
+func uniqueName(ctx *Ctx, name string) (string, string) {
 	candidate, index := name, 2
 	for ctx.names[candidate] {
 		candidate = name + "-" + strconv.Itoa(index)
 		index++
 	}
 	ctx.names[candidate] = true
-	return candidate
+	if candidate != name {
+		return candidate, candidate
+	}
+	return candidate, ""
 }
 
 func nameFromPath(path string) string {

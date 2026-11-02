@@ -101,6 +101,6 @@ runs:
           echo "🚀 已推送：\`$(head -n1 "$MSG")\`"
           echo ""
           echo '```'
-          sed -n '3,$p' "$MSG" | head -30
+          sed -n '3,$p' "$MSG" | head -40
           echo '```'
         } >> "$GITHUB_STEP_SUMMARY"

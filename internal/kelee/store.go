@@ -25,6 +25,10 @@ type Entry struct {
 	ModuleSHA string   `json:"module_sha"`
 	Status    string   `json:"status"`
 	Notes     []string `json:"notes"`
+	// Adapted 记转换器做过的等价改写（属性名归一、重名脚本加后缀…），
+	// Review 记还没能自动处理、要人看一眼的地方。两者都会写进提交信息。
+	Adapted []string `json:"adapted,omitempty"`
+	Review  []string `json:"review,omitempty"`
 }
 
 type indexFile struct {
@@ -136,9 +140,13 @@ func renderTable(entries []Entry, syncedAt string) string {
 
 	for _, entry := range sorted {
 		mark, module := "", "—"
-		if entry.Status == StatusOK {
+		switch entry.Status {
+		case StatusOK:
 			module = fmt.Sprintf("[module](%s)", linkPath("surge", entry.Stem+".sgmodule"))
-		} else {
+		case StatusExcluded:
+			// 不是故障，只是 Surge 模块装不下这个插件的内容，别打警告符号。
+			module = "Loon 专用"
+		default:
 			mark = " ⚠️"
 		}
 		fmt.Fprintf(&b, "| %s%s | %s | %s | %s | [`%s`](%s) · %s |\n",

@@ -327,6 +327,200 @@ func TestRealWorldZhihu(t *testing.T) {
 	})
 }
 
+// TestScriptV2Action 覆盖 Loon V2 的 `… then script("url") with …` 写法。
+//
+// 这类插件以前整批被判成"缺少 script-path"：路径其实写在 script(…) 里，
+// 不是 script-path= 属性。可莉的节点检测类插件几乎全是这种写法。
+func TestScriptV2Action(t *testing.T) {
+	t.Run("generic 取 script(…) 里的路径", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Script]
+generic then script("https://e.com/n.js") with tag="代理链路检测", img_url="link.circle.system"
+`)
+		equalStrings(t, section(result, "Script"), []string{
+			`代理链路检测 = type=generic, script-path=https://e.com/n.js, timeout=300`,
+		})
+	})
+
+	t.Run("request if … then script(…) 转成 http-request", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Script]
+request if ${url} ~= /^https?:\/\/a\.com\/v3\/.*\/apps$/i then script("https://e.com/c.js") with tag="取令牌"
+`)
+		equalStrings(t, section(result, "Script"), []string{
+			`取令牌 = type=http-request, pattern=(?i:^https?:\/\/a\.com\/v3\/.*\/apps$), ` +
+				`script-path=https://e.com/c.js, timeout=10`,
+		})
+	})
+
+	t.Run("cron 表达式留在左边当 cronexp", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Argument]
+Cron=input, "0 0/2 * * * ?"
+[Script]
+cron ${Cron} then script("https://e.com/j.js") with tag="定时", timeout=600
+`)
+		equalStrings(t, section(result, "Script"), []string{
+			`定时 = type=cron, cronexp="{{{Cron}}}", script-path=https://e.com/j.js, timeout=600`,
+		})
+	})
+
+	t.Run("img_url 是显示元数据，静默丢弃", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Script]
+generic then script("https://e.com/n.js") with tag="T", img_url="a.b"
+`)
+		for _, note := range result.Notes {
+			if note.Code == "script-attribute" {
+				t.Errorf("img_url 不该报未知属性：%v", note)
+			}
+		}
+	})
+}
+
+// TestModuleExcluded 说明什么样的插件算"Surge 表达不了"，而不是源文件坏了。
+func TestModuleExcluded(t *testing.T) {
+	proxyOnly := `#!name=t
+[Rule]
+DOMAIN-SUFFIX, a.com, PROXY
+DOMAIN, b.com, PROXY
+`
+	result := convert(t, proxyOnly)
+	if result.OK() {
+		t.Fatalf("整份规则都是 PROXY，不该产出模块：\n%s", result.Text)
+	}
+	if !result.Excluded() {
+		t.Errorf("应判定为排除而不是失败：%v", result.Notes)
+	}
+	if !strings.Contains(result.ExcludeReason(), "PROXY") {
+		t.Errorf("排除理由要提到 PROXY：%q", result.ExcludeReason())
+	}
+
+	// 有脚本可用时仍要产出，规则那行留在末尾注释里等人处理
+	mixed := `#!name=t
+[Rule]
+DOMAIN, a.com, PROXY
+[Script]
+request if ${url} ~= /x/ then script("https://e.com/a.js") with tag="A"
+`
+	ok := convert(t, mixed)
+	if !ok.OK() {
+		t.Fatalf("有可用脚本就该产出：%v", ok.Notes)
+	}
+	if !strings.Contains(ok.Text, "# DOMAIN, a.com, PROXY") {
+		t.Errorf("无法转换的规则应保留为注释：\n%s", ok.Text)
+	}
+
+	// 源文件本身有毛病时不能被当成"排除"，那是真要人看的失败
+	broken := convert(t, "#!name=t\n[Argument]\nBroken=input\n[Script]\nhttp-request ^https://a script-path=https://e.com/a.js\n")
+	if broken.Excluded() {
+		t.Errorf("参数缺默认值是源文件问题，不该算排除：%v", broken.Notes)
+	}
+}
+
+// TestScriptAttributeAlias 锁住一次真实事故：可莉 185 处脚本用 requires_body 写，
+// 不归一就会被当作未知属性丢掉——Surge 那边脚本读不到响应体，去广告静默失效。
+func TestScriptAttributeAlias(t *testing.T) {
+	result := convert(t, `#!name=t
+[Script]
+response if ${url} ~= /^https://////a//.com///x/i then script("https://e.com/a.js") with tag="去广告", requires_body=true, binary_body_mode=true
+`)
+	line := section(result, "Script")[0]
+	for _, want := range []string{"requires-body=true", "binary-body-mode=true"} {
+		if !strings.Contains(line, want) {
+			t.Errorf("下划线属性没有换成连字符，缺 %q：\n%s", want, line)
+		}
+	}
+	if strings.Contains(line, "_") && strings.Contains(line, "requires_body") {
+		t.Errorf("原始下划线写法还在：\n%s", line)
+	}
+	if got := codes(result.Adapted()); len(got) != 2 {
+		t.Errorf("每条归一都该记一次 adapted，得到 %v", got)
+	}
+	if got := codes(result.NeedsReview()); len(got) != 0 {
+		t.Errorf("属性名归一是等价改写，不该进待确认：%v", got)
+	}
+}
+
+// TestScriptObjectArgs 覆盖 script("url", {${A}, ${B}}) 这种带参数清单的写法。
+// 旧实现会把清单当成路径的一部分，生成 script-path="url", {…} 这种导不进去的行。
+func TestScriptObjectArgs(t *testing.T) {
+	t.Run("声明过的参数转成 argument JSON", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Argument]
+tab=switch, false, true
+useractivity=switch, true, false
+[Script]
+response if ${url} ~= /^https://////a//.com///x/i then script("https://e.com/a.js", {${tab}, ${useractivity}}) with tag="去广告", requires_body=true
+`)
+		line := section(result, "Script")[0]
+		want := `去广告 = type=http-response, pattern=(?i:^https://////a//.com///x), ` +
+			`script-path=https://e.com/a.js, requires-body=true, timeout=10, ` +
+			`argument="{\"tab\":{{{tab}}},\"useractivity\":{{{useractivity}}}}"`
+		if line != want {
+			t.Fatalf("产物不符：\n得到 %s\n期望 %s", line, want)
+		}
+		// 参数只出现在清单里，也要留在 #!arguments，否则 Surge 里就没人能改它了
+		if args := result.Sections["Script"]; len(args) == 0 {
+			t.Fatal("没有 Script 段")
+		}
+	})
+
+	t.Run("点号参数名：键保持原样，值用下划线名", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Argument]
+Weather.Provider=select, "ColorfulClouds", "WeatherKit"
+[Script]
+response if ${url} ~= /^https://////a//.com///x/i then script("https://e.com/a.js", {${Weather.Provider}}) with tag="天气"
+`)
+		line := section(result, "Script")[0]
+		// 脚本是按 "Weather.Provider" 这个键取值的，键被改掉设置就失效了
+		if !strings.Contains(line, `{\"Weather.Provider\":{{{Weather_Provider}}}}`) {
+			t.Errorf("点号参数名处理不对：\n%s", line)
+		}
+	})
+
+	t.Run("没声明的参数按 null 传并进待确认", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Script]
+response if ${url} ~= /^https://////a//.com///x/i then script("https://e.com/a.js", {${ghost}}) with tag="去广告"
+`)
+		line := section(result, "Script")[0]
+		if !strings.Contains(line, `{\"ghost\":null}`) {
+			t.Errorf("未声明参数应传 null：\n%s", line)
+		}
+		if got := codes(result.NeedsReview()); len(got) != 1 || got[0] != "script-argument" {
+			t.Errorf("未声明参数要进待确认，得到 %v", got)
+		}
+	})
+}
+
+// TestReviewAndAdaptedSeparated 确认两种诊断不会混在一个桶里：
+// 「替你改好了」和「你得看一眼」对使用者的意义完全不同。
+func TestReviewAndAdaptedSeparated(t *testing.T) {
+	result := convert(t, `#!name=t
+[Script]
+generic then script("https://e.com/n.js") with tag="链路检测"
+`)
+	if got := codes(result.NeedsReview()); len(got) != 1 || got[0] != "script-generic" {
+		t.Errorf("generic 脚本应进待确认，得到 %v", got)
+	}
+
+	skipped := convert(t, `#!name=t
+[Rule]
+DOMAIN, a.com, PROXY
+[Script]
+response if ${url} ~= /^https://////a//.com///x/i then script("https://e.com/a.js") with tag="去广告"
+`)
+	if skipped.Skipped != 1 {
+		t.Errorf("应记 1 行未能转换，得到 %d", skipped.Skipped)
+	}
+	summary := Summarize(skipped.NeedsReview())
+	if len(summary) != 0 {
+		t.Errorf("逐行注释的诊断应被压成一句计数，不该单独列出：%v", summary)
+	}
+}
+
 func BenchmarkConvert(b *testing.B) {
 	data, err := os.ReadFile("testdata/zhihu.lpx")
 	if err != nil {

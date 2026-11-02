@@ -286,6 +286,50 @@ func TestSyncPipeline(t *testing.T) {
 	}
 }
 
+// TestSyncExcludedIsNotFailure 锁住语义：Surge 表达不了的插件不算失败。
+//
+// 这类插件（例如整份规则都是 `…,PROXY`）不该每天在流水线里亮红灯，
+// 但原始 .lpx 必须照常留下，报告里也要说清为什么没有模块。
+func TestSyncExcludedIsNotFailure(t *testing.T) {
+	proxyOnly := "#!name=DNS防泄露\n[Rule]\nDOMAIN-SUFFIX, dnsleaktest.com, PROXY\nDOMAIN, whoer.net, PROXY\n"
+	site := newFakeSite(t, map[string]string{"/Tool/Loon/Lpx/Prevent_DNS_Leaks.lpx": proxyOnly})
+	root := t.TempDir()
+	vault := NewVault(root)
+
+	syncer := newSyncer(vault, site.sources(), 2, 0)
+	entries := syncer.run(site.remotes(t), vault.ReadState(), true, true)
+
+	if len(entries) != 1 || entries[0].Status != StatusExcluded {
+		t.Fatalf("应判定为 Loon 专用：%+v", entries)
+	}
+	if !strings.Contains(firstNote(entries[0].Notes), "PROXY") {
+		t.Errorf("理由要说明是 PROXY：%v", entries[0].Notes)
+	}
+	if _, err := os.Stat(vault.lpxPath("DNS防泄露")); err != nil {
+		t.Errorf("原始 .lpx 必须保留：%v", err)
+	}
+	if _, err := os.Stat(vault.modulePath("DNS防泄露")); !os.IsNotExist(err) {
+		t.Errorf("不该产出模块文件")
+	}
+
+	got := syncer.stats()
+	if len(got.failed) != 0 {
+		t.Errorf("排除不该记进失败：%v", got.failed)
+	}
+	if len(got.excluded) != 1 {
+		t.Errorf("应记一条排除：%v", got.excluded)
+	}
+
+	// 表格里标"Loon 专用"，不打警告符号——它不是故障
+	if _, err := vault.WriteTable(entries, "2026-11-02 00:00:00 UTC"); err != nil {
+		t.Fatalf("写表格失败：%v", err)
+	}
+	table := readFile(t, vault.tablePath())
+	if !strings.Contains(table, "Loon 专用") || strings.Contains(table, "⚠️") {
+		t.Errorf("表格标记不对：\n%s", table)
+	}
+}
+
 // TestSyncFollowsPluginName 是本轮需求的核心：文件名取 #!name，上游改名文件跟着改。
 func TestSyncFollowsPluginName(t *testing.T) {
 	path := "/Tool/Loon/Lpx/51Job_remove_ads.lpx"
@@ -519,6 +563,62 @@ func TestRequestShapeMatchesLoonClient(t *testing.T) {
 }
 
 // TestCommitMessage 检查提交正文：每行"时间在前、模块在后"，且只写真正动过的模块。
+// TestCommitMarks 提交信息要能在两个方向上回答同一个问题：
+// 这条模块是"转换器替我改过了"，还是"我没能全转、你得看一眼"。
+func TestCommitMarks(t *testing.T) {
+	now := time.Date(2026, 11, 2, 18, 30, 0, 0, time.UTC)
+	entries := []Entry{
+		{
+			Stem: "财新去广告", Date: "2026-10-02 13:57:49", Status: StatusOK,
+			Adapted: []string{"属性名归一（下划线转连字符） ×6", "重名脚本自动加后缀"},
+		},
+		{
+			Stem: "代理链路检测", Date: "2026-10-02 13:57:49", Status: StatusOK,
+			Adapted: []string{"属性名归一（下划线转连字符）"},
+			Review:  []string{"generic 脚本没有节点上下文"},
+		},
+		{Stem: "干净的", Date: "2026-10-02 13:57:49", Status: StatusOK},
+	}
+
+	message := commitMessage(changeSet{
+		entries: entries,
+		added:   []string{"财新去广告", "代理链路检测", "干净的"},
+		now:     now,
+	})
+
+	for _, want := range []string{
+		"需人工确认 1 · 合计 3",
+		"- 2026-10-02 13:57:49 · 财新去广告.sgmodule · 已适配",
+		"- 2026-10-02 13:57:49 · 代理链路检测.sgmodule · ⚠️ 需人工确认 · 已适配",
+		"- 2026-10-02 13:57:49 · 干净的.sgmodule",
+		"⚠️ 需人工确认 1 个（转换器没能自动处理，请看一眼）：",
+		"- 2026-10-02 13:57:49 · 代理链路检测.sgmodule · generic 脚本没有节点上下文",
+		"已自动适配 2 个（转换器做了等价改写，功能不受影响）：",
+		"- 2026-10-02 13:57:49 · 财新去广告.sgmodule · 属性名归一（下划线转连字符） ×6；重名脚本自动加后缀",
+	} {
+		if !strings.Contains(message, want) {
+			t.Errorf("提交信息里缺少 %q：\n%s", want, message)
+		}
+	}
+
+	// 没被改动的模块不该因为"历史上需要确认"就每天重复出现在提交信息里
+	quiet := commitMessage(changeSet{
+		entries: append(entries, Entry{Stem: "老账", Date: "2026-10-02 13:57:49", Status: StatusOK,
+			Review: []string{"1 行无法自动转换"}}),
+		added: []string{"干净的"},
+		now:   now,
+	})
+	if strings.Contains(quiet, "老账") {
+		t.Errorf("本轮没变的模块不该出现在提交信息里：\n%s", quiet)
+	}
+	if strings.Contains(quiet, "需人工确认 ") {
+		t.Errorf("本轮没有待确认的改动，就不该在统计行写：\n%s", quiet)
+	}
+	if strings.Contains(quiet, "已自动适配 ") {
+		t.Errorf("本轮没有适配的改动，就不该留空小节：\n%s", quiet)
+	}
+}
+
 func TestCommitMessage(t *testing.T) {
 	entries := []Entry{
 		{Stem: "前程无忧去广告", Date: "2026-10-02 13:57:49", Status: StatusOK},

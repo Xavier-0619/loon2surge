@@ -7,6 +7,7 @@ package lpx
 import (
 	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -54,12 +55,26 @@ type Emit struct {
 	Text    string
 }
 
+// 诊断的处理等级。区分这两种，是为了让"我替你改了什么"和"你得自己看一眼"
+// 分别可查：前者说明转换器做了等价改写，后者说明有东西没能自动处理。
+const (
+	// ActionAdapted 表示转换器做了等价改写（属性名归一、脚本重名加后缀…），
+	// 模块可以直接用，只是和源文件长得不完全一样。
+	ActionAdapted = "adapted"
+	// ActionReview 表示这里留有需要人确认的地方（原文注释、运行时语义差异…）。
+	ActionReview = "review"
+)
+
 // Note 是一条转换诊断；Fatal 表示该模块无法安全产出。
 type Note struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
 	Line    int    `json:"line,omitempty"`
 	Fatal   bool   `json:"fatal,omitempty"`
+	// Action 取 ActionAdapted / ActionReview，空表示只是记录，不需要人管。
+	Action string `json:"action,omitempty"`
+	// Skipped 表示这一行没能转换、以注释形式留在了文件末尾。
+	Skipped bool `json:"skipped,omitempty"`
 }
 
 func (n Note) String() string {
@@ -178,6 +193,9 @@ func (a *Args) Unused() []string {
 }
 
 // Table 渲染 #!arguments 的值。
+//
+// 只有含逗号才加引号：逗号是参数之间的分隔符，`Cron:0 0,12 * * *` 不引起来会被拆成两个参数。
+// 含空格的值（cron 表达式）不能加引号，引号会被当成值的一部分传给脚本。
 func (a *Args) Table() string {
 	pairs := make([]string, 0, len(a.Order))
 	for _, name := range a.Order {
@@ -217,6 +235,23 @@ func newCtx(options Options) *Ctx {
 // Warn 记一条不致命的诊断。
 func (c *Ctx) Warn(code, message string, line int) {
 	c.notes = append(c.notes, Note{Code: code, Message: message, Line: line})
+}
+
+// Adapt 记一条"转换器替你改写过了"的诊断。
+func (c *Ctx) Adapt(code, message string, line int) {
+	c.notes = append(c.notes, Note{Code: code, Message: message, Line: line, Action: ActionAdapted})
+}
+
+// Review 记一条"这里需要人看一眼"的诊断。
+func (c *Ctx) Review(code, message string, line int) {
+	c.notes = append(c.notes, Note{Code: code, Message: message, Line: line, Action: ActionReview})
+}
+
+// ReviewSkipped 记一条"这一行没能转换"，条文会以注释保留在文件末尾。
+func (c *Ctx) ReviewSkipped(code, message string, line int) {
+	c.notes = append(c.notes, Note{
+		Code: code, Message: message, Line: line, Action: ActionReview, Skipped: true,
+	})
 }
 
 // Fail 记一条致命诊断：模块不会产出。
@@ -264,6 +299,8 @@ type Result struct {
 	Notes    []Note
 	Sections map[string][]string
 	Order    []string
+	// Skipped 是无法转换、以注释形式留在文件末尾的行数。
+	Skipped int
 }
 
 // Fatal 返回致命诊断。
@@ -288,8 +325,69 @@ func (r Result) Warnings() []Note {
 	return out
 }
 
+// Adapted 返回"转换器做过等价改写"的诊断。
+func (r Result) Adapted() []Note { return r.withAction(ActionAdapted) }
+
+// NeedsReview 返回"需要人看一眼"的诊断。
+func (r Result) NeedsReview() []Note { return r.withAction(ActionReview) }
+
+func (r Result) withAction(action string) []Note {
+	var out []Note
+	for _, note := range r.Notes {
+		if note.Action == action {
+			out = append(out, note)
+		}
+	}
+	return out
+}
+
 // OK 表示模块可以安全落盘。
 func (r Result) OK() bool { return len(r.Fatal()) == 0 && len(r.Sections) > 0 }
+
+// Excluded 表示"这个插件在 Surge 里根本表达不出来"，而不是源文件坏了。
+//
+// 典型是 [Rule] 里写 PROXY：Surge 模块的规则只允许 DIRECT / REJECT / REJECT-TINYGIF，
+// 这类模块本质是"给代理用的规则集"，硬转出来会少掉关键规则、看着能装其实不对。
+// 调用方要把它和真正的转换失败分开统计——前者是正常结论，后者才要人去看。
+func (r Result) Excluded() bool {
+	fatal := r.Fatal()
+	if len(fatal) == 0 {
+		return false
+	}
+	for _, note := range fatal {
+		if note.Code != "module-excluded" {
+			return false
+		}
+	}
+	return true
+}
+
+// ExcludeReason 给出一句话的排除理由，优先解释"哪一行没被 Surge 接受"。
+func (r Result) ExcludeReason() string {
+	for _, note := range r.Warnings() {
+		if note.Code == "rule-policy" {
+			return "模块规则只能用 DIRECT/REJECT，原文用的是 " + policyOf(note.Message)
+		}
+	}
+	if warnings := r.Warnings(); len(warnings) > 0 {
+		return warnings[0].Message
+	}
+	return "没有任何可转换的内容"
+}
+
+// policyOf 从 "Surge 模块 [Rule] 不允许 PROXY 策略" 里取出策略名。
+func policyOf(message string) string {
+	const marker = "不允许 "
+	at := strings.Index(message, marker)
+	if at < 0 {
+		return "策略"
+	}
+	rest := message[at+len(marker):]
+	if end := strings.Index(rest, " "); end > 0 {
+		return rest[:end]
+	}
+	return rest
+}
 
 // CountByCode 按诊断码计数，报告里用。
 func CountByCode(notes []Note) map[string]int {
@@ -298,4 +396,51 @@ func CountByCode(notes []Note) map[string]int {
 		counts[note.Code]++
 	}
 	return counts
+}
+
+// 诊断码 → 一句话说明。提交信息和 Job Summary 都用这套词，
+// 免得同一件事在两处叫两个名字。
+var noteLabels = map[string]string{
+	"script-attribute-alias": "属性名归一（下划线转连字符）",
+	"script-name-shared":     "重名脚本自动加后缀",
+	"script-object-adapted":  "脚本参数清单转成 argument JSON",
+	"script-argument":        "参数未声明，按 null 传",
+	"script-enable":          "enable 转为模块参数开关",
+	"script-generic":         "generic 脚本没有节点上下文",
+	"script-attribute":       "有脚本属性被丢弃",
+	"script-disabled":        "脚本默认关闭，已注释",
+	"mitm-missing":           "缺 [MITM] hostname",
+	"section-unsupported":    "有 section 整段注释",
+	"general-unsupported":    "General 项未核验",
+}
+
+// Summarize 把同一 code 的诊断压成一行，按首次出现的顺序排列。
+//
+// 只给"需要人管"的诊断用：同一份插件里 `requires_body` 可能出现六次，
+// 逐条列出来只会把提交信息淹掉。
+func Summarize(notes []Note) []string {
+	var order []string
+	counts := map[string]int{}
+	for _, note := range notes {
+		if note.Skipped {
+			continue // 逐行的注释诊断会压成一句"N 行无法自动转换"，不逐条列
+		}
+		if _, seen := counts[note.Code]; !seen {
+			order = append(order, note.Code)
+		}
+		counts[note.Code]++
+	}
+
+	lines := make([]string, 0, len(order))
+	for _, code := range order {
+		label, ok := noteLabels[code]
+		if !ok {
+			label = code
+		}
+		if counts[code] > 1 {
+			label += " ×" + strconv.Itoa(counts[code])
+		}
+		lines = append(lines, label)
+	}
+	return lines
 }

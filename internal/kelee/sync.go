@@ -45,6 +45,9 @@ const (
 
 	// StatusOK 表示插件与模块都已就绪。
 	StatusOK = "ok"
+	// StatusExcluded 表示插件本身没问题，只是 Surge 模块表达不了（例如规则用 PROXY）。
+	// 这类不生成模块，但在报告里与"转换失败"分开写，免得天天报警。
+	StatusExcluded = "loon-only"
 	// StatusFailed 表示下载或转换失败，没有可用模块。
 	StatusFailed = "convert-failed"
 )
@@ -244,6 +247,7 @@ type Syncer struct {
 	renamed    []Rename
 	removed    []Entry
 	failed     []string
+	excluded   []string
 	blocked    bool
 	failedKeys map[string]bool
 }
@@ -383,36 +387,54 @@ func (s *Syncer) finish(remote Remote, got fetched, old *Entry, write bool, used
 				return s.keep(old, remote, err, used)
 			}
 		}
-		s.record(entry, old, changed, renamed)
 	}
 
-	return s.convert(entry, got.data, old, write)
+	entry = s.convert(entry, got.data, old, write)
+	s.record(entry, old, changed, renamed)
+	return entry
 }
 
-// record 归档这一条属于新增 / 重命名 / 更新。
+// record 归档这一条属于新增 / 更新 / 改名。
 //
-// 改名和改内容可以同时发生：改名是文件层面的事，更新是内容层面的事，各记各的。
+// 记账放在转换之后：只有真的产出了模块才算"新增/更新"。否则被排除的插件
+// （Surge 表达不了的）会出现在提交信息的模块清单里，指向一个不存在的文件。
+// 改名是文件层面的事实，与有没有模块无关，因此单独记。
 func (s *Syncer) record(entry Entry, old *Entry, changed, renamed bool) {
-	switch {
-	case old == nil:
-		s.added = append(s.added, entry.Stem)
-	case renamed:
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if renamed {
 		s.renamed = append(s.renamed, Rename{From: old.Stem, To: entry.Stem, Date: entry.Date})
-		if changed {
-			s.updated = append(s.updated, entry.Stem)
-		}
-	default:
-		s.updated = append(s.updated, entry.Stem)
 	}
+	if entry.Status != StatusOK || !changed {
+		return
+	}
+	if old == nil {
+		s.added = append(s.added, entry.Stem)
+		return
+	}
+	s.updated = append(s.updated, entry.Stem)
 }
 
 func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry {
 	entry.Status = StatusOK
 
+	// 排除的结论也可以复用：插件字节没变，结论就不会变，不必每天重跑一遍解析。
+	if old != nil && old.LpxSHA == entry.LpxSHA && old.Status == StatusExcluded {
+		entry.Status = StatusExcluded
+		entry.Notes = old.Notes
+		s.mu.Lock()
+		s.excluded = append(s.excluded, entry.Stem)
+		s.mu.Unlock()
+		return entry
+	}
+
 	reusable := old != nil && old.LpxSHA == entry.LpxSHA && old.Status == StatusOK
 	if reusable && (!write || fileExists(s.vault.modulePath(entry.Stem))) {
 		entry.ModuleSHA = old.ModuleSHA
 		entry.Notes = old.Notes
+		entry.Adapted = old.Adapted
+		entry.Review = old.Review
 		return entry
 	}
 
@@ -420,6 +442,16 @@ func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry
 	if !result.OK() {
 		if write {
 			_ = os.Remove(s.vault.modulePath(entry.Stem))
+		}
+		// 排除与失败要分开：排除是"Surge 模块表达不了"，属于正常结论，
+		// 不该每天在流水线里亮红灯；真失败才需要人来看。
+		if result.Excluded() {
+			entry.Status = StatusExcluded
+			entry.Notes = []string{result.ExcludeReason()}
+			s.mu.Lock()
+			s.excluded = append(s.excluded, entry.Stem)
+			s.mu.Unlock()
+			return entry
 		}
 		entry.Status = StatusFailed
 		entry.Notes = renderNotes(result.Notes, 8)
@@ -431,6 +463,8 @@ func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry
 
 	entry.ModuleSHA = hashOf([]byte(result.Text))
 	entry.Notes = renderNotes(result.Warnings(), 5)
+	entry.Adapted = lpx.Summarize(result.Adapted())
+	entry.Review = reviewSummary(result)
 	if write {
 		if err := writeFile(s.vault.modulePath(entry.Stem), []byte(result.Text)); err != nil {
 			fmt.Fprintf(os.Stderr, "  写入失败 %s：%v\n", entry.Stem, err)
@@ -439,6 +473,17 @@ func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry
 		}
 	}
 	return entry
+}
+
+// reviewSummary 把"要人看一眼"的诊断压成几行，没法转换的行数排在最前面。
+func reviewSummary(result lpx.Result) []string {
+	lines := lpx.Summarize(result.NeedsReview())
+	if result.Skipped > 0 {
+		lines = append([]string{
+			fmt.Sprintf("%d 行无法自动转换，原文注释在文件末尾", result.Skipped),
+		}, lines...)
+	}
+	return lines
 }
 
 // keep 下载失败时不删除既有产物，留一条记录说明这轮没跟上。
@@ -523,18 +568,19 @@ func (s *Syncer) markBlocked() {
 
 // outcome 是一轮同步的结果汇总。
 type outcome struct {
-	added   []string
-	updated []string
-	renamed []Rename
-	removed []Entry
-	failed  []string
-	blocked bool
+	added    []string
+	updated  []string
+	renamed  []Rename
+	removed  []Entry
+	failed   []string
+	excluded []string
+	blocked  bool
 }
 
 func (s *Syncer) stats() outcome {
 	return outcome{
 		added: s.added, updated: s.updated, renamed: s.renamed,
-		removed: s.removed, failed: s.failed, blocked: s.blocked,
+		removed: s.removed, failed: s.failed, excluded: s.excluded, blocked: s.blocked,
 	}
 }
 
@@ -668,13 +714,14 @@ func runSync(cfg config) int {
 	// 让 shell 去 grep 日志只会得到一行统计。
 	if cfg.commitFile != "" && !cfg.dryRun {
 		message := commitMessage(changeSet{
-			entries: entries,
-			added:   result.added,
-			updated: result.updated,
-			renamed: result.renamed,
-			removed: result.removed,
-			failed:  result.failed,
-			now:     now,
+			entries:  entries,
+			added:    result.added,
+			updated:  result.updated,
+			renamed:  result.renamed,
+			removed:  result.removed,
+			failed:   result.failed,
+			excluded: result.excluded,
+			now:      now,
 		})
 		if err := writeCommitMessage(cfg.commitFile, message); err != nil {
 			fmt.Fprintf(os.Stderr, "! 提交信息写入失败：%v\n", err)
@@ -790,10 +837,21 @@ func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
 	added, updated, removed, failed, renamed, blocked :=
 		result.added, result.updated, result.removed, result.failed, result.renamed, result.blocked
 
-	var bad []Entry
+	// 排除（Surge 表达不了）与失败（真出问题）分开列，否则每天都有一堆"失败"。
+	// 另外两类单独数：转换器替我们改写过的，和还没能自动处理、要人看一眼的。
+	var bad, loonOnly, reviewed, adapted []Entry
 	for _, entry := range entries {
-		if entry.Status != StatusOK && !syncer.failedKeys[entryKey(entry)] {
+		switch {
+		case entry.Status == StatusExcluded:
+			loonOnly = append(loonOnly, entry)
+		case entry.Status != StatusOK && !syncer.failedKeys[entryKey(entry)]:
 			bad = append(bad, entry)
+		}
+		if entry.Status == StatusOK && len(entry.Review) > 0 {
+			reviewed = append(reviewed, entry)
+		}
+		if entry.Status == StatusOK && len(entry.Adapted) > 0 {
+			adapted = append(adapted, entry)
 		}
 	}
 
@@ -801,10 +859,12 @@ func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
 	if cfg.dryRun {
 		prefix = "（dry-run，未写入）"
 	}
-	fmt.Printf("%s共 %d 个插件：新增 %d，更新 %d，重命名 %d，删除 %d，失败 %d\n",
-		prefix, len(entries), len(added), len(updated), len(renamed), len(removed), len(failed))
-	fmt.Printf("统计：新增 %d · 更新 %d · 重命名 %d · 删除 %d · 失败 %d · 合计 %d\n",
-		len(added), len(updated), len(renamed), len(removed), len(failed), len(entries))
+	fmt.Printf("%s共 %d 个插件：新增 %d，更新 %d，重命名 %d，删除 %d，失败 %d，Loon 专用 %d，需人工确认 %d，已适配 %d\n",
+		prefix, len(entries), len(added), len(updated), len(renamed), len(removed), len(failed),
+		len(loonOnly), len(reviewed), len(adapted))
+	fmt.Printf("统计：新增 %d · 更新 %d · 重命名 %d · 删除 %d · 失败 %d · Loon 专用 %d · 需人工确认 %d · 已适配 %d · 合计 %d\n",
+		len(added), len(updated), len(renamed), len(removed), len(failed), len(loonOnly),
+		len(reviewed), len(adapted), len(entries))
 
 	for _, group := range []struct {
 		label string
@@ -827,8 +887,9 @@ func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
 		"## 可莉插件同步",
 		"",
 		fmt.Sprintf("- 插件总数：**%d**", len(entries)),
-		fmt.Sprintf("- 新增 %d · 更新 %d · 重命名 %d · 删除 %d · 转换失败 %d",
-			len(added), len(updated), len(renamed), len(removed), len(bad)),
+		fmt.Sprintf("- 新增 %d · 更新 %d · 重命名 %d · 删除 %d · 转换失败 %d · 未生成 %d",
+			len(added), len(updated), len(renamed), len(removed), len(bad), len(loonOnly)),
+		fmt.Sprintf("- 需人工确认 %d · 已自动适配 %d", len(reviewed), len(adapted)),
 		"- 同步时间：" + syncedAt,
 	}
 	if len(renamed) > 0 {
@@ -850,9 +911,35 @@ func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
 		}
 	}
 	if len(bad) > 0 {
-		summary = append(summary, "", fmt.Sprintf("### 未生成模块 %d", len(bad)), "")
+		summary = append(summary, "", fmt.Sprintf("### 转换失败 %d（需要看一眼）", len(bad)), "")
 		for _, entry := range headEntries(bad, 20) {
 			summary = append(summary, fmt.Sprintf("- `%s`：%s", entry.Stem, firstNote(entry.Notes)))
+		}
+	}
+	if len(reviewed) > 0 {
+		summary = append(summary, "", fmt.Sprintf("### ⚠️ 需人工确认 %d", len(reviewed)), "")
+		summary = append(summary, "> 这些模块**已经生成并能导入**，但里面有转换器没能自动处理的原始行（注释在文件末尾），",
+			"> 或者运行时行为和 Loon 不完全一样。改完源插件后下一轮会重新判定。", "")
+		for _, entry := range headEntries(reviewed, 30) {
+			summary = append(summary, fmt.Sprintf("- `%s`：%s", entry.Stem, strings.Join(entry.Review, "；")))
+		}
+	}
+	if len(adapted) > 0 {
+		summary = append(summary, "", fmt.Sprintf("### 已自动适配 %d（不需要处理）", len(adapted)), "")
+		summary = append(summary, "> 转换器做了等价改写，功能不受影响，只是生成的模块和源文件长得不完全一样。", "")
+		for _, entry := range headEntries(adapted, 20) {
+			summary = append(summary, fmt.Sprintf("- `%s`：%s", entry.Stem, strings.Join(entry.Adapted, "；")))
+		}
+		if len(adapted) > 20 {
+			summary = append(summary, fmt.Sprintf("- 其余 %d 个略", len(adapted)-20))
+		}
+	}
+	if len(loonOnly) > 0 {
+		summary = append(summary, "", fmt.Sprintf("### 未生成模块 %d（Loon 专用，不是故障）", len(loonOnly)), "")
+		summary = append(summary, "> 这些插件的内容 Surge 模块表达不出来（通常是规则里写了 `PROXY`：模块规则只允许 `DIRECT` / `REJECT` / `REJECT-TINYGIF`）。",
+			"> 原始 `.lpx` 已照常保存，可以在 Loon 里使用；这里不算失败，也不会让流水线变红。", "")
+		for _, entry := range headEntries(loonOnly, 20) {
+			summary = append(summary, fmt.Sprintf("- `%s`：%s", entry.Name, firstNote(entry.Notes)))
 		}
 	}
 	writeSummary(summary)

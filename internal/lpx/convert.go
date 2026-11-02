@@ -90,6 +90,7 @@ func (c *Converter) run() Result {
 		Notes:    c.ctx.notes,
 		Sections: sections,
 		Order:    order,
+		Skipped:  len(c.skipped),
 	}
 }
 
@@ -169,7 +170,7 @@ func (c *Converter) general() {
 				c.ctx.Warn("general-value", "ipv6-vif 取值无法映射："+value, line.No)
 			}
 		default:
-			c.ctx.Warn("general-unsupported", "未核验的 General 项："+key, line.No)
+			c.ctx.Review("general-unsupported", "未核验的 General 项，已忽略："+key, line.No)
 		}
 	}
 
@@ -299,7 +300,7 @@ func (c *Converter) warnMissingMITM(sections map[string][]string) {
 	}
 	for _, name := range []string{"URL Rewrite", "Header Rewrite", "Body Rewrite", "Map Local"} {
 		if _, ok := sections[name]; ok {
-			c.ctx.Warn("mitm-missing", "该模块改写了 HTTPS 流量，但源插件没有 hostname，请手动补 [MITM]", 0)
+			c.ctx.Review("mitm-missing", "该模块改写了 HTTPS 流量，但源插件没有 hostname，需手动补 [MITM]", 0)
 			return
 		}
 	}
@@ -312,7 +313,7 @@ func (c *Converter) unhandled() {
 		if handledSections[name] || len(lines) == 0 {
 			continue
 		}
-		c.ctx.Warn("section-unsupported",
+		c.ctx.Review("section-unsupported",
 			"["+name+"] 没有对应转换规则，"+strconv.Itoa(len(lines))+" 行已原样注释", 0)
 		for _, line := range lines {
 			c.skipped = append(c.skipped, line.Text)
@@ -326,7 +327,7 @@ func (c *Converter) skip(lineno int, line string, err error) {
 	if typed, ok := err.(*Unsupported); ok {
 		code, message = typed.Code, typed.Message
 	}
-	c.ctx.Warn(code, message+" → 已注释："+shorten(line), lineno)
+	c.ctx.ReviewSkipped(code, message+" → 已注释："+shorten(line), lineno)
 	c.skipped = append(c.skipped, line)
 }
 
@@ -453,12 +454,12 @@ func cidrOf(item string, lineno int, ctx *Ctx) string {
 	}
 	_, network, err := net.ParseCIDR(text)
 	if err != nil || network.IP.To4() == nil {
-		ctx.Warn("general-unsupported", "include-tun 只接受 IPv4 网段："+item, lineno)
+		ctx.Review("general-unsupported", "include-tun 只接受 IPv4 网段，已忽略："+item, lineno)
 		return ""
 	}
 	ones, bits := network.Mask.Size()
 	if bits != 32 {
-		ctx.Warn("general-unsupported", "include-tun 只接受 IPv4 网段："+item, lineno)
+		ctx.Review("general-unsupported", "include-tun 只接受 IPv4 网段，已忽略："+item, lineno)
 		return ""
 	}
 	return network.IP.String() + "/" + strconv.Itoa(ones)
