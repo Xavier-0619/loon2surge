@@ -795,6 +795,7 @@ func tidyHeader(lines []string, repo string, add func(string)) []string {
 		fill("category", owner, "补齐 #!category（Surge 里好归类）")
 		if note := provenance(repo); !contains(comments, note) {
 			comments = append(comments, note)
+			add("加一行来源说明")
 		}
 	}
 

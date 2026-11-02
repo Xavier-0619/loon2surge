@@ -1,7 +1,7 @@
 {
   "source": "https://github.com/ios151/Rewrite",
   "ref": "main",
-  "synced_at": "2026-11-02 18:52:58 UTC",
+  "synced_at": "2026-11-02 18:55:34 UTC",
   "count": 56,
   "merged": 46,
   "entries": [
@@ -14,7 +14,8 @@
       "status": "merged",
       "stem": "1808.online",
       "tidy": [
-        "补齐 #!author（标明来源）"
+        "补齐 #!author（标明来源）",
+        "加一行来源说明"
       ]
     },
     {
@@ -27,7 +28,8 @@
       "stem": "91暗网",
       "tidy": [
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -42,7 +44,8 @@
         "requires-body 的 true/false 统一写成 1/0",
         "[Script] 转义 pattern 主机名里的点",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -52,7 +55,10 @@
       "sha256": "1ff905e94ea65da81560975b8488e0e2cc510e94741b4d29e3deacd9e8b45fc3",
       "bytes": 634,
       "status": "merged",
-      "stem": "AppRaven 邀请助手"
+      "stem": "AppRaven 邀请助手",
+      "tidy": [
+        "加一行来源说明"
+      ]
     },
     {
       "name": "CAD快速看图",
@@ -64,7 +70,8 @@
       "stem": "CAD快速看图",
       "tidy": [
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -77,7 +84,8 @@
       "stem": "Carrot解锁订阅",
       "tidy": [
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -92,7 +100,8 @@
         "argument-name"
       ],
       "tidy": [
-        "requires-body 的 true/false 统一写成 1/0"
+        "requires-body 的 true/false 统一写成 1/0",
+        "加一行来源说明"
       ]
     },
     {
@@ -105,7 +114,8 @@
       "stem": "IPPure Panel",
       "tidy": [
         "section 按 Surge 惯例重排",
-        "补齐 #!author（标明来源）"
+        "补齐 #!author（标明来源）",
+        "加一行来源说明"
       ]
     },
     {
@@ -115,7 +125,10 @@
       "sha256": "3fed8c455aad2ffa3fc6a7296bbbf2b7c915c40167e144e4d2a12cf7c9e4660d",
       "bytes": 1575,
       "status": "merged",
-      "stem": "JAVHD解锁VIP"
+      "stem": "JAVHD解锁VIP",
+      "tidy": [
+        "加一行来源说明"
+      ]
     },
     {
       "name": "JAVHD解锁VIP",
@@ -136,7 +149,8 @@
       "tidy": [
         "section 按 Surge 惯例重排",
         "头部 #!key = value 统一成 #!key=value",
-        "补齐 #!author（标明来源）"
+        "补齐 #!author（标明来源）",
+        "加一行来源说明"
       ]
     },
     {
@@ -148,7 +162,8 @@
       "status": "merged",
       "stem": "Moshi",
       "tidy": [
-        "补齐 #!author（标明来源）"
+        "补齐 #!author（标明来源）",
+        "加一行来源说明"
       ]
     },
     {
@@ -161,6 +176,9 @@
       "stem": "Pear视频解析",
       "accepted_problems": [
         "argument-name"
+      ],
+      "tidy": [
+        "加一行来源说明"
       ]
     },
     {
@@ -174,7 +192,8 @@
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -187,7 +206,8 @@
       "stem": "Speedtest 广告vip \u0026 净化",
       "tidy": [
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -201,7 +221,8 @@
       "tidy": [
         "去掉 1 处行尾空白",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -214,7 +235,8 @@
       "duplicate_of": "Telegram重定向",
       "reason": "与 Telegram重定向 是同一个功能",
       "tidy": [
-        "头部 #!key = value 统一成 #!key=value"
+        "头部 #!key = value 统一成 #!key=value",
+        "加一行来源说明"
       ]
     },
     {
@@ -228,7 +250,8 @@
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -238,7 +261,10 @@
       "sha256": "18f40e192b690a33eaaad279d4fa93ebaf7ead825e9d40fcaa2fff22a90bb943",
       "bytes": 557,
       "status": "merged",
-      "stem": "XV暗网破解"
+      "stem": "XV暗网破解",
+      "tidy": [
+        "加一行来源说明"
+      ]
     },
     {
       "name": "Yu9191 → ios151 链接重定向",
@@ -249,7 +275,8 @@
       "status": "merged",
       "stem": "Yu9191 → ios151 链接重定向",
       "tidy": [
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -263,7 +290,8 @@
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -284,6 +312,9 @@
       "stem": "insav 解锁",
       "accepted_problems": [
         "argument-name"
+      ],
+      "tidy": [
+        "加一行来源说明"
       ]
     },
     {
@@ -298,7 +329,8 @@
         "requires-body 的 true/false 统一写成 1/0",
         "[Script] 转义 pattern 主机名里的点",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -311,7 +343,8 @@
       "stem": "linearitcurve",
       "tidy": [
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -324,7 +357,8 @@
       "stem": "m3u8",
       "tidy": [
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -337,6 +371,9 @@
       "stem": "porntube VIP 解锁",
       "accepted_problems": [
         "argument-name"
+      ],
+      "tidy": [
+        "加一行来源说明"
       ]
     },
     {
@@ -358,7 +395,8 @@
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -372,7 +410,8 @@
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -385,6 +424,9 @@
       "stem": "xjh51 香蕉视频",
       "accepted_problems": [
         "argument-name"
+      ],
+      "tidy": [
+        "加一行来源说明"
       ]
     },
     {
@@ -409,7 +451,8 @@
         "[MITM] 去掉 hostname 里的端口",
         "[MITM] 去掉重复的 hostname",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -424,7 +467,8 @@
         "requires-body 的 true/false 统一写成 1/0",
         "[Script] 转义 pattern 主机名里的点",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -436,7 +480,8 @@
       "status": "incompatible",
       "reason": "L10 [script-type] Script 行缺少合法的 type=：http-request ^https?:\\/\\/api\\.rrmj\\.plus\\/m-station\\/drama\\/(?:page|pla…",
       "tidy": [
-        "requires-body 的 true/false 统一写成 1/0"
+        "requires-body 的 true/false 统一写成 1/0",
+        "加一行来源说明"
       ]
     },
     {
@@ -452,7 +497,8 @@
         "[MITM] 去掉 hostname 里的端口",
         "[MITM] 去掉重复的 hostname",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -465,7 +511,8 @@
       "stem": "含羞草去广告 \u0026 视频解锁",
       "tidy": [
         "头部 #!key = value 统一成 #!key=value",
-        "补齐 #!author（标明来源）"
+        "补齐 #!author（标明来源）",
+        "加一行来源说明"
       ]
     },
     {
@@ -479,7 +526,8 @@
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -491,7 +539,8 @@
       "status": "merged",
       "stem": "套路SM VIP解锁",
       "tidy": [
-        "requires-body 的 true/false 统一写成 1/0"
+        "requires-body 的 true/false 统一写成 1/0",
+        "加一行来源说明"
       ]
     },
     {
@@ -504,6 +553,9 @@
       "stem": "妻友社区解锁",
       "accepted_problems": [
         "argument-name"
+      ],
+      "tidy": [
+        "加一行来源说明"
       ]
     },
     {
@@ -515,7 +567,8 @@
       "status": "merged",
       "stem": "妻社 VIP解锁",
       "tidy": [
-        "requires-body 的 true/false 统一写成 1/0"
+        "requires-body 的 true/false 统一写成 1/0",
+        "加一行来源说明"
       ]
     },
     {
@@ -525,7 +578,10 @@
       "sha256": "5a1fd9b33c36a47a5ca68c15057b8e6bbc50021c8bf59516623c98a72c4c7bf8",
       "bytes": 528,
       "status": "merged",
-      "stem": "幻宇星球 VIP 解锁"
+      "stem": "幻宇星球 VIP 解锁",
+      "tidy": [
+        "加一行来源说明"
+      ]
     },
     {
       "name": "快对答案",
@@ -538,7 +594,8 @@
       "reason": "与 快对去广告 名字高度重合",
       "tidy": [
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -553,7 +610,8 @@
         "requires-body 的 true/false 统一写成 1/0",
         "[Script] 转义 pattern 主机名里的点",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -566,6 +624,9 @@
       "stem": "洛丽塔 VIP 解锁",
       "accepted_problems": [
         "argument-name"
+      ],
+      "tidy": [
+        "加一行来源说明"
       ]
     },
     {
@@ -575,7 +636,10 @@
       "sha256": "1e74dd8b3ddf97e6216643a55aabf689a96f457d04db1b53b5e197b49be98952",
       "bytes": 773,
       "status": "merged",
-      "stem": "海角视频解锁VIP"
+      "stem": "海角视频解锁VIP",
+      "tidy": [
+        "加一行来源说明"
+      ]
     },
     {
       "name": "看理想VIP解锁",
@@ -586,7 +650,8 @@
       "status": "merged",
       "stem": "看理想VIP解锁",
       "tidy": [
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -600,7 +665,8 @@
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -613,7 +679,8 @@
       "stem": "适配可莉插件中心",
       "tidy": [
         "section 按 Surge 惯例重排",
-        "头部 #!key = value 统一成 #!key=value"
+        "头部 #!key = value 统一成 #!key=value",
+        "加一行来源说明"
       ]
     },
     {
@@ -626,7 +693,8 @@
       "duplicate_of": "酷我音乐去广告",
       "reason": "与 酷我音乐去广告 是同一个功能",
       "tidy": [
-        "requires-body 的 true/false 统一写成 1/0"
+        "requires-body 的 true/false 统一写成 1/0",
+        "加一行来源说明"
       ]
     },
     {
@@ -640,7 +708,8 @@
       "reason": "与 酷狗音乐去广告 是同一个功能",
       "tidy": [
         "去掉 1 处行尾空白",
-        "requires-body 的 true/false 统一写成 1/0"
+        "requires-body 的 true/false 统一写成 1/0",
+        "加一行来源说明"
       ]
     },
     {
@@ -654,7 +723,8 @@
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -668,7 +738,8 @@
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
-        "补齐 #!category（Surge 里好归类）"
+        "补齐 #!category（Surge 里好归类）",
+        "加一行来源说明"
       ]
     },
     {
@@ -680,7 +751,8 @@
       "status": "merged",
       "stem": "黄果短剧去广告",
       "tidy": [
-        "section 按 Surge 惯例重排"
+        "section 按 Surge 惯例重排",
+        "加一行来源说明"
       ]
     },
     {
@@ -693,6 +765,9 @@
       "stem": "黄豆短剧VIP解锁",
       "accepted_problems": [
         "argument-name"
+      ],
+      "tidy": [
+        "加一行来源说明"
       ]
     },
     {
