@@ -1,7 +1,7 @@
 {
   "source": "https://github.com/ios151/Rewrite",
   "ref": "main",
-  "synced_at": "2026-11-02 18:55:34 UTC",
+  "synced_at": "2026-11-02 20:12:12 UTC",
   "count": 56,
   "merged": 46,
   "entries": [
@@ -197,13 +197,13 @@
       ]
     },
     {
-      "name": "Speedtest 广告vip \u0026 净化",
+      "name": "Speedtest 广告vip & 净化",
       "path": "speedtest.sgmodule",
       "snapshot": "speedtest.sgmodule",
       "sha256": "02cccc88af5b7582597e9807e8cbd40c08be679de3d9abe2c789d376fc0b0911",
       "bytes": 590,
       "status": "merged",
-      "stem": "Speedtest 广告vip \u0026 净化",
+      "stem": "Speedtest 广告vip & 净化",
       "tidy": [
         "补齐 #!author（标明来源）",
         "补齐 #!category（Surge 里好归类）",
@@ -502,13 +502,13 @@
       ]
     },
     {
-      "name": "含羞草去广告 \u0026 视频解锁",
+      "name": "含羞草去广告 & 视频解锁",
       "path": "Hanxiucao/6lpu5.sgmodule",
       "snapshot": "Hanxiucao/6lpu5.sgmodule",
       "sha256": "cdff6bd4f7b6b003082f03002f47322bbc5e5547490841219b4d51a42d8dafac",
       "bytes": 1002,
       "status": "merged",
-      "stem": "含羞草去广告 \u0026 视频解锁",
+      "stem": "含羞草去广告 & 视频解锁",
       "tidy": [
         "头部 #!key = value 统一成 #!key=value",
         "补齐 #!author（标明来源）",

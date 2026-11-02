@@ -1,6 +1,6 @@
 {
   "source": "https://hub.kelee.one/list.json",
-  "synced_at": "2026-11-02 19:46:51 UTC",
+  "synced_at": "2026-11-02 20:12:11 UTC",
   "count": 275,
   "plugins": [
     {
@@ -27,7 +27,7 @@
         "[script-attribute-alias] L17: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×4"
       ]
@@ -53,7 +53,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "123云盘去广告",
@@ -75,7 +75,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "360摄像机去广告",
@@ -97,7 +97,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "360智慧生活去广告",
@@ -119,7 +119,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "36氪去广告",
@@ -141,7 +141,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "555电影去广告",
@@ -163,7 +163,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "5EPlay去广告",
@@ -185,7 +185,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Apple天气增强",
@@ -212,7 +212,7 @@
         "[rule-policy] L28: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：AND, ((OR, ((IP-ASN, 714, no-resolve), (IP-ASN, 6185, no-resolve))), (P…",
         "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "脚本参数清单转成 argument JSON ×2",
         "属性名归一（下划线转连字符） ×3"
@@ -241,7 +241,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "BoxJs",
@@ -265,7 +265,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ],
@@ -293,7 +293,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "DJ多多去广告",
@@ -316,7 +316,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -340,7 +340,7 @@
       "notes": [
         "模块规则只能用 DIRECT/REJECT，原文用的是 PROXY"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "DREAME去广告",
@@ -362,7 +362,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Dlabel云标签去广告",
@@ -384,7 +384,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "ECOVACS HOME去广告",
@@ -406,7 +406,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Fileball网盘挂载",
@@ -429,7 +429,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -456,7 +456,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "脚本参数清单转成 argument JSON"
       ]
@@ -481,7 +481,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Google搜索重定向",
@@ -503,7 +503,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "HTTPDNS拦截器",
@@ -530,7 +530,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Hong Kong Toolbar去广告",
@@ -554,7 +554,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "2 行无法自动转换，原文注释在文件末尾"
       ]
@@ -580,7 +580,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -607,7 +607,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "脚本参数清单转成 argument JSON",
         "属性名归一（下划线转连字符）"
@@ -633,7 +633,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "KOOK去广告",
@@ -655,7 +655,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Keep去广告",
@@ -677,7 +677,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Line去广告",
@@ -702,7 +702,7 @@
         "[rule-policy] L20: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：URL-REGEX, \"^https:\\/\\/w\\.line\\.me\\/adp\\/api\\/ad\\/v\\d\\/\", REJECT-DROP",
         "[rule-policy] L21: Surge 模块 [Rule] 不允许 REJECT-DROP 策略 → 已注释：URL-REGEX, \"^https:\\/\\/crs-event\\.line\\.me\\/v\\d\\/imp\", REJECT-DROP"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "14 行无法自动转换，原文注释在文件末尾"
       ]
@@ -727,7 +727,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "PICOOC去广告",
@@ -749,7 +749,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Pinterest去广告",
@@ -771,7 +771,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "QQ链接解锁",
@@ -793,7 +793,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "QQ音乐去广告",
@@ -815,7 +815,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "RQrun去广告",
@@ -837,7 +837,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Reddit去广告",
@@ -860,7 +860,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "1 行无法自动转换，原文注释在文件末尾"
       ]
@@ -885,7 +885,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Roborock去广告",
@@ -907,7 +907,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Script-Hub",
@@ -935,7 +935,7 @@
         "[meta-dropped] 头部字段 `select` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `input` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "1 行无法自动转换，原文注释在文件末尾"
       ]
@@ -960,7 +960,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Soul去广告",
@@ -985,7 +985,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -1013,7 +1013,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "脚本参数清单转成 argument JSON",
         "属性名归一（下划线转连字符） ×2"
@@ -1042,7 +1042,7 @@
         "[script-attribute-alias] L17: 属性名归一 binary_body_mode → binary-body-mode",
         "[script-attribute-alias] L19: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×10"
       ]
@@ -1070,7 +1070,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2"
       ],
@@ -1098,7 +1098,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "TeraBox去广告",
@@ -1120,7 +1120,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "TestFlight地区解锁",
@@ -1143,7 +1143,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "1 行无法自动转换，原文注释在文件末尾"
       ]
@@ -1169,7 +1169,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "1 行无法自动转换，原文注释在文件末尾"
       ]
@@ -1194,7 +1194,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "Uki去广告",
@@ -1219,7 +1219,7 @@
         "[script-attribute-alias] L28: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×4"
       ]
@@ -1248,7 +1248,7 @@
         "[script-name-shared] L20: 脚本重名，已改名为 修复时间线-4（Surge 里同名脚本会被后者覆盖，只留一条生效）",
         "[script-attribute-alias] L22: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "重名脚本自动加后缀 ×3",
         "属性名归一（下划线转连字符） ×2"
@@ -1277,7 +1277,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ],
@@ -1308,7 +1308,7 @@
         "[argument-unused] 参数 DAY 未被任何行引用，已删除",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）",
         "enable 转为模块参数开关",
@@ -1335,7 +1335,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "YY去广告",
@@ -1357,7 +1357,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "YY语音去广告",
@@ -1379,7 +1379,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "YouTube去广告",
@@ -1408,7 +1408,7 @@
         "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
         "[script-attribute-alias] L23: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "脚本参数清单转成 argument JSON ×3",
         "属性名归一（下划线转连字符） ×6"
@@ -1437,7 +1437,7 @@
         "[script-attribute-alias] L21: 属性名归一 requires_body → requires-body",
         "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "脚本参数清单转成 argument JSON ×8",
         "属性名归一（下划线转连字符） ×16"
@@ -1463,7 +1463,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "e充电去广告",
@@ -1485,7 +1485,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "一刻相册去广告",
@@ -1507,7 +1507,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "一甜相机去广告",
@@ -1529,7 +1529,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "七猫小说去广告",
@@ -1551,7 +1551,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "下厨房去广告",
@@ -1573,7 +1573,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "两步路户外助手去广告",
@@ -1595,7 +1595,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "中华万年历去广告",
@@ -1617,7 +1617,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "中国人保去广告",
@@ -1641,7 +1641,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2"
       ]
@@ -1666,7 +1666,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "中国移动云盘去广告",
@@ -1690,7 +1690,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2"
       ]
@@ -1715,7 +1715,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "乐播投屏去广告",
@@ -1738,7 +1738,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -1764,7 +1764,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -1789,7 +1789,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "京东去广告",
@@ -1813,7 +1813,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -1838,7 +1838,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "京东比价",
@@ -1864,7 +1864,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2"
       ]
@@ -1891,7 +1891,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2"
       ]
@@ -1917,7 +1917,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "1 行无法自动转换，原文注释在文件末尾"
       ]
@@ -1942,7 +1942,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "代理链路检测",
@@ -1966,7 +1966,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ],
@@ -1997,7 +1997,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "健康160去广告",
@@ -2019,7 +2019,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "全民K歌去广告",
@@ -2041,7 +2041,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "凤凰新闻去广告",
@@ -2063,7 +2063,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "创维智慧云去广告",
@@ -2085,7 +2085,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "前程无忧去广告",
@@ -2107,7 +2107,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "剑网三无界去广告",
@@ -2129,7 +2129,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "医考帮去广告",
@@ -2151,7 +2151,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "华住会去广告",
@@ -2173,7 +2173,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "华尔街见闻去广告",
@@ -2195,7 +2195,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "南网在线去广告",
@@ -2217,7 +2217,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "口袋壁纸去广告",
@@ -2240,7 +2240,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -2267,7 +2267,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "可莉广告过滤器",
@@ -2290,7 +2290,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "向日葵去广告",
@@ -2312,7 +2312,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "启信宝去广告",
@@ -2334,7 +2334,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "哈罗去广告",
@@ -2357,7 +2357,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -2385,7 +2385,7 @@
         "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
         "[script-attribute-alias] L68: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "脚本参数清单转成 argument JSON ×3",
         "属性名归一（下划线转连字符） ×7",
@@ -2417,7 +2417,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2"
       ]
@@ -2442,7 +2442,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "图怪兽去广告",
@@ -2464,7 +2464,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "堆糖去广告",
@@ -2486,7 +2486,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "墨迹天气去广告",
@@ -2508,7 +2508,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "多屏互动去广告",
@@ -2530,7 +2530,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "大姨妈月经期助手去广告",
@@ -2552,7 +2552,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "大麦去广告",
@@ -2574,7 +2574,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "天天跳绳去广告",
@@ -2596,7 +2596,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "天气通去广告",
@@ -2618,7 +2618,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "天气预报去广告",
@@ -2641,7 +2641,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "缺 [MITM] hostname"
       ]
@@ -2666,7 +2666,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "夸克去广告",
@@ -2688,7 +2688,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "夸克扫描王去广告",
@@ -2710,7 +2710,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "好轻去广告",
@@ -2732,7 +2732,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "威锋去广告",
@@ -2754,7 +2754,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "学习通去广告",
@@ -2776,7 +2776,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "完美世界电竞去广告",
@@ -2798,7 +2798,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "宝宝树孕育去广告",
@@ -2823,7 +2823,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×3"
       ]
@@ -2848,7 +2848,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "小宇宙去广告",
@@ -2870,7 +2870,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "小店掌柜去广告",
@@ -2892,7 +2892,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "小桔充电去广告",
@@ -2914,7 +2914,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "小白智慧打印去广告",
@@ -2936,7 +2936,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "小睡眠去广告",
@@ -2958,7 +2958,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "小米音箱去广告",
@@ -2980,7 +2980,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "小红书去广告",
@@ -3006,7 +3006,7 @@
         "[script-attribute-alias] L37: 属性名归一 requires_body → requires-body",
         "[script-attribute-alias] L39: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×12",
         "重名脚本自动加后缀"
@@ -3033,7 +3033,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "小象超市去广告",
@@ -3056,7 +3056,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -3081,7 +3081,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "帆书去广告",
@@ -3106,7 +3106,7 @@
         "[script-attribute-alias] L27: 属性名归一 requires_body → requires-body",
         "[script-name-shared] L27: 脚本重名，已改名为 帆书去广告-3（Surge 里同名脚本会被后者覆盖，只留一条生效）"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×9",
         "重名脚本自动加后缀 ×8"
@@ -3136,7 +3136,7 @@
         "[rule-duplicate] L196: 重复规则已合并：DOMAIN-SUFFIX,puata.info,REJECT,extended-matching,pre-matching",
         "[rule-duplicate] L205: 重复规则已合并：DOMAIN-SUFFIX,uyunad.com,REJECT,extended-matching,pre-matching"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "库街区去广告",
@@ -3158,7 +3158,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "彩云天气去广告",
@@ -3181,7 +3181,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -3206,7 +3206,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "得间小说去广告",
@@ -3228,7 +3228,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "微信公众号去广告",
@@ -3250,7 +3250,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "微信外部链接解锁",
@@ -3273,7 +3273,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -3301,7 +3301,7 @@
         "[script-attribute-alias] L219: 属性名归一 requires_body → requires-body",
         "[script-attribute-alias] L221: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.1",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×12"
       ]
@@ -3330,7 +3330,7 @@
         "[script-attribute-alias] L51: 属性名归一 requires_body → requires-body",
         "[script-attribute-alias] L53: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×20",
         "重名脚本自动加后缀 ×2"
@@ -3356,7 +3356,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "微店去广告",
@@ -3381,7 +3381,7 @@
         "[script-attribute-alias] L41: 属性名归一 binary_body_mode → binary-body-mode",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×4"
       ]
@@ -3406,7 +3406,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "快对去广告",
@@ -3428,7 +3428,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "快影去广告",
@@ -3450,7 +3450,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "快手去广告",
@@ -3472,7 +3472,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "快捷搜索",
@@ -3494,7 +3494,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "快看漫画去广告",
@@ -3519,7 +3519,7 @@
         "[script-attribute-alias] L57: 属性名归一 requires_body → requires-body",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×4"
       ]
@@ -3544,7 +3544,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "慧生活798去广告",
@@ -3566,7 +3566,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "成分喵去广告",
@@ -3588,7 +3588,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "拼多多去广告",
@@ -3613,7 +3613,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -3688,7 +3688,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "掌上英雄联盟去广告",
@@ -3710,7 +3710,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "掌阅去广告",
@@ -3732,7 +3732,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "排班日历去广告",
@@ -3754,7 +3754,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "推栏去广告",
@@ -3776,7 +3776,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "摩天轮去广告",
@@ -3798,7 +3798,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "摩托范去广告",
@@ -3821,7 +3821,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -3846,7 +3846,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "数字心动去广告",
@@ -3868,7 +3868,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "斗鱼去广告",
@@ -3891,7 +3891,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -3916,7 +3916,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "无他相机去广告",
@@ -3938,7 +3938,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "易校园去广告",
@@ -3960,7 +3960,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "智慧苏州去广告",
@@ -3982,7 +3982,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "智联招聘去广告",
@@ -4004,7 +4004,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "最右去广告",
@@ -4026,7 +4026,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "最美壁纸去广告",
@@ -4051,7 +4051,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×3"
       ]
@@ -4076,7 +4076,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "有道翻译官去广告",
@@ -4098,7 +4098,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "朴朴超市去广告",
@@ -4124,7 +4124,7 @@
         "[script-attribute-alias] L20: 属性名归一 requires_body → requires-body",
         "[script-name-shared] L20: 脚本重名，已改名为 移除朴朴超市广告-3（Surge 里同名脚本会被后者覆盖，只留一条生效）"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×6",
         "重名脚本自动加后缀 ×5"
@@ -4150,7 +4150,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "比心去广告",
@@ -4174,7 +4174,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2"
       ]
@@ -4199,7 +4199,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "汽水音乐去广告",
@@ -4222,7 +4222,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -4250,7 +4250,7 @@
         "[script-attribute-alias] L57: 属性名归一 requires_body → requires-body",
         "[script-attribute-alias] L59: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×6",
         "重名脚本自动加后缀"
@@ -4276,7 +4276,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "波点音乐去广告",
@@ -4298,7 +4298,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "测测去广告",
@@ -4320,7 +4320,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "海雀去广告",
@@ -4342,7 +4342,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "淘宝去广告",
@@ -4367,7 +4367,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2",
         "重名脚本自动加后缀"
@@ -4393,7 +4393,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "滴滴去广告",
@@ -4415,7 +4415,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "滴答出行去广告",
@@ -4437,7 +4437,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "漫客栈去广告",
@@ -4460,7 +4460,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -4485,7 +4485,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "爱奇艺去广告",
@@ -4507,7 +4507,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "猫耳FM去广告",
@@ -4529,7 +4529,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "瑞幸咖啡去广告",
@@ -4551,7 +4551,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "番茄小说去广告",
@@ -4573,7 +4573,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "百度地图去广告",
@@ -4595,7 +4595,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "百度文库去广告",
@@ -4617,7 +4617,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "百度网盘去广告",
@@ -4639,7 +4639,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "百度网页去广告",
@@ -4662,7 +4662,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -4687,7 +4687,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "百度贴吧去广告",
@@ -4713,7 +4713,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1",
+      "converter": "2.2.0",
       "adapted": [
         "脚本参数清单转成 argument JSON",
         "属性名归一（下划线转连字符） ×2"
@@ -4740,7 +4740,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -4765,7 +4765,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "盒马去广告",
@@ -4787,7 +4787,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "盖得排行去广告",
@@ -4809,7 +4809,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "直播吧去广告",
@@ -4831,7 +4831,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "省钱快报去广告",
@@ -4853,7 +4853,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "看家王去广告",
@@ -4875,7 +4875,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "知乎去广告",
@@ -4897,7 +4897,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "知识星球去水印",
@@ -4917,7 +4917,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "磁力宅播放器去广告",
@@ -4939,7 +4939,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "稿定设计去广告",
@@ -4961,7 +4961,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "米游社去广告",
@@ -4983,7 +4983,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "粉笔去广告",
@@ -5005,7 +5005,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "纵横小说去广告",
@@ -5027,7 +5027,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "纷玩岛去广告",
@@ -5049,7 +5049,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "网易云音乐去广告",
@@ -5075,7 +5075,7 @@
         "[script-attribute-alias] L50: 属性名归一 requires_body → requires-body",
         "[script-attribute-alias] L50: 属性名归一 binary_body_mode → binary-body-mode"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×12",
         "脚本参数清单转成 argument JSON ×2"
@@ -5102,7 +5102,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -5130,7 +5130,7 @@
         "[script-attribute-alias] L31: 属性名归一 requires_body → requires-body",
         "[script-name-shared] L31: 脚本重名，已改名为 移除网易新闻广告-3（Surge 里同名脚本会被后者覆盖，只留一条生效）"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×3",
         "重名脚本自动加后缀 ×2"
@@ -5156,7 +5156,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "网易邮箱大师去广告",
@@ -5178,7 +5178,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "美丽修行去广告",
@@ -5200,7 +5200,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "美图秀秀去广告",
@@ -5222,7 +5222,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "美柚去广告",
@@ -5244,7 +5244,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "美颜相机去广告",
@@ -5267,7 +5267,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -5292,7 +5292,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "联掌门户去广告",
@@ -5314,7 +5314,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "胖乖生活去广告",
@@ -5336,7 +5336,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "脉脉去广告",
@@ -5359,7 +5359,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -5384,7 +5384,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "腾讯视频去广告",
@@ -5407,7 +5407,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "1 行无法自动转换，原文注释在文件末尾"
       ]
@@ -5437,7 +5437,7 @@
         "[script-enable] L27: enable 已转为行前缀开关 {{{RunMonitor}}}",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "enable 转为模块参数开关 ×3"
       ],
@@ -5465,7 +5465,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "节点检测工具",
@@ -5493,7 +5493,7 @@
         "[script-generic] L15: generic 脚本在 Surge 里没有 Loon 的节点上下文，请自行确认",
         "[script-attribute-alias] L16: 属性名归一 img_url → img-url"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×3"
       ],
@@ -5522,7 +5522,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "菜鸟去广告",
@@ -5544,7 +5544,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "萌娘百科去广告",
@@ -5566,7 +5566,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "萝卜快跑去广告",
@@ -5588,7 +5588,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "萤石云视频去广告",
@@ -5610,7 +5610,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "薄荷健康去广告",
@@ -5633,7 +5633,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -5658,7 +5658,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "虎扑去广告",
@@ -5683,7 +5683,7 @@
         "[script-attribute-alias] L26: 属性名归一 requires_body → requires-body",
         "[script-name-shared] L26: 脚本重名，已改名为 移除虎扑广告-3（Surge 里同名脚本会被后者覆盖，只留一条生效）"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×4",
         "重名脚本自动加后缀 ×3"
@@ -5709,7 +5709,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "蜻蜓FM去广告",
@@ -5731,7 +5731,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "行者户外去广告",
@@ -5753,7 +5753,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "触站去广告",
@@ -5775,7 +5775,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "豆瓣去广告",
@@ -5797,7 +5797,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "豆瓣阅读去广告",
@@ -5819,7 +5819,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "贝壳找房去广告",
@@ -5841,7 +5841,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "财新去广告",
@@ -5866,7 +5866,7 @@
         "[script-attribute-alias] L30: 属性名归一 requires_body → requires-body",
         "[script-attribute-alias] L32: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×6",
         "重名脚本自动加后缀"
@@ -5892,7 +5892,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "超级课程表去广告",
@@ -5914,7 +5914,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "车来了去广告",
@@ -5937,7 +5937,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -5962,7 +5962,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "迅雷去广告",
@@ -5984,7 +5984,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "配音秀去广告",
@@ -6007,7 +6007,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -6033,7 +6033,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.1"
+      "converter": "2.2.0"
     },
     {
       "stem": "酷我音乐去广告",
@@ -6055,7 +6055,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "酷狗概念版去广告",
@@ -6077,7 +6077,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "酷狗铃声去广告",
@@ -6099,7 +6099,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "酷狗音乐去广告",
@@ -6121,7 +6121,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "金十数据去广告",
@@ -6143,7 +6143,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "金山文档去广告",
@@ -6165,7 +6165,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "闪动校园去广告",
@@ -6187,7 +6187,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "闲鱼去广告",
@@ -6209,7 +6209,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "阅友去广告",
@@ -6231,7 +6231,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "阿里云盘去广告",
@@ -6256,7 +6256,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2",
         "重名脚本自动加后缀"
@@ -6282,7 +6282,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "雪球去广告",
@@ -6304,7 +6304,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "顺丰速运去广告",
@@ -6326,7 +6326,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "风鸟去广告",
@@ -6349,7 +6349,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符）"
       ]
@@ -6376,7 +6376,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "adapted": [
         "属性名归一（下划线转连字符） ×2"
       ]
@@ -6401,7 +6401,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "香港抖音去广告",
@@ -6424,7 +6424,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "1 行无法自动转换，原文注释在文件末尾"
       ]
@@ -6449,7 +6449,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "马蜂窝去广告",
@@ -6471,7 +6471,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "驾校一点通去广告",
@@ -6493,7 +6493,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "驾考宝典去广告",
@@ -6515,7 +6515,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.2.0"
     },
     {
       "stem": "高德地图去广告",
@@ -6539,7 +6539,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.2.0",
       "review": [
         "2 行无法自动转换，原文注释在文件末尾"
       ]
