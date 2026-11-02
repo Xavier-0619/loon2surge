@@ -11,7 +11,7 @@ import (
 )
 
 // Version 是发布版本号；只随发布递增，和转换规则版本（lpx.Version）是两件事。
-const Version = "2.2.0"
+const Version = "2.3.0-rc.1"
 
 const usage = `loon2surge %s —— Loon 插件 → Surge 模块
 
