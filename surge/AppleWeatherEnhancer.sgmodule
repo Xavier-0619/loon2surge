@@ -1,0 +1,24 @@
+#!name=Apple天气增强
+#!desc=解锁Apple天气的全部功能、替换空气质量数据源、添加下一小时降水数据、添加天气数据。
+#!author=VirgilClyne[https://github.com/VirgilClyne], WordlessEcho[https://github.com/WordlessEcho], 001[https://github.com/001ProMax]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/AppleWeather.png
+#!category=可莉插件
+#!openUrl=https://itunes.apple.com/app/id1069513131
+#!tag=功能增强
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=20
+
+# 由 loon2surge 自动转换
+# 有 6 行无法自动转换，见文件末尾注释
+
+[MITM]
+hostname = %APPEND% weatherkit.apple.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# DOMAIN, weather-analytics-events.apple.com, REJECT-DROP
+# DOMAIN, tether.edge.apple, REJECT-DROP
+# DOMAIN-SUFFIX, tthr.apple.com, REJECT-DROP
+# AND, ((OR, ((IP-ASN, 714, no-resolve), (IP-ASN, 6185, no-resolve))), (PROTOCOL, QUIC)), REJECT-DROP
+# response if ${url} ~= /^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\//i then script("https://github.com/NSRingo/WeatherKit/releases/download/v3.1.0/response.bundle.js", {${Weather.Provider}, ${NextHour.Provider}, ${AirQuality.Calculate.Algorithm}, ${API.ColorfulClouds.Token}, ${API.QWeather.Host}, ${API.QWeather.Token}, ${API.WAQI.Token}, ${Storage}, ${LogLevel}}) with tag="天气可用性响应", requires_body=true
+# response if ${url} ~= /^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\//i then script("https://github.com/NSRingo/WeatherKit/releases/download/v3.1.0/response.bundle.js", {${Weather.Provider}, ${NextHour.Provider}, ${AirQuality.Calculate.Algorithm}, ${API.ColorfulClouds.Token}, ${API.QWeather.Host}, ${API.QWeather.Token}, ${API.WAQI.Token}, ${Storage}, ${LogLevel}}) with tag="天气响应", requires_body=true, binary_body_mode=true

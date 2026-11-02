@@ -1,0 +1,32 @@
+#!name=TubeMax去广告
+#!desc=过滤TubeMax广告
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TubeMax.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id1634335563
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+# 有 1 行无法自动转换，见文件末尾注释
+
+[Rule]
+DOMAIN-SUFFIX,adjust.com,REJECT,extended-matching,pre-matching
+DOMAIN-SUFFIX,applvn.com,REJECT,extended-matching,pre-matching
+DOMAIN-SUFFIX,app-measurement.com,REJECT,extended-matching,pre-matching
+DOMAIN-SUFFIX,pangle.io,REJECT,extended-matching,pre-matching
+DOMAIN-SUFFIX,applovin.com,REJECT,extended-matching,pre-matching
+DOMAIN-SUFFIX,appier.net,REJECT,extended-matching,pre-matching
+DOMAIN-SUFFIX,adsmoloco.com,REJECT,extended-matching,pre-matching
+DOMAIN-SUFFIX,adcanvas.com,REJECT,extended-matching,pre-matching
+
+[Map Local]
+(?i:^https:\/\/.*\.i18n-pglstatp\.com\/obj\/ad-pattern-sg) data-type=text data="" status-code=404
+
+[MITM]
+hostname = %APPEND% *.i18n-pglstatp.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# DOMAIN, app.tubemaxapp.com, PROXY

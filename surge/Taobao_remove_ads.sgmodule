@@ -1,0 +1,41 @@
+#!name=淘宝去广告
+#!desc=过滤淘宝开屏广告
+#!author=RuCu6[https://github.com/RuCu6]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Taobao.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id387682726
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+# 有 2 行无法自动转换，见文件末尾注释
+
+[Rule]
+DOMAIN,adashx.m.taobao.com,REJECT,extended-matching,pre-matching
+DOMAIN,ossgw.alicdn.com,REJECT,extended-matching,pre-matching
+DOMAIN,ems.youku.com,REJECT,extended-matching,pre-matching
+DOMAIN,hudong.alicdn.com,REJECT,extended-matching,pre-matching
+DOMAIN,h-adashx.ut.taobao.com,REJECT,extended-matching,pre-matching
+DOMAIN,ut.taobao.com,REJECT,extended-matching,pre-matching
+
+[Map Local]
+(?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.fliggy\.crm\.screen\.(allresource|predict)) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.alibaba\.advertisementservice\.getadv) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.alimama\.etao\.config\.query\/.+?etao_advertise) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.alimusic\.common\.mobileservice\.startinit) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.etao\.noah\.query\/.+tao_splash) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.film\.mtopadvertiseapi\.queryadvertise) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.o2o\.ad\.gateway\.get) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.taobao\.idle\.home\.welcome) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.trip\.activity\.querytmsresources) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/(?:gw|heic)\.alicdn\.com\/imgextra\/i\d\/\d*\/?[\w!]+-\d-(?:octopus|tps)-(?:1080|1125)-\d{4}\.(?:jpg|png)_(?:1\d{3}|9\d{2})x(?:\d|1\d{3}|9\d{2})q[59]0) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.taobao\.(volvo\.secondfloor\.getconfig|wireless\.home\.newface\.awesome\.get)) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[MITM]
+hostname = %APPEND% acs.m.taobao.com, heic.alicdn.com, guide-acs.m.taobao.com, poplayer.template.alibaba.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# response if ${url} ~= /^https:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.taobao\.(cloudvideo\.video\.query|wireless\.home\.splash\.awesome\.get)/i then script("https://kelee.one/Resource/JavaScript/Taobao/Taobao_remove_ads.js") with tag="移除淘宝开屏广告", requires_body=true
+# response if ${url} ~= /^https:\/\/poplayer\.template\.alibaba\.com\/\w+\.json/i then script("https://kelee.one/Resource/JavaScript/Taobao/Taobao_remove_ads.js") with tag="移除淘宝开屏广告", requires_body=true

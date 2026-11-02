@@ -1,0 +1,22 @@
+#!name=Sub-Store
+#!desc=高级订阅管理工具，定时任务默认为每天23点55分，可在插件设置中自定义。使用前请在本插件的详情页面为[PROXY]项分配代理策略。
+#!author=Peng-YM[https://github.com/Peng-YM]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/Other_icon/120px/Sub-Store.png
+#!category=可莉插件
+#!openUrl=https://sub.store
+#!tag=订阅管理
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=20
+
+# 由 loon2surge 自动转换
+# 有 4 行无法自动转换，见文件末尾注释
+
+[MITM]
+hostname = %APPEND% sub.store
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# DOMAIN, sub-store.vercel.app, PROXY
+# request if ${url} ~= /^https?:\/\/sub\.store\/((download)|api\/(preview|sync|(utils\/node-info)))/i then script("https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-1.min.js") with tag="Sub-Store Core", timeout=120, requires_body=true
+# request if ${url} ~= /^https?:\/\/sub\.store/i then script("https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-0.min.js") with tag="Sub-Store Simple", timeout=120, requires_body=true
+# cron ${cron} then script("https://github.com/sub-store-org/Sub-Store/releases/latest/download/cron-sync-artifacts.min.js") with tag="Sub-Store Sync", timeout=120

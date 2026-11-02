@@ -1,0 +1,22 @@
+#!name=360摄像机去广告
+#!desc=移除开屏广告、首页推广、底栏商城入口及我的页面推广。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/360SmartCamera.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id958068931
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+
+[Rule]
+DOMAIN,ad.jia.360.cn,REJECT,extended-matching,pre-matching
+DOMAIN,ad.iot.360.cn,REJECT,extended-matching,pre-matching
+
+[Body Rewrite]
+http-response-jq (?i:^https:\/\/jia\.360\.cn\/conf\/v1\.json) 'delpaths([["tab_conf"],["ad_conf"],["activity"]])'
+
+[MITM]
+hostname = %APPEND% jia.360.cn

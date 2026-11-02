@@ -1,0 +1,20 @@
+#!name=智慧苏州去广告
+#!desc=移除开屏广告、横幅，移除信息流推广。
+#!author=xream[https://github.com/xream]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SuZhouCitizenCard.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id897076369
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=20
+
+# 由 loon2surge 自动转换
+# 有 2 行无法自动转换，见文件末尾注释
+
+[MITM]
+hostname = %APPEND% newapp2.szsmk.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# response if ${url} ~= /^https?:\/\/newapp2\.szsmk\.com\/app\/config\/queryMainAd/i then response.body.mock("json", "{\"message\":\"操作成功\",\"main_ad_list\":[],\"code\":\"000000\"}")
+# response if ${url} ~= /^https?:\/\/newapp2\.szsmk\.com\/app\/config\/(queryCarousel|queryRecommendation)\//i then response.body.mock("json", "{\"code\":\"000000\",\"message\":\"操作成功\",\"list\":[]}")

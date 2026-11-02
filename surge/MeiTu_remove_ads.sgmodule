@@ -1,0 +1,21 @@
+#!name=美图秀秀去广告
+#!desc=移除开屏广告、横幅推广，精简我的页面。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MeiTu.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id416048305
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+
+[Rule]
+DOMAIN,adui.tg.meitu.com,REJECT,extended-matching,pre-matching
+
+[Body Rewrite]
+http-response-jq (?i:^https:\/\/api\.posters\.meitu\.com\/common\/init\.json) 'delpaths([["data","vip"]])'
+
+[MITM]
+hostname = %APPEND% api.posters.meitu.com
