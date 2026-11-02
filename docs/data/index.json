@@ -1,6 +1,6 @@
 {
   "source": "https://hub.kelee.one/list.json",
-  "synced_at": "2026-11-02 16:56:57 UTC",
+  "synced_at": "2026-11-02 19:46:51 UTC",
   "count": 275,
   "plugins": [
     {
@@ -3621,7 +3621,7 @@
     {
       "stem": "挖财记账去广告",
       "name": "挖财记账去广告",
-      "desc": "移除弹窗广告、推广语横幅和右下角悬浮广告。",
+      "desc": "移除弹窗广告、推广语横幅和右下角悬浮广告；移除开屏广告、横幅广告，顶部推广、活动配置",
       "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WaCaiJiZhang.png",
       "tags": [
         "去广告"
@@ -3632,13 +3632,20 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/WaCaiJiZhang_remove_ads.lpx",
       "lpx_sha": "903016f7c99a34ad3ae3b9f0acf1ed1e0c485abf3a522b75c91da2185692aa98",
-      "module_sha": "d3e732d94254ba9297742bb1349055ad3020cc72f269fcdf14406a59086f3b5b",
+      "module_sha": "fff4407c0235a8cdcb8af6fd1e46f3b2bda53ff26c9a224d75cb9abb085737c2",
       "status": "ok",
       "notes": [
+        "[merged-source] 同名插件已融合成一版：挖财记账去广告 + 挖财记账去广告-2",
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "merged": [
+        "挖财记账去广告-2"
+      ],
+      "converter": "2.2.0",
+      "adapted": [
+        "merged-source"
+      ]
     },
     {
       "stem": "挖财记账去广告-2",
@@ -3654,13 +3661,12 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Wacai_remove_ads.lpx",
       "lpx_sha": "99b8087c4e424e09b40e67189eb640f48e6d49ef2b4f15bf4263a0c22e0462a1",
-      "module_sha": "15e855bd53cfd0745c054cc9563a318e2212379db60ae781240e86fc095ec4ec",
-      "status": "ok",
+      "module_sha": "",
+      "status": "merged",
       "notes": [
-        "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
-        "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
+        "规则已并入「挖财记账去广告」"
       ],
-      "converter": "2.1.0"
+      "merged_into": "挖财记账去广告"
     },
     {
       "stem": "掌上无畏契约去广告",

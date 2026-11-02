@@ -56,7 +56,7 @@ jobs:
         run: go test ./... -count=1
 
       - name: 🔨 编译
-        run: go build -o bin/loon2surge .
+        run: go build -o bin/loon2surge ./cmd/loon2surge
 
       - name: 🛡️ 产物自检
         shell: bash
@@ -76,10 +76,10 @@ jobs:
           listed = {e["stem"] for e in index["plugins"] if e.get("status") == "ok"}
           on_disk = {n[:-9] for n in os.listdir("surge") if n.endswith(".sgmodule")}
 
-          # 外部模块（ios151 Rewrite）不进 index.json，它们的账记在自己的清单里。
+          # 外部模块（external/ios151）不进 index.json，它们的账记在自己的清单里。
           # 两边分别对账：可莉的看 index，外部的看 manifest，谁缺文件都要报出来。
           external = set()
-          manifest_path = "ios151 Rewrite/manifest.json"
+          manifest_path = "external/ios151/manifest.json"
           if os.path.exists(manifest_path):
               manifest = json.load(open(manifest_path, encoding="utf-8"))
               external = {e["stem"] for e in manifest["entries"]
@@ -116,7 +116,7 @@ jobs:
         run: |
           modules=$(find surge -name '*.sgmodule' 2>/dev/null | wc -l)
           plugins=$(find loon -name '*.lpx' 2>/dev/null | wc -l)
-          external=$(python3 -c "import json;print(json.load(open('ios151 Rewrite/manifest.json',encoding='utf-8'))['merged'])" 2>/dev/null || echo 0)
+          external=$(python3 -c "import json;print(json.load(open('external/ios151/manifest.json',encoding='utf-8'))['merged'])" 2>/dev/null || echo 0)
           {
             echo ""
             echo "### 📊 校验结果"

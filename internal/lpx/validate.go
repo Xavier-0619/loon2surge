@@ -248,6 +248,3 @@ func checkRuleLine(lineNo int, line string) []Problem {
 	}
 	return problems
 }
-
-// FatalProblems 需要发布阻断的那部分（目前全部都是）。
-func FatalProblems(problems []Problem) []Problem { return problems }

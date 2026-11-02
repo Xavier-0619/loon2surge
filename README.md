@@ -24,13 +24,13 @@ python -m http.server 8080 --directory docs
 # 打开 http://127.0.0.1:8080
 ```
 
-## 外部模块（ios151 Rewrite）
+## 外部模块（ios151/Rewrite）
 
 可莉那边只覆盖 Loon 插件。有些功能上游没人写成 Loon 插件，但别的仓库已经有现成的
 Surge 模块，所以每天转换完之后会再跑一次 `loon2surge external`：
 
 - **快照**：把 [ios151/Rewrite](https://github.com/ios151/Rewrite) 里的 `.sgmodule`
-  同步到 [`ios151 Rewrite/`](ios151%20Rewrite)，保留上游目录结构，外加一份 `manifest.json`
+  同步到 [`external/ios151/`](external/ios151)，保留上游目录结构，外加一份 `manifest.json`
   记下每个文件的下场（并入 / 重复 / 不兼容）
 - **只收上游独有的**：按 `#!name` 比而不是文件名。比对前先摘掉「解锁 / 去广告 / VIP」
   这类只说明"怎么处理"的词，所以「酷狗音乐会员解锁」认得和「酷狗音乐去广告」是同一件事；
@@ -58,16 +58,17 @@ Surge 模块，所以每天转换完之后会再跑一次 `loon2surge external`�
 ## 目录速览
 
 ```
-main.go                命令行入口（convert / sync / validate / audit / external）
-internal/lpx/          转换引擎：规则 / 改写 / 脚本 / 头部 / 组装 / 产物自检
-internal/kelee/        同步：拉列表、比哈希、下载、转换、写索引、远程脚本审计
+cmd/loon2surge/        进程入口（只有 main，参数交给 internal/cli）
+internal/cli/          命令行：参数解析、退出码、各子命令的编排
+internal/lpx/          转换引擎：同名融合 / 规则 / 改写 / 脚本 / 头部 / 组装 / 产物自检
+internal/upstream/     同步：拉列表、比哈希、下载、按名字合流、写索引、远程脚本审计
 internal/external/     并入第三方仓库现成的 Surge 模块（按 #!name 去重）
-internal/cliargs/      让标志可以写在路径后面
+internal/fsutil/       统一落盘：内容不变不写、临时文件 + rename
 loon/  surge/          Loon 原始插件 / 转换后的 Surge 模块（按插件里的 #!name 命名）
-ios151 Rewrite/        第三方模块快照与清单（自动生成，不要手改）
+external/ios151/       第三方模块快照与清单（自动生成，不要手改）
 index.json             每个插件的哈希、状态与诊断（自动生成）
 INDEX.md               给人看的插件索引（自动生成）
-tools/                 上游监听脚本（只在 CI 里跑）
+scripts/               上游监听脚本（只在 CI 里跑）
 docs/                  GitHub Pages 模块网站（静态 HTML / CSS / JS）
 .github/workflows/     每日同步 / PR 校验 / 上游监听 / Pages 发布
 AGENTS.md              开发约定与踩过的坑（改代码前先看）
@@ -77,16 +78,16 @@ RULES.md               转换规则与"为什么这一行不转"
 ## 快速开始
 
 ```bash
-go build -o loon2surge .          # 需要 Go 1.22+
+go build -o loon2surge ./cmd/loon2surge     # 需要 Go 1.27+
 
 # 单个文件，输出到同目录
 ./loon2surge loon/知乎去广告.lpx
 
 # 整个目录 → 指定输出目录 + JSON 报告
-./loon2surge convert Loon -o Surge --report build/report.json
+./loon2surge convert loon -o surge --report build/report.json
 
 # 只看诊断，不落盘
-./loon2surge convert Loon --check
+./loon2surge convert loon --check
 ```
 
 ## 命令参考
@@ -100,7 +101,7 @@ go build -o loon2surge .          # 需要 Go 1.22+
 | `loon2surge sync --only A,B --limit 5` | 只处理指定/前 N 个（调试用，不会误删其它插件） |
 | `loon2surge validate [--dir surge]` | 把已发布的模块当成品再校验一遍（语法残留、策略、状态码、section 顺序） |
 | `loon2surge audit [--strict]` | 抓一遍模块引用的远程脚本，记录状态码与 SHA-256 |
-| `loon2surge external [--dir "ios151 Rewrite"] [--dry-run]` | 把第三方仓库的模块同步到快照目录，并把 `surge/` 里没有的并进去 |
+| `loon2surge external [--dir external/ios151] [--dry-run]` | 把第三方仓库的模块同步到快照目录，并把 `surge/` 里没有的并进去 |
 | `loon2surge version` | 版本号 |
 
 转换时并行读取与解析（`runtime.NumCPU()` 个 worker），进度按文件顺序输出，日志不会交错。
@@ -170,8 +171,10 @@ loon/51Job_remove_ads.lpx  ──►  #!name=前程无忧去广告  ──►  l
 上游只改名字也会让文件跟着改名（提交信息里记一条"重命名"），不会变成"删一个 + 加一个"。
 定名时挡掉了文件名不该有的东西：`/ \ : * ? " < > |`、控制字符、首尾空白与句点、
 长度超过 200 字节的截断（按 UTF-8 边界切，不会切碎汉字）、Windows 设备名（`CON` 之类）。
-真出现同名（可莉那边有两个"挖财记账去广告"）就按插件地址排序，后来的加 `-2`——
-排序基准是地址而不是下载顺序，所以同一份列表每轮算出的名字一定相同，不会天天改名。
+真出现同名（可莉那边有两个"挖财记账去广告"）就按插件地址排序：`loon/` 里后来的
+原始文件加 `-2` 留档，但**模块只产出一份**——两份规则合成一个模块（见
+[RULES.md](RULES.md) 的「同名插件融合」）。排序基准是地址而不是下载顺序，
+所以同一份列表每轮算出的名字一定相同，不会天天改名。
 
 **改名靠地址认人**：`index.json` 用插件地址当键，`stem` 只是当时的文件名。
 这样改一次名不会被误判成"旧插件下架 + 新插件上线"。
@@ -240,7 +243,7 @@ Git 里不会出现"只改时间戳"的空提交。
 > 同一个 runner 上换成 Python 的 OpenSSL 栈就能过，上游同款项目正是这么做的。
 
 所以下载这一步改成"借外部 TLS 栈"：`python3` 里的 `urllib` 负责取字节（嵌入式脚本
-`internal/kelee/pyfetch.py`，25 行，不含任何业务逻辑），解析、转换、落盘全部仍在 Go 里。
+`internal/upstream/pyfetch.py`，25 行，不含任何业务逻辑），解析、转换、落盘全部仍在 Go 里。
 找不到 python3 就退回 Go 原生通道，功能不缺，只是更容易被质询——日志里会写明用的是哪条。
 
 | 项 | 取值 | 为什么 |
@@ -433,25 +436,53 @@ Job Summary 里每类分开列，一眼能看出哪个要管、哪个不用管�
 ## 代码结构
 
 ```
-main.go             命令行：参数、批处理、控制台与 JSON 报告
+cmd/loon2surge/main.go  只有一行：把 os.Args 交给 cli.Run
+internal/cli/
+  cli.go            版本号、用法文本、子命令分发、退出码
+  args.go           标志与位置参数分离（可以混着写）
+  convert.go        convert：按 #!name 分组、并行批处理、控制台进度与 JSON 报告
+  sync.go           sync → upstream.Config
+  validate.go       validate：把成品再校验一遍，按清单放行豁免项
+  audit.go          audit → upstream.AuditOptions
+  external.go       external → external.Options
 internal/lpx/
-  model.go          Plugin / Ctx / Note / Result、section 顺序、版本门槛
-  syntax.go         顶层切分、正则字面量、引号、JQ 单引号、.lpx 解析
+  model.go          section / meta 顺序、Note / Result、诊断过滤
+  args.go           [Argument] 定义与值表
+  ctx.go            转换上下文：告警、适配、复查、失败
+  merge.go          同名插件融合：section 并集、头部合并、诊断标来源
+  syntax.go         顶层切分、正则字面量、引号、注释、分词
+  parse.go          #! 头部与 .lpx 解析
+  jq.go             JQ 单引号 → 合法 JSON 字面量
   rule.go           [Rule] → [Rule]/[Map Local]，含逻辑规则括号解析器
   rewrite.go        [Rewrite] → URL / Header / Body / Map Local（V2 + 旧语法）
   script.go         [Script] → [Script]，含 enable 行前缀方案
-  convert.go        [Argument]/[General]/[IP Rewrite]/[MITM] + 组装输出
-  convert_test.go   23 个用例 + 整篇金标准比对 + 基准测试
-internal/kelee/
-  http.go           多来源、403 记忆、退避重试、把 403 分成"质询"与"IP 拒绝"
+  convert.go        [General]/[IP Rewrite]/[MITM] + 组装输出
+  validate.go       产物自检：语法残留、策略、状态码、section 顺序
+  convert_test.go   用例 + 整篇金标准比对 + 基准测试
+  merge_test.go     融合：并集去重、头部合并、诊断来源、单源等价
+internal/upstream/
+  run.go            同步入口：读取配置、探测可用性、汇总结果
+  sync.go           定名、并发下载、按 #!name 合流、删除保护
+  state.go          index.json / INDEX.md 读写（含 merged 状态）
+  source.go         来源列表、命名、条目键
+  fetch.go          多来源、403 记忆、退避重试、把 403 分成"质询"与"IP 拒绝"
   transport.go      下载通道：python3（默认，借 OpenSSL TLS 栈）/ Go 原生（兜底）
   pyfetch.py        嵌入的 25 行下载脚本，只负责取字节，不含业务逻辑
-  store.go          索引读写、INDEX.md、内容不变就不写盘
-  sync.go           哈希比对、并发下载、删除保护、报告
-internal/cliargs/   标志与位置参数分离
+  summary.go        控制台摘要、重命名清单
+  commit.go         提交信息
+  audit.go          远程脚本审计
+  names.go          文件名清洗与 Windows 保留名
+internal/external/
+  external.go       并入流程：比对、判重、写回
+  source.go         本地目录 / tarball 读取与分类
+  tidy.go           按 Surge 语法整理（去 BOM、排序、去重、转义）
+  names.go          #!name 归一、相似度、撞名处理
+  manifest.go       manifest.json 读写、快照清理
+internal/fsutil/    统一落盘：内容不变不写、临时文件 + rename
 ```
 
-依赖单向：`model ← syntax ← rule/rewrite/script ← convert ← main`，没有循环引用。
+依赖单向：`model ← syntax ← rule/rewrite/script ← convert ← cli`，没有循环引用。
+`lpx` 不认命令行，`upstream` / `external` 不认 `flag`——参数一律由 `cli` 填进结构体再传下去。
 每个 section 的处理器签名统一成 `func(ctx *Ctx, 行号 int, 行 string) ([]Emit, error)`，
 认不出来就返回 `Unsupported{Code, Message}`，上层统一注释并写报告。
 

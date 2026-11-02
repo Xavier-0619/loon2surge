@@ -114,7 +114,7 @@ jobs:
           build_code=$?
           go test ./... >> .upstream-work/test.log 2>&1
           test_code=$?
-          go run . validate --dir surge >> .upstream-work/test.log 2>&1
+          go run ./cmd/loon2surge validate --dir surge >> .upstream-work/test.log 2>&1
           validate_code=$?
 
           ok=true
@@ -146,7 +146,7 @@ jobs:
         run: |
           # 这一步不判失败：审核没跑起来，后面照样要给出反馈
           set +e
-          python3 tools/upstream_merge.py review \
+          python3 scripts/upstream_merge.py review \
             --base "${{ steps.pr.outputs.base }}" \
             --head "${{ steps.pr.outputs.head }}"
           code=$?

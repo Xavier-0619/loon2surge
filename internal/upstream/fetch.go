@@ -1,4 +1,4 @@
-package kelee
+package upstream
 
 import (
 	"errors"
@@ -44,12 +44,6 @@ type Sources struct {
 
 	mu   sync.Mutex
 	dead map[string]string
-}
-
-// NewSources 组装来源列表：官方站 + 可选镜像，下载通道按 auto 选。
-func NewSources(mirror string) *Sources {
-	sources, _ := NewSourcesWith(mirror, "auto")
-	return sources
 }
 
 // NewSourcesWith 指定下载通道：auto / python / go。

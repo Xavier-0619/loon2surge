@@ -6,9 +6,13 @@ import (
 	"testing"
 )
 
+// defaultOptions 与命令行默认值一致。库本身不提供"默认值"：不同调用方的
+// category 不同（命令行是「插件转换」，同步是「可莉插件」）。
+func defaultOptions() Options { return Options{Category: "插件转换", Banner: true} }
+
 func convert(t *testing.T, text string) Result {
 	t.Helper()
-	return ConvertText(text, DefaultOptions())
+	return ConvertText(text, defaultOptions())
 }
 
 func section(result Result, name string) []string { return result.Sections[name] }
@@ -709,7 +713,7 @@ func BenchmarkConvert(b *testing.B) {
 		b.Fatal(err)
 	}
 	text := string(data)
-	options := DefaultOptions()
+	options := defaultOptions()
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {

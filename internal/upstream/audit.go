@@ -1,22 +1,4 @@
-package kelee
-
-import (
-	"crypto/sha256"
-	"encoding/hex"
-	"encoding/json"
-	"flag"
-	"fmt"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
-	"regexp"
-	"slices"
-	"sort"
-	"strings"
-	"sync"
-	"time"
-)
+package upstream
 
 // 远程脚本审计。
 //
@@ -25,8 +7,25 @@ import (
 //
 // 这个命令把产物里引用到的脚本都抓一遍，记录状态码和 SHA-256：
 //   - 报告只是一份"当前长什么样"的快照，不阻断发布；
-//   - `--strict` 时下载失败会让命令返回非零，供 CI 单独当检查项用；
-//   - 命中的 URL 全部列出，包括被 `#` 注释掉的脚本行（用户随时可能打开它们）。
+//   - --strict 时下载失败会让命令返回非零，供 CI 单独当检查项用；
+//   - 命中的 URL 全部列出，包括被 # 注释掉的脚本行（用户随时可能打开它们）。
+
+import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+	"regexp"
+	"slices"
+	"strings"
+	"sync"
+	"time"
+
+	"loon2surge/internal/fsutil"
+)
 
 // scriptRef 抓的是 `script-path=` 后面那一段，引号由后面统一剥掉。
 var scriptRef = regexp.MustCompile(`script-path=("[^"]*"|\S+)`)
@@ -47,6 +46,15 @@ type auditReport struct {
 	OK          int           `json:"ok"`
 	Failed      int           `json:"failed"`
 	Scripts     []ScriptAudit `json:"scripts"`
+}
+
+// AuditOptions 是 `loon2surge audit` 的可调项。
+type AuditOptions struct {
+	Dir     string
+	Out     string
+	Jobs    int
+	Timeout int
+	Strict  bool
 }
 
 // collectScriptRefs 从一个目录的模块里收集脚本地址（同一个地址合并模块名）。
@@ -109,28 +117,19 @@ func fetchOnce(client *http.Client, url string) ScriptAudit {
 	return result
 }
 
-// AuditMain 是 `loon2surge audit` 的入口。
-func AuditMain(argv []string) int {
-	fs := flag.NewFlagSet("audit", flag.ContinueOnError)
-	dir := fs.String("dir", "surge", "模块目录")
-	out := fs.String("out", "", "报告路径，默认 <dir>/script-audit.json")
-	jobs := fs.Int("jobs", 8, "并发数")
-	timeout := fs.Int("timeout", 15, "单个脚本的超时（秒）")
-	strict := fs.Bool("strict", false, "有脚本抓不到时返回非零")
-	if err := fs.Parse(argv); err != nil {
-		return 2
+// RunAudit 是 `loon2surge audit` 的入口。
+func RunAudit(opts AuditOptions) int {
+	if opts.Jobs < 1 {
+		opts.Jobs = 1
 	}
-	if *jobs < 1 {
-		*jobs = 1
-	}
-	target := *out
+	target := opts.Out
 	if target == "" {
-		target = filepath.Join(*dir, "script-audit.json")
+		target = filepath.Join(opts.Dir, "script-audit.json")
 	}
 
-	refs, err := collectScriptRefs(*dir)
+	refs, err := collectScriptRefs(opts.Dir)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "读不到模块目录 %s：%v\n", *dir, err)
+		fmt.Fprintf(os.Stderr, "读不到模块目录 %s：%v\n", opts.Dir, err)
 		return 2
 	}
 
@@ -138,22 +137,21 @@ func AuditMain(argv []string) int {
 	for url := range refs {
 		urls = append(urls, url)
 	}
-	sort.Strings(urls)
+	slices.Sort(urls)
 
-	client := &http.Client{Timeout: time.Duration(*timeout) * time.Second}
+	client := &http.Client{Timeout: time.Duration(opts.Timeout) * time.Second}
 	results := make([]ScriptAudit, len(urls))
 	queue := make(chan int)
+
 	var wg sync.WaitGroup
-	for i := 0; i < *jobs; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
+	for range min(opts.Jobs, len(urls)) {
+		wg.Go(func() {
 			for index := range queue {
 				got := fetchOnce(client, urls[index])
 				got.Modules = refs[urls[index]]
 				results[index] = got
 			}
-		}()
+		})
 	}
 	for index := range urls {
 		queue <- index
@@ -176,16 +174,13 @@ func AuditMain(argv []string) int {
 	}
 	report.Scripts = results
 
-	if err := writeJSONFile(target, report); err != nil {
+	if _, err := fsutil.WriteJSON(target, report); err != nil {
 		fmt.Fprintf(os.Stderr, "报告写入失败 %s：%v\n", target, err)
 		return 2
 	}
 
 	fmt.Printf("审计 %d 个脚本：%d 个可下载，%d 个失败\n", report.Total, report.OK, report.Failed)
-	for index, item := range failures {
-		if index >= 10 {
-			break
-		}
+	for _, item := range head(failures, 10) {
 		fmt.Printf("  ✗ %s（%s）：%s\n", item.URL, strings.Join(item.Modules, "、"), item.Error)
 	}
 	if len(failures) > 10 {
@@ -193,19 +188,8 @@ func AuditMain(argv []string) int {
 	}
 	fmt.Printf("报告已写入 %s\n", target)
 
-	if *strict && report.Failed > 0 {
+	if opts.Strict && report.Failed > 0 {
 		return 1
 	}
 	return 0
-}
-
-func writeJSONFile(path string, value any) error {
-	data, err := json.MarshalIndent(value, "", "  ")
-	if err != nil {
-		return err
-	}
-	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
-		return err
-	}
-	return os.WriteFile(path, append(data, '\n'), 0o644)
 }

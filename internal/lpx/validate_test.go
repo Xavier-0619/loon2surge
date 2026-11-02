@@ -116,7 +116,7 @@ func TestValidateCatches(t *testing.T) {
 // 生成出来的模块必须自己能过自检；这条是"转换器有 bug 时把 bug 挡在发布前"的底线。
 func TestValidateOwnOutput(t *testing.T) {
 	for _, path := range []string{"testdata/zhihu.lpx"} {
-		result, err := ConvertFile(path, DefaultOptions())
+		result, err := ConvertFile(path, defaultOptions())
 		if err != nil {
 			t.Fatal(err)
 		}

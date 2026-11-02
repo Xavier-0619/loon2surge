@@ -12,15 +12,17 @@
 
 | 路径 | 职责 |
 | --- | --- |
-| `internal/lpx/` | 转换引擎：`convert.go` 调度，`rule.go`/`rewrite.go`/`script.go` 各管一段，`syntax.go` 是共用的顶层切分与引号处理，`validate.go` 是产物自检 |
-| `internal/kelee/` | 同步流水线：抓取（`http.go`/`transport.go`）、落盘（`store.go`）、提交信息（`commit.go`）、文件命名（`name.go`）、远程脚本审计（`audit.go`） |
-| `internal/cliargs/` | 让 flag 和位置参数可以混着写 |
+| `cmd/loon2surge/` | 进程入口，只有一行 `os.Exit(cli.Run(...))` |
+| `internal/cli/` | 参数解析、退出码、各子命令的编排；`args.go` 让 flag 和位置参数可以混着写 |
+| `internal/lpx/` | 转换引擎：`convert.go` 调度，`rule.go`/`rewrite.go`/`script.go` 各管一段，`syntax.go`/`parse.go` 是共用的切分与解析，`merge.go` 把同名插件合成一版，`validate.go` 是产物自检 |
+| `internal/upstream/` | 同步流水线：抓取（`fetch.go`/`transport.go`）、定名与合流（`sync.go`）、落盘（`state.go`）、入口（`run.go`）、摘要（`summary.go`）、提交信息（`commit.go`）、文件命名（`names.go`）、远程脚本审计（`audit.go`） |
+| `internal/external/` | 并入第三方仓库（ios151/Rewrite）现成的 Surge 模块：抓取、按 Surge 语法整理（`tidy.go`）、按 `#!name` 去重（`names.go`）、写清单（`manifest.go`） |
+| `internal/fsutil/` | 统一落盘：内容没变就不写，写入走临时文件 + rename |
 | `docs/` | GitHub Pages 模块网站；`data/index.json` 是发布用索引副本，由 `pages.yml` 在部署时更新 |
-| `internal/external/` | 并入第三方仓库（ios151/Rewrite）现成的 Surge 模块：抓取、按 Surge 语法整理（tidy）、按 `#!name` 去重、写清单 |
-| `ios151 Rewrite/` | 第三方模块快照 + `manifest.json`，由 `loon2surge external` 生成，**不要手改** |
+| `external/ios151/` | 第三方模块快照 + `manifest.json`，由 `loon2surge external` 生成，**不要手改** |
 | `loon/`、`surge/`、`index.json`、`INDEX.md` | 生成物，**不要手改** |
 | `.github/workflows/` | 每日同步、PR 校验、上游监听、上游 PR 审核、Pages 发布 |
-| `tools/` | 上游监听用的脚本（Python，只在 CI 里跑） |
+| `scripts/` | 上游监听用的脚本（Python，只在 CI 里跑） |
 
 ## 五条铁律
 
@@ -41,10 +43,10 @@
 go test ./internal/lpx -run TestXxx -v
 
 # 2. 全量跑一遍，看诊断分布有没有异常变化
-go run . loon -o /tmp/out --report /tmp/report.json
+go run ./cmd/loon2surge convert loon -o /tmp/out --report /tmp/report.json
 
 # 3. 产物自检
-go run . validate --dir /tmp/out
+go run ./cmd/loon2surge validate --dir /tmp/out
 
 # 4. 全部测试
 go test ./...
@@ -57,14 +59,14 @@ go test ./...
 `internal/lpx/testdata/zhihu.sgmodule` 是金标准。改了输出形态要重新生成：
 
 ```bash
-go run . internal/lpx/testdata/zhihu.lpx --category 可莉插件 -o internal/lpx/testdata/zhihu.sgmodule
+go run ./cmd/loon2surge convert internal/lpx/testdata/zhihu.lpx --category 可莉插件 -o internal/lpx/testdata/zhihu.sgmodule
 ```
 
 生成后**先看 diff 再提交**——金标准变了就是全网 270 多个模块都会变。
 
 ## 提交信息
 
-`internal/kelee/commit.go` 负责。结构：
+`internal/upstream/commit.go` 负责。结构：
 
 ```
 🔄 自动更新 2026-11-03
@@ -93,7 +95,7 @@ go run . internal/lpx/testdata/zhihu.lpx --category 可莉插件 -o internal/lpx
 `.github/workflows/upstream-watch.yml` 每周检查
 [deanxizian/loon_to_surge](https://github.com/deanxizian/loon_to_surge) 的新提交
 （跳过 `chore: update Kelee Surge modules`），有新东西就让模型读 diff、往这个仓库里
-生成补丁，跑通测试后开 PR。细节见该文件顶部的注释和 `tools/upstream_merge.py`。
+生成补丁，跑通测试后开 PR。细节见该文件顶部的注释和 `scripts/upstream_merge.py`。
 
 它每周最多开一个 PR，而且**不合代码**——合并永远是人来点。审查时重点看：
 
@@ -112,11 +114,17 @@ go run . internal/lpx/testdata/zhihu.lpx --category 可莉插件 -o internal/lpx
 2. 机器检查干净——没动 `.github/`、改了 `internal/lpx/` 就一定递增了 `const Version`、没有硬编码密钥；
 3. 模型说 approve，且 `concerns` 为空。
 
-机器检查在 `tools/upstream_merge.py` 的 `mechanical_checks()`，**先于模型**跑：
+机器检查在 `scripts/upstream_merge.py` 的 `mechanical_checks()`，**先于模型**跑：
 模型可能被说服，代码不会。批准 = draft 转正 + approve，**merge 仍由人点**。
 
 ## 踩过的坑
 
+- **同名插件要合成一个模块，不能按文件名分开写。** 上游会把同一个 App 的规则拆成几份
+  但都写同一个 `#!name`（可莉的「挖财记账去广告」就是两份）。各写一份会互相覆盖，
+  加 `-2` 分开写则要用户装两次、还各留一份重复规则。`convert` 和 `sync` 都必须走
+  `lpx.ConvertSources` 这条路径，否则两条命令对同一个目录会产出不同的模块。
+- **改了转换逻辑记得递增 `const Version`。** 同步层拿它当缓存键，不递增的话老模块
+  不会重转；机器检查也会拦下来。
 - **Body Rewrite 不是 `http-response-replace-regex`。** Surge 的写法是
   `http-response <url> <正则> <替换>`。写错能导入、但整行不生效，而且很难看出来。
 - **Surge 的 Body Rewrite 默认按行锚定 `^`/`$`。** Loon 不是。所以 flags 必须写全
@@ -129,4 +137,4 @@ go run . internal/lpx/testdata/zhihu.lpx --category 可莉插件 -o internal/lpx
 - **`requires_body` 归一不是美化。** 不归一会被当未知属性丢掉，脚本就读不到响应体。
 - **可莉按 UA 放行。** 下载必须带 Loon 的 UA，改浏览器 UA 会整个 403。
 - **Cloudflare 看 TLS 指纹。** Go 原生栈会拿到 `cf-mitigated=challenge`，所以要能借
-  Python 的 OpenSSL 栈（`internal/kelee/pyfetch.py`）。
+  Python 的 OpenSSL 栈（`internal/upstream/pyfetch.py`）。

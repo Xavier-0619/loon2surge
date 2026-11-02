@@ -29,7 +29,7 @@ runs:
 
     - name: 🔨 编译转换器
       shell: bash
-      run: go build -o bin/loon2surge .
+      run: go build -o bin/loon2surge ./cmd/loon2surge
 
     - name: 📡 上游连通性自检
       if: inputs.probe == 'true'
@@ -56,7 +56,7 @@ runs:
         esac
         ./bin/loon2surge sync $ARGS | tee sync.log
 
-    - name: 🌐 同步 ios151 Rewrite 模块
+    - name: 🌐 同步外部模块（ios151）
       # 可莉那边转换完之后，再把第三方仓库里现成的模块并进来：同名的一律留可莉那份，
       # 上游独有的才进 surge/。这个仓库挂了不该拖累主流程，所以 continue-on-error。
       if: inputs.probe != 'true'
@@ -64,7 +64,7 @@ runs:
       shell: bash
       run: |
         set -o pipefail
-        ./bin/loon2surge external --dir "ios151 Rewrite" --surge surge 2>&1 | tee "$RUNNER_TEMP/external.log"
+        ./bin/loon2surge external --dir external/ios151 --surge surge 2>&1 | tee "$RUNNER_TEMP/external.log"
 
     - name: 📊 汇总仓库现状
       if: inputs.probe != 'true'

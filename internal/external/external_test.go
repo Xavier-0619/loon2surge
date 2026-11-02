@@ -140,7 +140,7 @@ func TestRunMergesOnlyMissingModules(t *testing.T) {
 	root := t.TempDir()
 	source := filepath.Join(root, "upstream")
 	surge := filepath.Join(root, "surge")
-	snapshot := filepath.Join(root, "ios151 Rewrite")
+	snapshot := filepath.Join(root, "external", "ios151")
 	if err := os.MkdirAll(surge, 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -212,7 +212,7 @@ func TestRunWaivesChineseArgumentNamesOnly(t *testing.T) {
 	root := t.TempDir()
 	source := filepath.Join(root, "upstream")
 	surge := filepath.Join(root, "surge")
-	snapshot := filepath.Join(root, "ios151 Rewrite")
+	snapshot := filepath.Join(root, "external", "ios151")
 
 	write(t, source, "args.sgmodule", `#!name=中文参数模块
 #!desc=上游写法
@@ -247,7 +247,7 @@ func TestRunRetiresModuleDroppedUpstream(t *testing.T) {
 	root := t.TempDir()
 	source := filepath.Join(root, "upstream")
 	surge := filepath.Join(root, "surge")
-	snapshot := filepath.Join(root, "ios151 Rewrite")
+	snapshot := filepath.Join(root, "external", "ios151")
 	write(t, source, "gone.sgmodule", strings.Replace(moduleTemplate, "%s", "会下线的模块", 1))
 
 	if _, err := Run(Options{SourceDir: source, SurgeDir: surge, Dir: snapshot, Repo: "ios151/Rewrite"}); err != nil {
