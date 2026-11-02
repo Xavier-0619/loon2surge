@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -48,6 +49,8 @@ func (v *Vault) lpxPath(stem string) string    { return filepath.Join(v.lpxDir()
 func (v *Vault) modulePath(stem string) string { return filepath.Join(v.surgeDir(), stem+".sgmodule") }
 
 // ReadState 读上一轮的索引；读不了就按空状态处理，不让一次损坏卡住同步。
+//
+// 键用插件地址而不是文件名：文件名跟着 #!name 走，改一次名就会被当成新插件。
 func (v *Vault) ReadState() map[string]Entry {
 	data, err := os.ReadFile(v.indexPath())
 	if err != nil {
@@ -60,8 +63,8 @@ func (v *Vault) ReadState() map[string]Entry {
 	}
 	state := make(map[string]Entry, len(parsed.Plugins))
 	for _, entry := range parsed.Plugins {
-		if entry.Stem != "" {
-			state[entry.Stem] = entry
+		if key := entryKey(entry); key != "" {
+			state[key] = entry
 		}
 	}
 	return state
@@ -134,19 +137,27 @@ func renderTable(entries []Entry, syncedAt string) string {
 	for _, entry := range sorted {
 		mark, module := "", "—"
 		if entry.Status == StatusOK {
-			module = fmt.Sprintf("[module](surge/%s.sgmodule)", entry.Stem)
+			module = fmt.Sprintf("[module](%s)", linkPath("surge", entry.Stem+".sgmodule"))
 		} else {
 			mark = " ⚠️"
 		}
-		fmt.Fprintf(&b, "| %s%s | %s | %s | %s | [`%s`](loon/%s.lpx) · %s |\n",
+		fmt.Fprintf(&b, "| %s%s | %s | %s | %s | [`%s`](%s) · %s |\n",
 			tableCell(entry.Name), mark,
 			tableCell(strings.Join(entry.Tags, "/")),
 			tableCell(strings.Join(entry.Authors, "、")),
 			tableCell(entry.Date),
-			entry.Stem, entry.Stem, module,
+			entry.Stem, linkPath("loon", entry.Stem+".lpx"), module,
 		)
 	}
 	return b.String()
+}
+
+// linkPath 生成 Markdown 链接里的路径。
+//
+// 文件名现在取自 #!name，可能带空格和中文（例如 `Hong Kong Toolbar去广告.lpx`），
+// 直接塞进括号里会把链接截断在空格处，所以逐段转义。
+func linkPath(dir, name string) string {
+	return dir + "/" + url.PathEscape(name)
 }
 
 func tableCell(text string) string {
@@ -163,7 +174,7 @@ func contentChanged(entries []Entry, previous map[string]Entry) bool {
 		return true
 	}
 	for _, entry := range entries {
-		old, ok := previous[entry.Stem]
+		old, ok := previous[entryKey(entry)]
 		if !ok || !reflect.DeepEqual(entry, old) {
 			return true
 		}

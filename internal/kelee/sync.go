@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -52,6 +53,7 @@ var badStemChars = regexp.MustCompile(`[^A-Za-z0-9._-]+`)
 
 // Remote 是 list.json 里的一条。
 type Remote struct {
+	// Stem 只是兜底名字（从地址里抠出来的），#!name 缺失时才会用到。
 	Stem    string
 	Name    string
 	Desc    string
@@ -59,6 +61,32 @@ type Remote struct {
 	Authors []string
 	Date    string
 	URL     string
+}
+
+// key 是插件的稳定身份：地址本身。
+//
+// 文件名取自 #!name，可莉改个名文件就得跟着改；拿文件名当身份的话，
+// 每改一次名都会被当成"删一个 + 加一个"。地址不会变，所以用它。
+func (r Remote) key() string {
+	if r.URL != "" {
+		return r.URL
+	}
+	return r.Stem
+}
+
+// entryKey 与 Remote.key 对齐，供 index.json 这一侧使用。
+func entryKey(entry Entry) string {
+	if entry.URL != "" {
+		return entry.URL
+	}
+	return entry.Stem
+}
+
+// Rename 记录一次文件改名，提交信息里要写清"旧名 → 新名"。
+type Rename struct {
+	From string
+	To   string
+	Date string
 }
 
 type rawItem struct {
@@ -210,13 +238,14 @@ type Syncer struct {
 	jobs  int
 	delay float64
 
-	mu        sync.Mutex
-	added     []string
-	updated   []string
-	removed   []string
-	failed    []string
-	failedSet map[string]bool
-	blocked   bool
+	mu         sync.Mutex // 只保护 blocked：下载阶段是多协程
+	added      []string
+	updated    []string
+	renamed    []Rename
+	removed    []Entry
+	failed     []string
+	blocked    bool
+	failedKeys map[string]bool
 }
 
 func newSyncer(vault *Vault, src *Sources, jobs int, delay float64) *Syncer {
@@ -227,17 +256,70 @@ func newSyncer(vault *Vault, src *Sources, jobs int, delay float64) *Syncer {
 		delay = 0
 	}
 	return &Syncer{
-		vault:     vault,
-		src:       src,
-		opts:      lpx.Options{Category: "可莉插件", Banner: true},
-		jobs:      jobs,
-		delay:     delay,
-		failedSet: map[string]bool{},
+		vault:      vault,
+		src:        src,
+		opts:       lpx.Options{Category: "可莉插件", Banner: true},
+		jobs:       jobs,
+		delay:      delay,
+		failedKeys: map[string]bool{},
 	}
 }
 
+// fetched 是一个插件的下载结果。
+type fetched struct {
+	data []byte
+	err  error
+}
+
+// usable 表示拿到了正文且确实是插件（不是拦截页）。
+func (f fetched) usable() bool { return f.err == nil && looksLikePlugin(f.data) }
+
+// run 分两步走：
+//
+//  1. 并发下载。文件名取自插件里的 #!name，不先拿到内容就定不了名；
+//  2. 串行定名 → 落盘 → 转换。转换一个只要 0.2 毫秒，275 个串起来也就几十毫秒，
+//     换来的是文件名可复现：同名冲突时按地址排序决定谁拿原名，不靠谁先跑完。
 func (s *Syncer) run(remotes []Remote, previous map[string]Entry, write, prune bool) []Entry {
+	downloads := s.fetchAll(remotes)
+
+	old := make([]*Entry, len(remotes))
+	for index, remote := range remotes {
+		if previousEntry, ok := previous[remote.key()]; ok {
+			old[index] = &previousEntry
+		}
+	}
+
+	// 这一轮要沿用旧文件的插件先把名字占住，否则新插件可能先抢走同一个名字，
+	// 两个条目就会指向同一个文件。
+	used := make(map[string]bool, len(remotes))
+	for index := range remotes {
+		if !downloads[index].usable() && old[index] != nil {
+			used[strings.ToLower(old[index].Stem)] = true
+		}
+	}
+
+	order := make([]int, len(remotes))
+	for index := range order {
+		order[index] = index
+	}
+	sort.Slice(order, func(a, b int) bool { return remotes[order[a]].key() < remotes[order[b]].key() })
+
 	entries := make([]Entry, len(remotes))
+	for _, index := range order {
+		entries[index] = s.finish(remotes[index], downloads[index], old[index], write, used)
+	}
+
+	if write && prune {
+		s.sweep(entries, previous)
+	}
+
+	sort.Slice(entries, func(i, j int) bool { return entries[i].Stem < entries[j].Stem })
+	return entries
+}
+
+// fetchAll 并发把每个插件下下来，顺序与 remotes 一致。
+func (s *Syncer) fetchAll(remotes []Remote) []fetched {
+	out := make([]fetched, len(remotes))
 	sem := make(chan struct{}, s.jobs)
 	var wg sync.WaitGroup
 
@@ -247,38 +329,17 @@ func (s *Syncer) run(remotes []Remote, previous map[string]Entry, write, prune b
 		go func(index int, remote Remote) {
 			defer wg.Done()
 			defer func() { <-sem }()
-
-			var old *Entry
-			if previousEntry, ok := previous[remote.Stem]; ok {
-				old = &previousEntry
-			}
-			entries[index] = s.process(remote, old, write)
+			out[index] = s.fetch(remote)
 		}(index, remote)
 	}
 	wg.Wait()
-
-	if write && prune {
-		keep := make(map[string]bool, len(entries))
-		for _, entry := range entries {
-			keep[entry.Stem] = true
-		}
-		s.prune(keep, previous)
-	}
-
-	sort.Slice(entries, func(i, j int) bool { return entries[i].Stem < entries[j].Stem })
-	return entries
+	return out
 }
 
-// process 下载 + 落盘 + 转换，一个插件一条龙走完，省掉第二遍遍历。
-func (s *Syncer) process(remote Remote, old *Entry, write bool) Entry {
-	entry := Entry{
-		Stem: remote.Stem, Name: remote.Name, Desc: remote.Desc,
-		Tags: remote.Tags, Authors: remote.Authors, Date: remote.Date, URL: remote.URL,
-	}
-
+func (s *Syncer) fetch(remote Remote) fetched {
 	if !s.src.alive() {
 		s.markBlocked()
-		return s.keep(old, remote)
+		return fetched{err: errors.New("上游已拒绝访问")}
 	}
 	if s.delay > 0 {
 		time.Sleep(time.Duration(rand.Float64() * s.delay * float64(time.Second)))
@@ -291,32 +352,58 @@ func (s *Syncer) process(remote Remote, old *Entry, write bool) Entry {
 			s.markBlocked()
 		}
 		fmt.Fprintf(os.Stderr, "  下载失败 %s：%v\n", remote.Stem, err)
-		return s.keep(old, remote)
+		return fetched{err: err}
 	}
 	if !looksLikePlugin(data) {
 		fmt.Fprintf(os.Stderr, "  下载失败 %s：返回的不是插件文本（多半是拦截页）\n", remote.Stem)
-		return s.keep(old, remote)
+		return fetched{err: errors.New("返回的不是插件文本")}
+	}
+	return fetched{data: data}
+}
+
+// finish 定名 + 落盘 + 转换，一个插件一条龙走完，省掉第二遍遍历。
+func (s *Syncer) finish(remote Remote, got fetched, old *Entry, write bool, used map[string]bool) Entry {
+	if !got.usable() {
+		return s.keep(old, remote, got.err, used)
 	}
 
-	entry.LpxSHA = hashOf(data)
+	entry := Entry{
+		Name: remote.Name, Desc: remote.Desc, Tags: remote.Tags,
+		Authors: remote.Authors, Date: remote.Date, URL: remote.URL,
+		Stem:   uniqueStem(fileStem(lpx.PluginName(decode(got.data)), remote.Stem), used),
+		LpxSHA: hashOf(got.data),
+	}
+
 	changed := old == nil || old.LpxSHA != entry.LpxSHA
-	if changed {
+	renamed := old != nil && old.Stem != entry.Stem
+	if changed || renamed {
 		if write {
-			if err := writeFile(s.vault.lpxPath(remote.Stem), data); err != nil {
-				fmt.Fprintf(os.Stderr, "  写入失败 %s：%v\n", remote.Stem, err)
-				return s.keep(old, remote)
+			if err := writeFile(s.vault.lpxPath(entry.Stem), got.data); err != nil {
+				fmt.Fprintf(os.Stderr, "  写入失败 %s：%v\n", entry.Stem, err)
+				return s.keep(old, remote, err, used)
 			}
 		}
-		s.mu.Lock()
-		if old == nil {
-			s.added = append(s.added, remote.Stem)
-		} else {
-			s.updated = append(s.updated, remote.Stem)
-		}
-		s.mu.Unlock()
+		s.record(entry, old, changed, renamed)
 	}
 
-	return s.convert(entry, data, old, write)
+	return s.convert(entry, got.data, old, write)
+}
+
+// record 归档这一条属于新增 / 重命名 / 更新。
+//
+// 改名和改内容可以同时发生：改名是文件层面的事，更新是内容层面的事，各记各的。
+func (s *Syncer) record(entry Entry, old *Entry, changed, renamed bool) {
+	switch {
+	case old == nil:
+		s.added = append(s.added, entry.Stem)
+	case renamed:
+		s.renamed = append(s.renamed, Rename{From: old.Stem, To: entry.Stem, Date: entry.Date})
+		if changed {
+			s.updated = append(s.updated, entry.Stem)
+		}
+	default:
+		s.updated = append(s.updated, entry.Stem)
+	}
 }
 
 func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry {
@@ -355,50 +442,76 @@ func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry
 }
 
 // keep 下载失败时不删除既有产物，留一条记录说明这轮没跟上。
-func (s *Syncer) keep(old *Entry, remote Remote) Entry {
-	s.mu.Lock()
-	s.failedSet[remote.Stem] = true
-	if old == nil {
-		s.failed = append(s.failed, remote.Stem+"（从未下载成功）")
-		s.mu.Unlock()
-		return Entry{
-			Stem: remote.Stem, Name: remote.Name, Desc: remote.Desc,
-			Tags: remote.Tags, Authors: remote.Authors, Date: remote.Date, URL: remote.URL,
-			Status: StatusFailed, Notes: []string{"下载失败，尚未入库"},
-		}
+func (s *Syncer) keep(old *Entry, remote Remote, cause error, used map[string]bool) Entry {
+	s.failedKeys[remote.key()] = true
+	note := "下载失败，尚未入库"
+	if cause != nil {
+		note = cause.Error()
 	}
-	s.failed = append(s.failed, remote.Stem+"（沿用上一版）")
-	s.mu.Unlock()
-	return *old
+
+	if old != nil {
+		s.failed = append(s.failed, old.Stem+"（沿用上一版）")
+		return *old
+	}
+
+	s.failed = append(s.failed, remote.Stem+"（从未下载成功）")
+	return Entry{
+		Stem: uniqueStem(remote.Stem, used), Name: remote.Name, Desc: remote.Desc,
+		Tags: remote.Tags, Authors: remote.Authors, Date: remote.Date, URL: remote.URL,
+		Status: StatusFailed, Notes: []string{note},
+	}
 }
 
-// prune 删掉上游下架的插件；一次少太多说明列表不完整，本轮不动文件。
-func (s *Syncer) prune(keep map[string]bool, previous map[string]Entry) {
-	var gone []string
-	for stem := range previous {
-		if !keep[stem] {
-			gone = append(gone, stem)
+// sweep 收拾旧文件：上游下架的、以及这一轮改了名的。
+//
+// 以前文件名 = 身份，删除只要比对文件名；现在文件名来自 #!name，会随上游改名，
+// 所以要按地址（key）判断"这个插件还在不在"，再按文件名判断"旧文件还要不要"。
+func (s *Syncer) sweep(entries []Entry, previous map[string]Entry) {
+	live := make(map[string]string, len(entries)) // key → 这一轮的文件名
+	liveStems := make(map[string]bool, len(entries))
+	for _, entry := range entries {
+		live[entryKey(entry)] = entry.Stem
+		liveStems[entry.Stem] = true
+	}
+
+	var gone []Entry   // 上游下架
+	var stale []string // 旧文件名，改名或下架留下的
+	for key, old := range previous {
+		stem, ok := live[key]
+		if !ok {
+			gone = append(gone, old)
+			if old.Stem != "" && !liveStems[old.Stem] {
+				stale = append(stale, old.Stem)
+			}
+			continue
+		}
+		// 改名：同一个插件换了文件名，旧文件必删——但要确认这个名字没被别的插件接手
+		if old.Stem != "" && old.Stem != stem && !liveStems[old.Stem] {
+			stale = append(stale, old.Stem)
 		}
 	}
-	if len(gone) == 0 {
-		return
-	}
-	sort.Strings(gone)
 
+	// 一次少太多说明列表不完整，本轮不删"下架"的；改名是逐个确认过的，照删。
 	threshold := len(previous) * 3 / 10
 	if threshold < 3 {
 		threshold = 3
 	}
 	if len(gone) > threshold {
-		fmt.Fprintf(os.Stderr, "! 上游一次少了 %d/%d 个插件，疑似列表不完整，本轮不删文件\n",
+		fmt.Fprintf(os.Stderr, "! 上游一次少了 %d/%d 个插件，疑似列表不完整，本轮不删这些文件\n",
 			len(gone), len(previous))
-		return
+		keepStems := make(map[string]bool, len(gone))
+		for _, entry := range gone {
+			keepStems[entry.Stem] = true
+		}
+		stale = slices.DeleteFunc(stale, func(stem string) bool { return keepStems[stem] })
+		gone = nil
 	}
 
-	for _, stem := range gone {
+	for _, stem := range stale {
 		_ = os.Remove(s.vault.lpxPath(stem))
 		_ = os.Remove(s.vault.modulePath(stem))
 	}
+	sort.Slice(gone, func(i, j int) bool { return gone[i].Stem < gone[j].Stem })
 	s.removed = gone
 }
 
@@ -408,10 +521,21 @@ func (s *Syncer) markBlocked() {
 	s.mu.Unlock()
 }
 
-func (s *Syncer) stats() (added, updated, removed, failed []string, blocked bool) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	return s.added, s.updated, s.removed, s.failed, s.blocked
+// outcome 是一轮同步的结果汇总。
+type outcome struct {
+	added   []string
+	updated []string
+	renamed []Rename
+	removed []Entry
+	failed  []string
+	blocked bool
+}
+
+func (s *Syncer) stats() outcome {
+	return outcome{
+		added: s.added, updated: s.updated, renamed: s.renamed,
+		removed: s.removed, failed: s.failed, blocked: s.blocked,
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -445,7 +569,7 @@ func Main(argv []string) int {
 	fs.StringVar(&cfg.mirror, "mirror", os.Getenv("KLEE_MIRROR"), "备用站点前缀，例如 https://mirror.example.com")
 	fs.StringVar(&cfg.fetcher, "fetcher", "auto", "下载通道：auto（有 python3 就用）/ python / go")
 	fs.StringVar(&cfg.commitFile, "commit-file", "", "把提交信息写到这个文件（action 里交给 git commit -F）")
-	fs.StringVar(&cfg.only, "only", "", "只处理这些文件名（逗号分隔）")
+	fs.StringVar(&cfg.only, "only", "", "只处理这些插件（文件名、地址或上一轮的模块名，逗号分隔）")
 	fs.IntVar(&cfg.limit, "limit", 0, "只处理前 N 个（调试用）")
 	fs.IntVar(&cfg.jobs, "jobs", 8, "并发下载数")
 	fs.Float64Var(&cfg.delay, "delay", 0.15, "每个请求前随机等待上限（秒）")
@@ -498,7 +622,7 @@ func runSync(cfg config) int {
 		fmt.Fprintf(os.Stderr, "! 拿不到在线列表（%v），改用仓库里上一轮的 index.json，本轮不删插件\n", err)
 	}
 
-	remotes = filterRemotes(remotes, cfg)
+	remotes = filterRemotes(remotes, cfg, previous)
 	if len(remotes) == 0 {
 		fmt.Fprintln(os.Stderr, "✗ 列表为空，什么都不做")
 		return 3
@@ -512,10 +636,10 @@ func runSync(cfg config) int {
 	if partial { // 调试模式不能顺手删掉没处理的部分
 		touched := make(map[string]bool, len(entries))
 		for _, entry := range entries {
-			touched[entry.Stem] = true
+			touched[entryKey(entry)] = true
 		}
-		for stem, entry := range previous {
-			if !touched[stem] {
+		for key, entry := range previous {
+			if !touched[key] {
 				entries = append(entries, entry)
 			}
 		}
@@ -524,11 +648,12 @@ func runSync(cfg config) int {
 
 	now := time.Now()
 	syncedAt := now.UTC().Format("2006-01-02 15:04:05") + " UTC"
-	added, updated, removed, failed, blocked := syncer.stats()
+	result := syncer.stats()
 
 	// 全站被拦且一无所获时，连索引都不该动，别让空结果覆盖掉旧索引；
 	// 插件没变化也不写，否则 synced_at 一变，git 里每天多一个空提交
-	if !cfg.dryRun && contentChanged(entries, previous) && !(blocked && len(added) == 0 && len(updated) == 0) {
+	if !cfg.dryRun && contentChanged(entries, previous) &&
+		!(result.blocked && len(result.added) == 0 && len(result.updated) == 0 && len(result.renamed) == 0) {
 		if _, err := vault.WriteState(entries, syncedAt); err != nil {
 			fmt.Fprintf(os.Stderr, "! index.json 写入失败：%v\n", err)
 		}
@@ -542,15 +667,23 @@ func runSync(cfg config) int {
 	// 提交信息由程序生成：模块清单和可莉的更新时间只有这里知道，
 	// 让 shell 去 grep 日志只会得到一行统计。
 	if cfg.commitFile != "" && !cfg.dryRun {
-		message := commitMessage(entries, added, updated, removed, failed, now)
+		message := commitMessage(changeSet{
+			entries: entries,
+			added:   result.added,
+			updated: result.updated,
+			renamed: result.renamed,
+			removed: result.removed,
+			failed:  result.failed,
+			now:     now,
+		})
 		if err := writeCommitMessage(cfg.commitFile, message); err != nil {
 			fmt.Fprintf(os.Stderr, "! 提交信息写入失败：%v\n", err)
 		}
 	}
-	if blocked {
+	if result.blocked {
 		return 3
 	}
-	if cfg.maxFailures >= 0 && len(failed) > cfg.maxFailures {
+	if cfg.maxFailures >= 0 && len(result.failed) > cfg.maxFailures {
 		return 2
 	}
 	return 0
@@ -579,7 +712,8 @@ func remotesFromState(state map[string]Entry) []Remote {
 	return remotes
 }
 
-func filterRemotes(remotes []Remote, cfg config) []Remote {
+// filterRemotes 处理 --only：三种写法都认——地址、地址里的文件名、上一轮落盘的名字。
+func filterRemotes(remotes []Remote, cfg config, previous map[string]Entry) []Remote {
 	out := remotes
 	if cfg.only != "" {
 		wanted := map[string]bool{}
@@ -590,7 +724,7 @@ func filterRemotes(remotes []Remote, cfg config) []Remote {
 		}
 		filtered := make([]Remote, 0, len(wanted))
 		for _, remote := range remotes {
-			if wanted[remote.Stem] {
+			if wanted[remote.Stem] || wanted[remote.URL] || wanted[previous[remote.key()].Stem] {
 				filtered = append(filtered, remote)
 			}
 		}
@@ -652,11 +786,13 @@ func probe(sources *Sources, cfg config) int {
 // ---------------------------------------------------------------------------
 
 func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
-	added, updated, removed, failed, blocked := syncer.stats()
+	result := syncer.stats()
+	added, updated, removed, failed, renamed, blocked :=
+		result.added, result.updated, result.removed, result.failed, result.renamed, result.blocked
 
 	var bad []Entry
 	for _, entry := range entries {
-		if entry.Status != StatusOK && !syncer.failedSet[entry.Stem] {
+		if entry.Status != StatusOK && !syncer.failedKeys[entryKey(entry)] {
 			bad = append(bad, entry)
 		}
 	}
@@ -665,16 +801,17 @@ func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
 	if cfg.dryRun {
 		prefix = "（dry-run，未写入）"
 	}
-	line := fmt.Sprintf("%s共 %d 个插件：新增 %d，更新 %d，删除 %d，失败 %d",
-		prefix, len(entries), len(added), len(updated), len(removed), len(failed))
-	fmt.Println(line)
-	fmt.Printf("统计：新增 %d · 更新 %d · 删除 %d · 失败 %d · 合计 %d\n",
-		len(added), len(updated), len(removed), len(failed), len(entries))
+	fmt.Printf("%s共 %d 个插件：新增 %d，更新 %d，重命名 %d，删除 %d，失败 %d\n",
+		prefix, len(entries), len(added), len(updated), len(renamed), len(removed), len(failed))
+	fmt.Printf("统计：新增 %d · 更新 %d · 重命名 %d · 删除 %d · 失败 %d · 合计 %d\n",
+		len(added), len(updated), len(renamed), len(removed), len(failed), len(entries))
 
 	for _, group := range []struct {
 		label string
 		names []string
-	}{{"+", added}, {"~", updated}, {"-", removed}} {
+	}{
+		{"+", added}, {"~", updated}, {"→", renameList(renamed)}, {"-", stemsOf(removed)},
+	} {
 		if len(group.names) > 0 {
 			fmt.Printf("  %s %s%s\n", group.label, strings.Join(head(group.names, 8), ", "), tail(group.names, 8))
 		}
@@ -690,8 +827,15 @@ func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
 		"## 可莉插件同步",
 		"",
 		fmt.Sprintf("- 插件总数：**%d**", len(entries)),
-		fmt.Sprintf("- 新增 %d · 更新 %d · 删除 %d · 转换失败 %d", len(added), len(updated), len(removed), len(bad)),
+		fmt.Sprintf("- 新增 %d · 更新 %d · 重命名 %d · 删除 %d · 转换失败 %d",
+			len(added), len(updated), len(renamed), len(removed), len(bad)),
 		"- 同步时间：" + syncedAt,
+	}
+	if len(renamed) > 0 {
+		summary = append(summary, "", fmt.Sprintf("### 文件改名 %d（文件名跟随插件里的 #!name）", len(renamed)), "")
+		for _, change := range headRenames(renamed, 20) {
+			summary = append(summary, fmt.Sprintf("- `%s` → `%s`", change.From, change.To))
+		}
 	}
 	if cfg.stale {
 		summary = append(summary, "", "> ℹ️ 本轮没拉到在线列表，用的是仓库里上一轮的 `index.json`，因此没有删除任何插件。")
@@ -712,6 +856,29 @@ func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
 		}
 	}
 	writeSummary(summary)
+}
+
+func renameList(renamed []Rename) []string {
+	out := make([]string, 0, len(renamed))
+	for _, change := range renamed {
+		out = append(out, change.From+"→"+change.To)
+	}
+	return out
+}
+
+func stemsOf(entries []Entry) []string {
+	out := make([]string, 0, len(entries))
+	for _, entry := range entries {
+		out = append(out, entry.Stem)
+	}
+	return out
+}
+
+func headRenames(renamed []Rename, limit int) []Rename {
+	if len(renamed) > limit {
+		return renamed[:limit]
+	}
+	return renamed
 }
 
 func writeSummary(lines []string) {

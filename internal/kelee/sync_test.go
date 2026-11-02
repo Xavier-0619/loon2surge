@@ -7,10 +7,14 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
+	"unicode/utf8"
+
+	"loon2surge/internal/lpx"
 )
 
 const samplePlugin = `#!name=测试插件
@@ -26,6 +30,11 @@ DOMAIN-SUFFIX,ads.example.com,REJECT
 [MITM]
 hostname = %APPEND% a.com
 `
+
+// namedPlugin 换掉 #!name，用来造多个"不同名"的假插件。
+func namedPlugin(name string) string {
+	return strings.Replace(samplePlugin, "#!name=测试插件", "#!name="+name, 1)
+}
 
 type fakeSite struct {
 	server   *httptest.Server
@@ -107,6 +116,14 @@ func readFile(t *testing.T, path string) string {
 	return string(data)
 }
 
+func stateOf(entries []Entry) map[string]Entry {
+	state := make(map[string]Entry, len(entries))
+	for _, entry := range entries {
+		state[entryKey(entry)] = entry
+	}
+	return state
+}
+
 // ---------------------------------------------------------------------------
 // 解析
 // ---------------------------------------------------------------------------
@@ -133,7 +150,7 @@ func TestLoadRemotes(t *testing.T) {
 		t.Errorf("loon:// 没有解出真实地址：%s", remotes[0].URL)
 	}
 	if remotes[0].Stem != "Zhihu_remove_ads" {
-		t.Errorf("stem 不对：%s", remotes[0].Stem)
+		t.Errorf("兜底名字不对：%s", remotes[0].Stem)
 	}
 	if remotes[0].Authors[0] != "可莉" {
 		t.Errorf("作者没解析出来：%v", remotes[0].Authors)
@@ -150,6 +167,58 @@ func TestRenderTableEscapesPipe(t *testing.T) {
 
 	if !strings.Contains(table, `含\|竖线`) {
 		t.Errorf("竖线没有转义，表格会被破坏：\n%s", table)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// 文件名
+// ---------------------------------------------------------------------------
+
+func TestPluginName(t *testing.T) {
+	cases := []struct {
+		name string
+		text string
+		want string
+	}{
+		{"正常", samplePlugin, "测试插件"},
+		{"大小写", "#!Name=大写\n[Rule]\nDOMAIN,a.com,REJECT\n", "大写"},
+		{"缺字段", "#!desc=没名字\n[Rule]\nDOMAIN,a.com,REJECT\n", ""},
+		{"section 之后不再找", "#!desc=d\n[Rule]\n#!name=晚到的\n", ""},
+		{"注释里不算", "# 说明\n#!name=真名\n", "真名"},
+	}
+	for _, c := range cases {
+		if got := lpx.PluginName(c.text); got != c.want {
+			t.Errorf("%s：得到 %q，想要 %q", c.name, got, c.want)
+		}
+	}
+}
+
+func TestFileStem(t *testing.T) {
+	cases := []struct {
+		name, fallback, want string
+	}{
+		{"前程无忧去广告", "51Job_remove_ads", "前程无忧去广告"},
+		{"贴吧/知乎 去广告", "x", "贴吧-知乎 去广告"},
+		{"  前后空白  ", "x", "前后空白"},
+		{"结尾句点.", "x", "结尾句点"},
+		{"a:b*c?d\"e<f>g|h\\i", "x", "a-b-c-d-e-f-g-h-i"},
+		{"", "Fallback", "Fallback"},
+		{"...", "Fallback", "Fallback"},
+		{"CON", "x", "_CON"},
+		{"中文\n换行", "x", "中文 换行"},
+	}
+	for _, c := range cases {
+		if got := fileStem(c.name, c.fallback); got != c.want {
+			t.Errorf("fileStem(%q)：得到 %q，想要 %q", c.name, got, c.want)
+		}
+	}
+
+	// 200 字节以内才安全：.sgmodule 还要占 9 个字节，而文件系统只给 255
+	long := strings.Repeat("长", 120)
+	if got := fileStem(long, "x"); len(got) > maxStemBytes {
+		t.Errorf("截断没生效：%d 字节", len(got))
+	} else if !utf8.ValidString(got) {
+		t.Errorf("截断把汉字切碎了：%q", got)
 	}
 }
 
@@ -176,9 +245,13 @@ func TestSyncPipeline(t *testing.T) {
 		t.Fatalf("写表格失败：%v", err)
 	}
 
-	module := readFile(t, vault.modulePath("Demo"))
+	// 落盘文件名取自 #!name，不是地址里的 Demo
+	module := readFile(t, vault.modulePath("测试插件"))
 	if !strings.Contains(module, "[MITM]") || !strings.Contains(module, "hostname = %APPEND% a.com") {
 		t.Errorf("模块内容不对：\n%s", module)
+	}
+	if _, err := os.Stat(vault.lpxPath("Demo")); !os.IsNotExist(err) {
+		t.Errorf("不该按地址命名文件")
 	}
 	if !strings.Contains(readFile(t, vault.indexPath()), `"lpx_sha"`) {
 		t.Errorf("索引里应记录内容哈希")
@@ -186,15 +259,15 @@ func TestSyncPipeline(t *testing.T) {
 
 	// 第二轮：上游没变，既不该重下重转，也不该改文件
 	previous := vault.ReadState()
-	before := readFile(t, vault.modulePath("Demo"))
+	before := readFile(t, vault.modulePath("测试插件"))
 	syncer2 := newSyncer(vault, site.sources(), 4, 0)
 	entries = syncer2.run(remotes, previous, true, true)
-	added, updated, removed, failed, blocked := syncer2.stats()
+	got := syncer2.stats()
 
-	if len(added)+len(updated)+len(removed)+len(failed) != 0 || blocked {
-		t.Errorf("没有变化却报了变更：+%v ~%v -%v !%v", added, updated, removed, failed)
+	if len(got.added)+len(got.updated)+len(got.renamed)+len(got.removed)+len(got.failed) != 0 || got.blocked {
+		t.Errorf("没有变化却报了变更：%+v", got)
 	}
-	if readFile(t, vault.modulePath("Demo")) != before {
+	if readFile(t, vault.modulePath("测试插件")) != before {
 		t.Errorf("模块被无谓重写了")
 	}
 
@@ -213,6 +286,68 @@ func TestSyncPipeline(t *testing.T) {
 	}
 }
 
+// TestSyncFollowsPluginName 是本轮需求的核心：文件名取 #!name，上游改名文件跟着改。
+func TestSyncFollowsPluginName(t *testing.T) {
+	path := "/Tool/Loon/Lpx/51Job_remove_ads.lpx"
+	site := newFakeSite(t, map[string]string{path: namedPlugin("前程无忧去广告")})
+	vault := NewVault(t.TempDir())
+
+	syncer := newSyncer(vault, site.sources(), 2, 0)
+	entries := syncer.run(site.remotes(t), map[string]Entry{}, true, true)
+	if _, err := os.Stat(vault.lpxPath("前程无忧去广告")); err != nil {
+		t.Fatalf("应按 #!name 落盘：%v", err)
+	}
+
+	previous := stateOf(entries)
+	site.plugins[path] = namedPlugin("前程无忧去广告 Pro") // 上游改了名
+
+	syncer2 := newSyncer(vault, site.sources(), 2, 0)
+	syncer2.run(site.remotes(t), previous, true, true)
+	got := syncer2.stats()
+
+	if len(got.renamed) != 1 || got.renamed[0].From != "前程无忧去广告" || got.renamed[0].To != "前程无忧去广告 Pro" {
+		t.Fatalf("应记一次改名：%+v", got.renamed)
+	}
+	if len(got.added) != 0 {
+		t.Errorf("改名不该算新增：%v", got.added)
+	}
+	if _, err := os.Stat(vault.modulePath("前程无忧去广告")); !os.IsNotExist(err) {
+		t.Errorf("旧名字的模块应删掉")
+	}
+	if _, err := os.Stat(vault.modulePath("前程无忧去广告 Pro")); err != nil {
+		t.Errorf("新名字的模块没落盘：%v", err)
+	}
+}
+
+func TestSyncDedupesIdenticalNames(t *testing.T) {
+	// 可莉那边真有两个"挖财记账去广告"，不能都写成同一个文件
+	site := newFakeSite(t, map[string]string{
+		"/Tool/Loon/Lpx/WaCaiJiZhang_remove_ads.lpx": namedPlugin("挖财记账去广告"),
+		"/Tool/Loon/Lpx/Wacai_remove_ads.lpx":        namedPlugin("挖财记账去广告"),
+	})
+	vault := NewVault(t.TempDir())
+
+	entries := newSyncer(vault, site.sources(), 2, 0).run(site.remotes(t), map[string]Entry{}, true, true)
+	if len(entries) != 2 {
+		t.Fatalf("应有两个条目：%+v", entries)
+	}
+	if entries[0].Stem == entries[1].Stem {
+		t.Fatalf("同名插件落进了同一个文件：%s", entries[0].Stem)
+	}
+	if entries[1].Stem != "挖财记账去广告-2" {
+		t.Errorf("重名应加后缀：%s", entries[1].Stem)
+	}
+
+	// 再来一轮必须得到同样的名字，否则每天都会改名
+	previous := stateOf(entries)
+	again := newSyncer(vault, site.sources(), 2, 0).run(site.remotes(t), previous, true, true)
+	for i := range entries {
+		if again[i].Stem != entries[i].Stem {
+			t.Fatalf("同一份列表两轮名字不一致：%s / %s", entries[i].Stem, again[i].Stem)
+		}
+	}
+}
+
 func TestSyncDetectsUpdate(t *testing.T) {
 	path := "/Tool/Loon/Lpx/Demo.lpx"
 	site := newFakeSite(t, map[string]string{path: samplePlugin})
@@ -222,7 +357,7 @@ func TestSyncDetectsUpdate(t *testing.T) {
 
 	syncer := newSyncer(vault, site.sources(), 2, 0)
 	entries := syncer.run(remotes, map[string]Entry{}, true, true)
-	previous := map[string]Entry{entries[0].Stem: entries[0]}
+	previous := stateOf(entries)
 
 	site.plugins[path] = strings.Replace(samplePlugin,
 		"DOMAIN-SUFFIX,ads.example.com,REJECT",
@@ -230,12 +365,12 @@ func TestSyncDetectsUpdate(t *testing.T) {
 
 	syncer2 := newSyncer(vault, site.sources(), 2, 0)
 	syncer2.run(remotes, previous, true, true)
-	added, updated, _, _, _ := syncer2.stats()
+	got := syncer2.stats()
 
-	if len(added) != 0 || len(updated) != 1 {
-		t.Fatalf("应报 1 个更新：+%v ~%v", added, updated)
+	if len(got.added) != 0 || len(got.updated) != 1 {
+		t.Fatalf("应报 1 个更新：+%v ~%v", got.added, got.updated)
 	}
-	if !strings.Contains(readFile(t, vault.modulePath("Demo")), "banner.example.com") {
+	if !strings.Contains(readFile(t, vault.modulePath("测试插件")), "banner.example.com") {
 		t.Errorf("模块没有跟上新内容")
 	}
 }
@@ -243,32 +378,36 @@ func TestSyncDetectsUpdate(t *testing.T) {
 func TestSyncPrunesRemoved(t *testing.T) {
 	keep := "/Tool/Loon/Lpx/Keep.lpx"
 	drop := "/Tool/Loon/Lpx/Drop.lpx"
-	site := newFakeSite(t, map[string]string{keep: samplePlugin, drop: samplePlugin})
+	site := newFakeSite(t, map[string]string{keep: namedPlugin("保留插件"), drop: namedPlugin("下架插件")})
 	root := t.TempDir()
 	vault := NewVault(root)
 
 	syncer := newSyncer(vault, site.sources(), 2, 0)
 	entries := syncer.run(site.remotes(t), map[string]Entry{}, true, true)
-	previous := map[string]Entry{}
-	for _, entry := range entries {
-		previous[entry.Stem] = entry
-	}
-	if _, err := os.Stat(vault.lpxPath("Drop")); err != nil {
+	previous := stateOf(entries)
+	if _, err := os.Stat(vault.lpxPath("下架插件")); err != nil {
 		t.Fatalf("首轮应落盘：%v", err)
 	}
 
 	delete(site.plugins, drop) // 上游下架
 	syncer2 := newSyncer(vault, site.sources(), 2, 0)
 	syncer2.run(site.remotes(t), previous, true, true)
+	got := syncer2.stats()
 
-	if _, err := os.Stat(vault.lpxPath("Drop")); !os.IsNotExist(err) {
+	if _, err := os.Stat(vault.lpxPath("下架插件")); !os.IsNotExist(err) {
 		t.Errorf("下架的插件应被删除")
 	}
-	if _, err := os.Stat(vault.modulePath("Drop")); !os.IsNotExist(err) {
+	if _, err := os.Stat(vault.modulePath("下架插件")); !os.IsNotExist(err) {
 		t.Errorf("下架的模块应被删除")
 	}
-	if _, err := os.Stat(vault.lpxPath("Keep")); err != nil {
+	if _, err := os.Stat(vault.lpxPath("保留插件")); err != nil {
 		t.Errorf("在架的插件不该被牵连：%v", err)
+	}
+	if len(got.removed) != 1 || got.removed[0].Stem != "下架插件" {
+		t.Errorf("提交信息要能列出被删的模块：%+v", got.removed)
+	}
+	if got.removed[0].Date != "2026-10-02 13:57:49" {
+		t.Errorf("删除也要带可莉的更新时间：%+v", got.removed[0])
 	}
 }
 
@@ -303,21 +442,21 @@ func TestSyncKeepsFilesWhenBlocked(t *testing.T) {
 	syncer := newSyncer(vault, site.sources(), 2, 0)
 	remotes := site.remotes(t)
 	entries := syncer.run(remotes, map[string]Entry{}, true, true)
-	previous := map[string]Entry{entries[0].Stem: entries[0]}
-	before := readFile(t, vault.modulePath("Demo"))
+	previous := stateOf(entries)
+	before := readFile(t, vault.modulePath("测试插件"))
 
 	site.denyAll.Store(true) // 整站被 Cloudflare 拦
 	syncer2 := newSyncer(vault, site.sources(), 2, 0)
 	entries = syncer2.run(remotes, previous, true, true)
-	_, _, _, _, blocked := syncer2.stats()
+	got := syncer2.stats()
 
-	if !blocked {
+	if !got.blocked {
 		t.Errorf("403 应被标记为被拦截")
 	}
 	if entries[0].Status != StatusOK {
 		t.Errorf("下载失败时不该把已有条目降级：%+v", entries[0])
 	}
-	if readFile(t, vault.modulePath("Demo")) != before {
+	if readFile(t, vault.modulePath("测试插件")) != before {
 		t.Errorf("被拦截时不该动已有模块")
 	}
 }
@@ -379,69 +518,81 @@ func TestRequestShapeMatchesLoonClient(t *testing.T) {
 	}
 }
 
-// TestCommitMessage 检查提交正文说清了"动了哪些模块"和"可莉什么时候更新的"。
+// TestCommitMessage 检查提交正文：每行"时间在前、模块在后"，且只写真正动过的模块。
 func TestCommitMessage(t *testing.T) {
 	entries := []Entry{
-		{Stem: "Alpha", Date: "2026-10-02 13:57:49", Status: StatusOK},
-		{Stem: "Beta", Date: "2026-10-02 13:57:49", Status: StatusOK},
+		{Stem: "前程无忧去广告", Date: "2026-10-02 13:57:49", Status: StatusOK},
+		{Stem: "知乎去广告", Date: "2026-10-02 13:57:49", Status: StatusOK},
 	}
 	now := time.Date(2026, 11, 2, 18, 30, 0, 0, time.UTC) // 北京 11-03 02:30
 
-	message := commitMessage(entries, []string{"Alpha"}, []string{"Beta"}, nil, nil, now)
+	message := commitMessage(changeSet{
+		entries: entries,
+		added:   []string{"前程无忧去广告"},
+		updated: []string{"知乎去广告"},
+		renamed: []Rename{{From: "Zhihu_remove_ads", To: "知乎去广告", Date: "2026-10-19 23:24:57"}},
+		removed: []Entry{{Stem: "Old_Plugin", Date: "2026-10-16 10:00:00"}},
+		now:     now,
+	})
+
 	for _, want := range []string{
 		"🔄 自动更新 2026-11-03",
-		"新增 1 · 更新 1 · 删除 0 · 失败 0 · 合计 2",
-		"新增模块（可莉更新 2026-10-02 13:57:49）：",
-		"- Alpha.sgmodule",
-		"更新模块（可莉更新 2026-10-02 13:57:49）：",
-		"- Beta.sgmodule",
+		"新增 1 · 更新 1 · 重命名 1 · 删除 1 · 失败 0 · 合计 2",
+		"新增模块 1 个：",
+		"- 2026-10-02 13:57:49 · 前程无忧去广告.sgmodule",
+		"更新模块 1 个：",
+		"- 2026-10-02 13:57:49 · 知乎去广告.sgmodule",
+		"重命名 1 个（文件名跟随 #!name）：",
+		"- 2026-10-19 23:24:57 · Zhihu_remove_ads → 知乎去广告",
+		"删除模块 1 个（上游已下架）：",
+		"- 2026-10-16 10:00:00 · Old_Plugin.sgmodule",
 		"同步时间：2026-11-03 02:30:00（北京时间）",
 	} {
 		if !strings.Contains(message, want) {
 			t.Errorf("提交信息里缺少 %q：\n%s", want, message)
 		}
 	}
-	if strings.Contains(message, "删除模块") {
-		t.Errorf("没有删除时不该留一个空小节：\n%s", message)
+
+	// 每一条明细都必须是同一个形状：`- <时间> · <模块>`
+	shape := regexp.MustCompile(`^- (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}|未知时间) · \S`)
+	for _, line := range strings.Split(message, "\n") {
+		if strings.HasPrefix(line, "- ") && !shape.MatchString(line) {
+			t.Errorf("明细格式不统一：%q", line)
+		}
 	}
 
-	// 多数派日期提到标题，少数派逐条标；超过 60 条折叠
-	many := make([]Entry, 0, 70)
+	// 没有的类别不该留空小节
+	only := commitMessage(changeSet{entries: entries, added: []string{"前程无忧去广告"}, now: now})
+	for _, unwanted := range []string{"\n更新模块 ", "\n重命名 ", "\n删除模块 "} {
+		if strings.Contains(only, unwanted) {
+			t.Errorf("不该出现空小节 %q：\n%s", strings.TrimSpace(unwanted), only)
+		}
+	}
+
+	// 缺日期时也要占住时间位，形状保持一致
+	blank := commitMessage(changeSet{
+		entries: []Entry{{Stem: "无日期插件"}},
+		added:   []string{"无日期插件"},
+		now:     now,
+	})
+	if !strings.Contains(blank, "- 未知时间 · 无日期插件.sgmodule") {
+		t.Errorf("缺日期应写未知时间：\n%s", blank)
+	}
+
+	// 超过 60 条折叠，免得首次全量时提交信息比代码还长
 	stems := make([]string, 0, 70)
+	many := make([]Entry, 0, 70)
 	for i := 0; i < 70; i++ {
 		stem := fmt.Sprintf("Mod%02d", i)
-		date := "2026-10-02 13:57:49"
-		if i%35 == 0 { // 两条少数派
-			date = "2026-10-19 23:24:57"
-		}
-		many = append(many, Entry{Stem: stem, Date: date, Status: StatusOK})
 		stems = append(stems, stem)
+		many = append(many, Entry{Stem: stem, Date: "2026-10-02 13:57:49", Status: StatusOK})
 	}
-	message = commitMessage(many, stems, nil, nil, nil, now)
-	if !strings.Contains(message, "新增模块（可莉更新 2026-10-02 13:57:49）：") {
-		t.Errorf("多数派日期应提到小标题：\n%s", message[:200])
+	folded := commitMessage(changeSet{entries: many, added: stems, now: now})
+	if !strings.Contains(folded, "… 其余 10 个略") {
+		t.Errorf("超过 60 条应折叠：\n%s", folded)
 	}
-	if got := strings.Count(message, "可莉更新 2026-10-19 23:24:57"); got != 2 {
-		t.Errorf("少数派应逐条标注，期望 2 处，得到 %d", got)
-	}
-	if got := strings.Count(message, "可莉更新 2026-10-02 13:57:49"); got != 1 {
-		t.Errorf("多数派日期不该在每行重复，期望只出现在标题，得到 %d 处", got)
-	}
-	if !strings.Contains(message, "- 其余 10 个略") {
-		t.Errorf("超过 60 条应折叠：\n%s", message)
-	}
-
-	// 日期不一致时逐条标注；下架的模块没有日期
-	entries[1].Date = "2026-10-19 23:24:57"
-	message = commitMessage(entries, nil, []string{"Alpha", "Beta"}, []string{"Gone"}, nil, now)
-	for _, want := range []string{
-		"- Alpha.sgmodule · 可莉更新 2026-10-02 13:57:49",
-		"- Beta.sgmodule · 可莉更新 2026-10-19 23:24:57",
-		"- Gone.sgmodule · 上游已下架",
-	} {
-		if !strings.Contains(message, want) {
-			t.Errorf("提交信息里缺少 %q：\n%s", want, message)
-		}
+	if got := strings.Count(folded, "- 2026-10-02 13:57:49 · "); got != commitLineLimit {
+		t.Errorf("折叠后应剩 %d 条明细，实际 %d", commitLineLimit, got)
 	}
 }
 

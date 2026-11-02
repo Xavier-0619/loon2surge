@@ -185,6 +185,30 @@ func words(text string) []string {
 // .lpx 解析
 // ---------------------------------------------------------------------------
 
+// PluginName 只取头部的 #!name，遇到第一个 [section] 就停。
+//
+// 同步时用它给落盘文件命名，此时还不该付整个解析的代价；调用方要自己
+// 先去掉 BOM（见 kelee.decode）。取不到返回空串，由调用方决定兜底名字。
+func PluginName(text string) string {
+	for _, raw := range strings.Split(text, "\n") {
+		line := strings.TrimSpace(raw)
+		switch {
+		case line == "":
+			continue
+		case strings.HasPrefix(line, "#!"):
+			key, value, _ := strings.Cut(line[2:], "=")
+			if strings.EqualFold(strings.TrimSpace(key), "name") {
+				return strings.TrimSpace(value)
+			}
+		case strings.HasPrefix(line, "#"), strings.HasPrefix(line, "//"), strings.HasPrefix(line, ";"):
+			continue
+		case strings.HasPrefix(line, "["):
+			return "" // 头部结束，后面不会再有元数据
+		}
+	}
+	return ""
+}
+
 // parsePlugin 把 .lpx 拆成头部元数据 + 各 section 的行（带行号）。
 func parsePlugin(text string) *Plugin {
 	plugin := &Plugin{Meta: map[string]string{}, Sections: map[string][]Line{}}
