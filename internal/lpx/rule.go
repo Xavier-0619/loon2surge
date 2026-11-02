@@ -104,6 +104,11 @@ func formatRule(ctx *Ctx, kind, value, policy string, extra []string) (string, e
 	if !modulePolicies[policy] {
 		return "", unsupported("rule-policy", "Surge 模块 [Rule] 不允许 %s 策略", policy)
 	}
+	if kind == "PROCESS-NAME" {
+		if err := checkProcessName(ctx, value); err != nil {
+			return "", err
+		}
+	}
 
 	var options []string
 	switch {
@@ -112,13 +117,16 @@ func formatRule(ctx *Ctx, kind, value, policy string, extra []string) (string, e
 	case ipTypes[kind]:
 		options = append(options, "no-resolve")
 	}
-	// 源文件里的 extended-matching / no-resolve / pre-matching 不照搬，按类型重建
+	// 源文件里的 extended-matching / no-resolve / pre-matching 不照搬，按类型重建；
+	// 其余选项 Surge 文档没确认过，原样透传等于把未知语法塞给客户端。
 	for _, item := range extra {
 		switch strings.ToLower(item) {
 		case "extended-matching", "no-resolve", "pre-matching":
 			continue
+		case "":
+			continue
 		}
-		options = append(options, item)
+		return "", unsupported("unsupported-rule", "未核验的规则选项 %s", item)
 	}
 
 	if kind == "DOMAIN-WILDCARD" || kind == "PROCESS-NAME" {
@@ -296,6 +304,66 @@ func formatMatcher(node *matcher) string {
 	return "(" + kind + "," + node.value + suffix + ")"
 }
 
+// checkProcessName 校验 Loon 的进程规则能不能安全映射。
+//
+// Surge 的进程名匹配区分大小写，Loon 按可执行文件名匹配时不区分；
+// 路径里的字符集合、反斜杠在 Surge 文档里也没说清楚。这些都不猜。
+func checkProcessName(ctx *Ctx, value string) error {
+	if !strings.Contains(strings.ToLower(ctx.platform), "mac") {
+		return unsupported("rule-process-platform",
+			"进程规则只在 macOS 生效，插件没有标注 macOS")
+	}
+	text := strings.TrimSpace(value)
+	if text == "" {
+		return unsupported("unsupported-rule", "进程规则缺少取值")
+	}
+	if strings.ContainsAny(text, `\[]`) {
+		return unsupported("rule-process-pattern",
+			"进程路径含字符集合或反斜杠，Surge 匹配细节未确认：%s", text)
+	}
+	if !strings.Contains(text, "/") {
+		return unsupported("rule-process-pattern",
+			"按可执行文件名匹配时 Loon 不区分大小写、Surge 区分：%s", text)
+	}
+	return nil
+}
+
+// hasProcess 判断子树里是否含进程条件。
+func (m *matcher) hasProcess() bool {
+	if strings.EqualFold(m.kind, "PROCESS-NAME") {
+		return true
+	}
+	for _, child := range m.children {
+		if child.hasProcess() {
+			return true
+		}
+	}
+	return false
+}
+
+// checkLogicNodes 递归检查逻辑规则里的进程条件。
+func checkLogicNodes(ctx *Ctx, node *matcher) error {
+	if strings.EqualFold(node.kind, "NOT") {
+		for _, child := range node.children {
+			if child.hasProcess() {
+				return unsupported("rule-process-negation",
+					"NOT 里含进程条件，两端对未知进程信息的处理方式不同")
+			}
+		}
+	}
+	if strings.EqualFold(node.kind, "PROCESS-NAME") {
+		if err := checkProcessName(ctx, node.value); err != nil {
+			return err
+		}
+	}
+	for _, child := range node.children {
+		if err := checkLogicNodes(ctx, child); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func logicRule(ctx *Ctx, parts []string) ([]Emit, error) {
 	if len(parts) < 3 {
 		return nil, unsupported("rule-logic", "逻辑规则不完整")
@@ -311,6 +379,11 @@ func logicRule(ctx *Ctx, parts []string) ([]Emit, error) {
 	}
 	if !modulePolicies[policy] {
 		return nil, unsupported("rule-policy", "Surge 模块 [Rule] 不允许 %s 策略", policy)
+	}
+	for _, node := range nodes {
+		if err := checkLogicNodes(ctx, node); err != nil {
+			return nil, err
+		}
 	}
 
 	kinds := map[string]bool{}

@@ -74,6 +74,24 @@ runs:
           echo "| 🔌 下载通道 | ${channel:-未知} |"
         } >> "$GITHUB_STEP_SUMMARY"
 
+    - name: 🔍 审计远程脚本
+      if: inputs.probe != 'true'
+      shell: bash
+      run: |
+        # 转换只搬运 script-path 字符串。脚本本身哪天 404 了，模块照样能导入、
+        # 只是跑起来没反应——所以每次同步都把引用到的脚本抓一遍，留个快照当附件。
+        # 不加 --strict：单个脚本抓不到不该让整轮同步失败。
+        ./bin/loon2surge audit --out "$RUNNER_TEMP/script-audit.json" | tee audit.log
+
+    - name: 📎 上传脚本审计报告
+      if: inputs.probe != 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: script-audit
+        path: ${{ runner.temp }}/script-audit.json
+        retention-days: 30
+        if-no-files-found: warn
+
     - name: 🚀 提交并推送
       if: inputs.probe != 'true'
       shell: bash

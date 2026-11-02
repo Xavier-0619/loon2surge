@@ -8,14 +8,17 @@
 ## 目录速览
 
 ```
-main.go                命令行入口（convert / sync）
-internal/lpx/          转换引擎：规则 / 改写 / 脚本 / 头部 / 组装
-internal/kelee/        同步：拉列表、比哈希、下载、转换、写索引
+main.go                命令行入口（convert / sync / validate / audit）
+internal/lpx/          转换引擎：规则 / 改写 / 脚本 / 头部 / 组装 / 产物自检
+internal/kelee/        同步：拉列表、比哈希、下载、转换、写索引、远程脚本审计
 internal/cliargs/      让标志可以写在路径后面
 loon/  surge/          Loon 原始插件 / 转换后的 Surge 模块（按插件里的 #!name 命名）
 index.json             每个插件的哈希、状态与诊断（自动生成）
 INDEX.md               给人看的插件索引（自动生成）
-.github/workflows/     定时同步流水线
+tools/                 上游监听脚本（只在 CI 里跑）
+.github/workflows/     每日同步 / PR 校验 / 上游监听
+AGENTS.md              开发约定与踩过的坑（改代码前先看）
+RULES.md               转换规则与"为什么这一行不转"
 ```
 
 ## 快速开始
@@ -42,6 +45,8 @@ go build -o loon2surge .          # 需要 Go 1.22+
 | `loon2surge sync --fetcher go` | 强制用 Go 原生通道下载（默认 auto：有 python3 就借它的 TLS 栈） |
 | `loon2surge sync --index-file list.json` | 用本地列表离线调试 |
 | `loon2surge sync --only A,B --limit 5` | 只处理指定/前 N 个（调试用，不会误删其它插件） |
+| `loon2surge validate [--dir surge]` | 把已发布的模块当成品再校验一遍（语法残留、策略、状态码、section 顺序） |
+| `loon2surge audit [--strict]` | 抓一遍模块引用的远程脚本，记录状态码与 SHA-256 |
 | `loon2surge version` | 版本号 |
 
 转换时并行读取与解析（`runtime.NumCPU()` 个 worker），进度按文件顺序输出，日志不会交错。
@@ -67,6 +72,37 @@ hub.kelee.one/list.json ──► loon/*.lpx ──► surge/*.sgmodule
 | 📊 汇总仓库现状 | 把插件/模块数量、实际下载通道写进 Job Summary |
 | 🚀 提交并推送 | 提交信息由程序生成：标题是北京日期，正文列出这次动过的模块 |
 | 🩺 汇报失败 | 同步出错时把整轮标红，但已成功的改动照样落盘 |
+
+另有三个配套流水线：
+
+- **✅ 代码与产物校验**（`validate.yml`）：PR 和 push 到 main 时跑格式、`go vet`、测试，
+  以及 `loon2surge validate` 把仓库里已有的模块当成品再读一遍，并核对 `index.json` 与 `surge/` 是否一一对应。
+- **🛰️ 上游更新监听**（`upstream-watch.yml`）：每周一北京时间 09:00 看一眼
+  [deanxizian/loon_to_surge](https://github.com/deanxizian/loon_to_surge) 的新提交
+  （跳过 `chore: update Kelee Surge modules`），有值得借鉴的内容就让模型读 diff 生成改动，
+  跑通测试后开一个 draft PR 等人审核。模型判断不需要移植或调用失败时只开 issue 提醒，不动代码。
+- **🧑‍⚖️ 上游 PR 自动审核**（`upstream-review.yml`）：只认带 `upstream-sync` 标签的 PR。
+  先跑构建、测试、产物自检，再让模型读 diff 逐条对照 `RULES.md` 与 `AGENTS.md`。
+  三关全过才批准（draft 转正 + approve），**从不自动合并**。
+
+### 上游监听与审核怎么配
+
+**开箱即用，不用配任何密钥。** 模型走 GitHub 自带的 Models 网关
+（`https://models.github.ai/inference`，模型 `openai/gpt-4o-mini`），
+凭证是 workflow 里的 `github.token`，成本记在 GitHub 头上。对应的权限是
+`permissions: models: read`——**删了这行就会降级成 issue 提醒**。
+
+想换更强的模型，再加下面的配置（有自己的 key 就优先用，没有才回落到 GitHub Models）：
+
+| 类型 | 名称 | 说明 |
+| --- | --- | --- |
+| secret | `AI_API_KEY` | 兼容 OpenAI 接口的密钥，配了就不再用 GitHub Models |
+| variable | `AI_BASE_URL` | 默认 `https://api.deepseek.com/v1`（仅配了 `AI_API_KEY` 时生效） |
+| variable | `AI_MODEL` | 默认 `deepseek-chat`（同上）；用 GitHub Models 时默认 `openai/gpt-4o-mini` |
+| secret | `REVIEW_TOKEN` | 细粒度 PAT，勾 `Pull requests: Read and write`；不配也能审，只是批不了（bot 批不了自己开的 PR） |
+
+审核通过会自动 approve，但**不会自动合并**——点 merge 那一步永远是人。进度记在 `.upstream-sync.json` 里，
+一轮的最大处理量是 12 个提交，超出的下一轮继续。
 
 ### 文件叫什么名字
 
@@ -125,7 +161,7 @@ loon/51Job_remove_ads.lpx  ──►  #!name=前程无忧去广告  ──►  l
 
 **角标说明**：模块名后面挂 `已适配` 表示转换器替它做了等价改写；挂 `⚠️ 需人工确认`
 表示有原始行没能自动处理，或者运行时行为和 Loon 不完全一样。正文末尾两节会把原因摊开写。
-只看本轮改动过的模块——历史欠账不会每天刷一遍；完整的存量清单在 Job Summary 里。
+只看本轮改动过的模块——历史欠账不会每轮刷一遍；完整的存量清单在 Job Summary 里。
 
 **对比方式**：上游的 `date` 字段是站点重建时间（275 条里 273 条完全相同），当不了版本号。
 所以每轮都下载并算 SHA-256，哈希没变就不落盘、不重转，`index.json` 也不会重写——
@@ -261,6 +297,16 @@ Git 里不会出现"只改时间戳"的空提交。
 | `script-http-name-shared` | 脚本重名 | 已自动适配（自动加 `-2`；它只报不改，第二条会被第一条覆盖） |
 | `module-excluded` | 整份表达不出来 | 未生成（Loon 专用） |
 
+本轮又对齐了它几处更关键的实现（详见 [RULES.md](RULES.md)）：
+
+| 它的行为 | 为什么重要 |
+| --- | --- |
+| Body Rewrite 写成 `http-response <url> <正则> <替换>`，并显式写出 `(?ims)` / `(?-ims)` | Surge 的 Body Rewrite 默认按行锚定 `^`/`$`，Loon 不是。之前这里输出 `http-response-replace-regex`——那不是合法写法，模块能导入但整行不生效 |
+| JQ 表达式按词法去注释、再压成一行 | 直接把换行换成空格，`#` 注释会吞掉后面的代码 |
+| `? as name` 捕获 + `${name.1}` 引用 | 19 条 Loon V2 改写依赖它，之前整行注释 |
+| `enable` 参数同时是脚本入参时不用行前缀 | 否则脚本拿到的是开关值而不是参数 |
+| 产物独立校验器 | 转换器的诊断看不见自己的 bug |
+
 差别只有两处：
 - 它对「自动加入TestFlight」这类**部分可转**的插件整份排除；这里会把能转的脚本转出来，
   只把 `PROXY` 规则留在文件末尾注释里——规则少一条能手动补，脚本没了就真没了。
@@ -376,11 +422,15 @@ internal/cliargs/   标志与位置参数分离
 
 ## 已知边界
 
-- `url.replace(a, b)` 不转换：Loon 是「URL 子串替换」，Surge 的 `[URL Rewrite]` 是「整条 URL 替换」，两者不等价，硬转会改坏跳转。
+- `url.replace` 只在 request 阶段转换，输出 `pattern 目标 header`（`header` 表示只改 URL、不动请求体里的地址）；
+  response 阶段的同名动作没有等价写法，会注释保留。
+- `response.body.mock` 内联正文含引号时走 `data-type=base64`；含换行则拒绝——单行 Map Local 装不下。
+- `response.body.mock_file` 支持 `mock_file(url)` 和 `mock_file("text", url, 200)` 两种签名。
+- `jq_file` / `jq-path` 指向的远程 JQ 暂不抓取内联：转换器不联网，这一行会注释保留并标「需人工确认」。
 - `[Script]` 的 `generic` 会照转但给出警告：Loon 有被选节点上下文，Surge 没有。
   个别脚本还要 `$argument.policy` 之类的模块参数（如「代理链路检测」），那属于脚本级知识，
   转换器不会替你猜，需要自己补 `#!arguments=Policy:PROXY` 和 `argument="policy={{{Policy}}}"`。
-- `network-changed` 触发器、`response.body.mock`、Loon 专属的 `img-url` 等暂无对应。
+- `network-changed` 触发器、Loon 专属的 `img-url` 等暂无对应。
 - MITM 不会自动推断：源插件没写 `hostname` 但存在改写行时，只提示手动补。
 - 静态检查通过 ≠ 真机可用。远程脚本、正则引擎差异仍需在 Surge 里实测一遍。
 
@@ -389,7 +439,13 @@ internal/cliargs/   标志与位置参数分离
 ```bash
 go test ./...                     # 单元 + 端到端（本地假站点，不联网）
 go test ./internal/lpx -bench .   # 转换性能
+loon2surge validate --dir surge   # 已发布产物的独立校验
+loon2surge audit                  # 远程脚本可达性（会联网）
 ```
+
+产物有两道闸：转换结束时会对自己刚写出的文本跑一遍 `Validate`（有问题记为
+`product-invalid`，该模块不落盘），`validate` 命令则对仓库里已有的文件再跑一遍。
+两处用的是同一套规则，所以"转换器自检通过"和"仓库里的文件合规"是同一件事。
 
 ## 关于内容归属
 

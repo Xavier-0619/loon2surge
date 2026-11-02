@@ -59,6 +59,9 @@ type attrSet struct {
 	// 这不是美化：不归一就会被当成未知属性丢掉，而 requires-body 掉了
 	// 脚本就读不到响应体——模块能导入，但去广告静默失效。
 	renamed []string
+	// conflicts 记录同一个属性被赋了不同值。Loon 里后者覆盖前者，但多半是
+	// 上游写错了，猜哪个生效等于替用户做决定，所以留给上层拒绝。
+	conflicts []string
 }
 
 func newAttrSet() *attrSet { return &attrSet{values: map[string]string{}} }
@@ -76,9 +79,14 @@ func (a *attrSet) set(key, value string) {
 		a.renamed = appendUnique(a.renamed, key+" → "+normalized)
 		key = normalized
 	}
-	if _, seen := a.values[key]; !seen {
-		a.order = append(a.order, key)
+	if previous, seen := a.values[key]; seen {
+		if previous != value {
+			a.conflicts = appendUnique(a.conflicts, key)
+		}
+		a.values[key] = value
+		return
 	}
+	a.order = append(a.order, key)
 	a.values[key] = value
 }
 
@@ -216,11 +224,44 @@ func convertScript(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 	}
 
 	body := name + " = " + strings.Join(pieces, ", ")
+	if kind == "cron" && !plausibleCron(pattern) {
+		return nil, unsupported("script-cron", "cron 表达式不是 5/6 段数字写法：%s", pattern)
+	}
 	wrapped, err := applyEnable(ctx, lineno, body, enable)
 	if err != nil {
 		return nil, err
 	}
+	if len(attrs.conflicts) > 0 {
+		return nil, unsupported("script-attribute",
+			"同一属性被赋了不同值，无法判断哪个生效：%s", strings.Join(attrs.conflicts, "、"))
+	}
 	return []Emit{{"Script", wrapped}}, nil
+}
+
+// plausibleCron 只做形状检查：5 或 6 段、每段是数字和 * , - / 的组合。
+// 含模块参数占位符的表达式留给 Surge 在运行期判断，不在这里假装能验。
+func plausibleCron(expr string) bool {
+	text := strings.TrimSpace(expr)
+	if text == "" {
+		return false
+	}
+	if strings.Contains(text, "{") {
+		return true
+	}
+	fields := strings.Fields(text)
+	if len(fields) != 5 && len(fields) != 6 {
+		return false
+	}
+	for _, field := range fields {
+		for i := 0; i < len(field); i++ {
+			ch := field[i]
+			if (ch >= '0' && ch <= '9') || ch == '*' || ch == ',' || ch == '-' || ch == '/' {
+				continue
+			}
+			return false
+		}
+	}
+	return true
 }
 
 // isDisplayKey 是只在客户端列表里显示用的元数据，Surge 没有对应字段，静默丢弃。
@@ -451,12 +492,34 @@ func applyEnable(ctx *Ctx, lineno int, body, raw string) (string, error) {
 		return "", unsupported("script-enable", "enable 引用了未声明参数：%s", param)
 	}
 
+	// 同一个参数既当开关、又出现在 cron 或 argument 里时，不能把它的默认值
+	// 改成 `#`：脚本拿到的会变成开关值，而不是原本的入参。
+	// 这种情况 Surge 没有等价写法，只能按默认值把整行静态注释或保留。
+	if referencesArg(body, param) {
+		ctx.args.Used[param] = true
+		if falsyValues[strings.ToLower(strings.TrimSpace(defaultValue))] {
+			ctx.Review("script-enable-shared",
+				"参数 "+param+" 同时是脚本入参，按默认值保持关闭（未用行前缀）", lineno)
+			return "# " + body, nil
+		}
+		ctx.Review("script-enable-shared",
+			"参数 "+param+" 同时是脚本入参，按默认值保持开启（未用行前缀）", lineno)
+		return body, nil
+	}
+
 	ctx.args.Used[param] = true
 	if falsyValues[strings.ToLower(strings.TrimSpace(defaultValue))] {
 		ctx.args.Defaults[param] = "#"
 	}
 	ctx.Adapt("script-enable", "enable 已转为行前缀开关 {{{"+param+"}}}", lineno)
 	return "{{{" + param + "}}}" + body, nil
+}
+
+// referencesArg 判断一行产出里是否还引用了某个参数（三种占位符写法都算）。
+func referencesArg(text, name string) bool {
+	return strings.Contains(text, "{"+name+"}") ||
+		strings.Contains(text, "${"+name+"}") ||
+		strings.Contains(text, "{{{"+name+"}}}")
 }
 
 // enableParam 从 `$?\{?([A-Za-z0-9_]+)\}?` 里取出参数名。

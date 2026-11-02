@@ -1,0 +1,105 @@
+name: ✅ 代码与产物校验
+
+# 每次 PR 和推送到 main 都跑：单元测试、格式、以及"仓库里躺着的模块是不是还合规"。
+# 这里不联网、不抓上游，只验证已经提交的东西——抓取那件事归每日同步。
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GOFLAGS: -trimpath
+  CGO_ENABLED: 0
+
+jobs:
+  check:
+    name: 🧪 测试与产物校验
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 🐹 准备 Go 环境
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      - name: 🎨 检查格式
+        shell: bash
+        run: |
+          unformatted=$(gofmt -l . | grep -v '^$' || true)
+          if [ -n "$unformatted" ]; then
+            echo "### ❌ 这些文件没有 gofmt" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "$unformatted" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+      - name: 🔍 静态检查
+        run: go vet ./...
+
+      - name: 🧪 单元测试
+        run: go test ./... -count=1
+
+      - name: 🔨 编译
+        run: go build -o bin/loon2surge .
+
+      - name: 🛡️ 产物自检
+        shell: bash
+        run: |
+          # 已经提交进仓库的模块当成品再读一遍：手改过的、上一版遗留的都会在这里暴露
+          set -o pipefail
+          ./bin/loon2surge validate --dir surge | tee validate.log
+
+      - name: 🧮 索引与文件一致性
+        if: hashFiles('index.json') != ''
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+
+          index = json.load(open("index.json", encoding="utf-8"))
+          listed = {e["stem"] for e in index["plugins"] if e.get("status") == "ok"}
+          on_disk = {n[:-9] for n in os.listdir("surge") if n.endswith(".sgmodule")}
+
+          missing = sorted(listed - on_disk)
+          extra = sorted(on_disk - listed)
+          if missing or extra:
+              print("### ❌ index.json 与 surge/ 对不上", file=sys.stderr)
+              for name in missing[:20]:
+                  print(f"  index 里有、文件没了：{name}", file=sys.stderr)
+              for name in extra[:20]:
+                  print(f"  文件在那儿、index 里没有：{name}", file=sys.stderr)
+              sys.exit(1)
+
+          print(f"index.json 与 {len(on_disk)} 个模块一一对应")
+          PY
+
+      - name: 📊 汇总
+        if: always()
+        shell: bash
+        run: |
+          modules=$(find surge -name '*.sgmodule' 2>/dev/null | wc -l)
+          plugins=$(find loon -name '*.lpx' 2>/dev/null | wc -l)
+          {
+            echo ""
+            echo "### 📊 校验结果"
+            echo ""
+            echo "| 项目 | 数量 |"
+            echo "| --- | --- |"
+            echo "| 🧩 Loon 插件 | $plugins |"
+            echo "| 📦 Surge 模块 | $modules |"
+          } >> "$GITHUB_STEP_SUMMARY"

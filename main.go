@@ -6,6 +6,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -22,13 +23,15 @@ import (
 	"loon2surge/internal/lpx"
 )
 
-const version = "2.0.0"
+const version = "2.1.0"
 
 const usage = `loon2surge %s —— Loon 插件 → Surge 模块
 
 用法：
   loon2surge convert <文件|目录|->  [选项]     把 .lpx 转成 .sgmodule
   loon2surge sync                   [选项]     同步可莉插件中心并转换
+  loon2surge validate               [选项]     校验已发布的模块产物
+  loon2surge audit                  [选项]     检查模块引用的远程脚本还能不能下载
   loon2surge <文件|目录>                       等价于 convert
 
 convert 选项：
@@ -37,6 +40,16 @@ convert 选项：
   --category      模块 #!category，默认「插件转换」
   --no-banner     不写转换说明注释
   --check         只检查，不落盘
+
+validate 选项：
+  --dir           模块目录，默认 surge
+
+audit 选项：
+  --dir           模块目录，默认 surge
+  --out           报告路径，默认 surge/script-audit.json
+  --jobs          并发数，默认 8
+  --timeout       单个脚本超时秒数，默认 15
+  --strict        有脚本抓不到就返回非零
 
 sync 选项：
   --root          仓库根目录，默认当前目录
@@ -53,6 +66,7 @@ sync 选项：
 示例：
   loon2surge convert Loon/知乎去广告.lpx -o Surge/
   loon2surge convert Loon -o Surge --report build/report.json
+  loon2surge validate --dir surge
   loon2surge sync --root . --jobs 4
 `
 
@@ -68,6 +82,10 @@ func main() {
 		os.Exit(runConvert(args[1:]))
 	case "sync":
 		os.Exit(kelee.Main(args[1:]))
+	case "validate":
+		os.Exit(runValidate(args[1:]))
+	case "audit":
+		os.Exit(kelee.AuditMain(args[1:]))
 	case "version", "-v", "--version":
 		fmt.Println("loon2surge " + version)
 	case "help", "-h", "--help":
@@ -75,6 +93,61 @@ func main() {
 	default: // 允许 `loon2surge a.lpx` 直接转换
 		os.Exit(runConvert(args))
 	}
+}
+
+// ---------------------------------------------------------------------------
+// validate
+// ---------------------------------------------------------------------------
+
+// runValidate 把仓库里已经发布的模块当成品再读一遍。
+//
+// 转换器自检只保证"这一轮写出来的"是对的；这个命令保证"仓库里躺着的"也是对的——
+// 手工改过的文件、上一版遗留的文件都会在这里暴露。
+func runValidate(argv []string) int {
+	fs := flag.NewFlagSet("validate", flag.ContinueOnError)
+	dir := fs.String("dir", "surge", "要校验的模块目录")
+	if err := fs.Parse(argv); err != nil {
+		return 2
+	}
+
+	entries, err := os.ReadDir(*dir)
+	if err != nil {
+		// 目录还不存在 = 还没同步过，不是错误。首次上仓库时 CI 就会走到这里。
+		if errors.Is(err, os.ErrNotExist) {
+			fmt.Printf("目录 %s 还不存在，没有需要校验的模块\n", *dir)
+			return 0
+		}
+		fmt.Fprintf(os.Stderr, "读不到目录 %s：%v\n", *dir, err)
+		return 2
+	}
+
+	total, bad := 0, 0
+	for _, entry := range entries {
+		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".sgmodule") {
+			continue
+		}
+		total++
+		path := filepath.Join(*dir, entry.Name())
+		data, err := os.ReadFile(path)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "读不了 %s：%v\n", path, err)
+			bad++
+			continue
+		}
+		if problems := lpx.Validate(string(data)); len(problems) > 0 {
+			for _, problem := range problems {
+				fmt.Printf("✗ %s L%d [%s] %s\n", entry.Name(), problem.Line, problem.Code, problem.Message)
+			}
+			bad++
+		}
+	}
+
+	if bad > 0 {
+		fmt.Printf("\n校验 %d 个模块，%d 个有问题\n", total, bad)
+		return 1
+	}
+	fmt.Printf("校验 %d 个模块，全部通过\n", total)
+	return 0
 }
 
 // ---------------------------------------------------------------------------

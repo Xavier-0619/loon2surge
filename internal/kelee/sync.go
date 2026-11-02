@@ -419,17 +419,22 @@ func (s *Syncer) record(entry Entry, old *Entry, changed, renamed bool) {
 func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry {
 	entry.Status = StatusOK
 
-	// 排除的结论也可以复用：插件字节没变，结论就不会变，不必每天重跑一遍解析。
-	if old != nil && old.LpxSHA == entry.LpxSHA && old.Status == StatusExcluded {
+	// 排除的结论也可以复用：插件字节没变，结论就不会变，不必每轮重跑一遍解析。
+	if old != nil && old.LpxSHA == entry.LpxSHA && old.Status == StatusExcluded &&
+		old.Converter == lpx.Version {
 		entry.Status = StatusExcluded
 		entry.Notes = old.Notes
+		entry.Converter = lpx.Version
 		s.mu.Lock()
 		s.excluded = append(s.excluded, entry.Stem)
 		s.mu.Unlock()
 		return entry
 	}
 
-	reusable := old != nil && old.LpxSHA == entry.LpxSHA && old.Status == StatusOK
+	entry.Converter = lpx.Version
+	// 转换器版本必须一起比：插件没变、规则变了的时候，旧模块是错的。
+	reusable := old != nil && old.LpxSHA == entry.LpxSHA &&
+		old.Status == StatusOK && old.Converter == lpx.Version
 	if reusable && (!write || fileExists(s.vault.modulePath(entry.Stem))) {
 		entry.ModuleSHA = old.ModuleSHA
 		entry.Notes = old.Notes
@@ -444,7 +449,7 @@ func (s *Syncer) convert(entry Entry, data []byte, old *Entry, write bool) Entry
 			_ = os.Remove(s.vault.modulePath(entry.Stem))
 		}
 		// 排除与失败要分开：排除是"Surge 模块表达不了"，属于正常结论，
-		// 不该每天在流水线里亮红灯；真失败才需要人来看。
+		// 不该每轮在流水线里亮红灯；真失败才需要人来看。
 		if result.Excluded() {
 			entry.Status = StatusExcluded
 			entry.Notes = []string{result.ExcludeReason()}
@@ -697,7 +702,7 @@ func runSync(cfg config) int {
 	result := syncer.stats()
 
 	// 全站被拦且一无所获时，连索引都不该动，别让空结果覆盖掉旧索引；
-	// 插件没变化也不写，否则 synced_at 一变，git 里每天多一个空提交
+	// 插件没变化也不写，否则 synced_at 一变，git 里每轮多一个空提交
 	if !cfg.dryRun && contentChanged(entries, previous) &&
 		!(result.blocked && len(result.added) == 0 && len(result.updated) == 0 && len(result.renamed) == 0) {
 		if _, err := vault.WriteState(entries, syncedAt); err != nil {
@@ -837,7 +842,7 @@ func report(syncer *Syncer, entries []Entry, cfg config, syncedAt string) {
 	added, updated, removed, failed, renamed, blocked :=
 		result.added, result.updated, result.removed, result.failed, result.renamed, result.blocked
 
-	// 排除（Surge 表达不了）与失败（真出问题）分开列，否则每天都有一堆"失败"。
+	// 排除（Surge 表达不了）与失败（真出问题）分开列，否则每轮都有一堆"失败"。
 	// 另外两类单独数：转换器替我们改写过的，和还没能自动处理、要人看一眼的。
 	var bad, loonOnly, reviewed, adapted []Entry
 	for _, entry := range entries {

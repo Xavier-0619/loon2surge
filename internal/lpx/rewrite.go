@@ -2,6 +2,7 @@ package lpx
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"regexp"
 	"strconv"
@@ -157,11 +158,57 @@ func fromV2(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 	if thenAt < 0 {
 		return nil, unsupported("rewrite-v2", "缺少 then 子句")
 	}
-	pattern, err := urlPattern(rest[:thenAt])
+	// Loon 的 `as name` 给 URL 捕获组起名，后面写 `${name.1}` 引用；
+	// Surge 侧只有 `$1`，所以把前缀名摘掉、把引用换成编号。
+	condition, capture := splitCapture(rest[:thenAt])
+	pattern, err := urlPattern(condition)
 	if err != nil {
 		return nil, err
 	}
-	return applyRewrite(ctx, lineno, phase, pattern, strings.TrimSpace(rest[thenAt+len(" then "):]))
+	action := applyCapture(rest[thenAt+len(" then "):], capture)
+	return applyRewrite(ctx, lineno, phase, pattern, strings.TrimSpace(action))
+}
+
+var captureRef = regexp.MustCompile(`\$\{([A-Za-z_][A-Za-z0-9_]*)\.(\d+)\}`)
+
+// splitCapture 把 `/re/i as name` 拆成 (/re/i, name)。
+func splitCapture(condition string) (string, string) {
+	text := strings.TrimSpace(condition)
+	at := findTop(text, " as ", 0)
+	if at < 0 {
+		return text, ""
+	}
+	name := strings.TrimSpace(text[at+len(" as "):])
+	if name == "" || !isIdentifier(name) {
+		return text, ""
+	}
+	return strings.TrimSpace(text[:at]), name
+}
+
+// applyCapture 把 `${name.2}` 换成 `$2`；别的参数占位符原样保留。
+func applyCapture(text, name string) string {
+	if name == "" {
+		return text
+	}
+	return captureRef.ReplaceAllStringFunc(text, func(match string) string {
+		parts := captureRef.FindStringSubmatch(match)
+		if parts[1] != name {
+			return match
+		}
+		return "$" + parts[2]
+	})
+}
+
+func isIdentifier(text string) bool {
+	if text == "" || (text[0] >= '0' && text[0] <= '9') {
+		return false
+	}
+	for i := 0; i < len(text); i++ {
+		if !isNameChar(text[i]) {
+			return false
+		}
+	}
+	return true
 }
 
 func applyRewrite(ctx *Ctx, lineno int, phase, pattern, action string) ([]Emit, error) {
@@ -171,6 +218,8 @@ func applyRewrite(ctx *Ctx, lineno int, phase, pattern, action string) ([]Emit, 
 	}
 	var args []string
 	if rawArgs != "" {
+		// 这里不解码转义：`json.delete([...])` 的数组是裸写的 JSON 文本，
+		// 把它的 \" 当 Loon 转义还原会把 JSON 弄坏。需要还原的动作各自处理。
 		for _, part := range splitTop(rawArgs, ",") {
 			args = append(args, unquote(part))
 		}
@@ -184,11 +233,17 @@ func applyRewrite(ctx *Ctx, lineno int, phase, pattern, action string) ([]Emit, 
 	if lowered == "redirect" {
 		return redirectAction(pattern, args)
 	}
+	if lowered == "url.replace" {
+		return urlReplaceAction(phase, pattern, args)
+	}
 	if match := actionName.FindStringSubmatch(lowered); match != nil {
 		switch match[2] {
 		case "header":
 			return headerAction(match[1], pattern, match[3], args)
 		case "body":
+			if match[3] == "mock" || match[3] == "mock_file" {
+				return mockAction(phase, pattern, match[3], args)
+			}
 			return bodyAction(match[1], pattern, match[3], args)
 		default:
 			return jsonAction(ctx, match[1], pattern, match[3], args)
@@ -246,13 +301,82 @@ func rejectAction(pattern, name string, defaultCode int, args []string) ([]Emit,
 	return []Emit{{"Map Local", line}}, nil
 }
 
+// urlReplaceAction 处理 Loon V2 的 url.replace(目标)。
+//
+// Surge 的 [URL Rewrite] 是「整条 URL 换成目标」，第四列 header 表示
+// 只改 URL、不动请求体里的同一地址——和 Loon 只改 URL 的行为一致。
+func urlReplaceAction(phase, pattern string, args []string) ([]Emit, error) {
+	if phase != "request" {
+		return nil, unsupported("rewrite-url", "url.replace 只能用在 request 阶段")
+	}
+	if len(args) < 1 {
+		return nil, unsupported("rewrite-url", "url.replace 缺少目标地址")
+	}
+	target, err := rewritToken(loonUnescape(args[0]), "url.replace 目标")
+	if err != nil {
+		return nil, err
+	}
+	return []Emit{{"URL Rewrite", pattern + " " + target + " header"}}, nil
+}
+
+// mockAction 把 V2 的 response.body.mock / mock_file 转成静态 [Map Local]。
+func mockAction(phase, pattern, op string, args []string) ([]Emit, error) {
+	if phase != "response" {
+		return nil, unsupported("rewrite-mock", op+" 只能用在 response 阶段")
+	}
+	if len(args) < 1 {
+		return nil, unsupported("rewrite-mock", op+" 缺少内容")
+	}
+	body := args[0]
+
+	if op == "mock_file" {
+		// Loon 的 mock_file 有两种签名：mock_file(url) 和
+		// mock_file("text", url, 200)——后者把类型和状态码也写在参数里。
+		target, status := body, 200
+		if len(args) >= 2 {
+			target = args[1]
+			if len(args) >= 3 && isDigits(args[2]) {
+				if parsed, err := strconv.Atoi(args[2]); err == nil {
+					status = parsed
+				}
+			}
+		}
+		if !strings.HasPrefix(target, "http://") && !strings.HasPrefix(target, "https://") {
+			return nil, unsupported("rewrite-mock", "mock_file 只支持 HTTP(S) 地址：%s", target)
+		}
+		if status < 200 || status > 999 {
+			return nil, unsupported("rewrite-mock", "Surge Map Local 只接受 200-999，收到 %d", status)
+		}
+		line := pattern + ` data-type=file data="` + target + `" status-code=` + strconv.Itoa(status)
+		return []Emit{{"Map Local", line}}, nil
+	}
+
+	// 内联正文里出现引号或换行就没法直接放进 data="…"。
+	// 引号改走 base64（Surge 支持 data-type=base64），换行则直接拒绝。
+	body = loonUnescape(args[0])
+	if strings.ContainsAny(body, "\r\n") {
+		return nil, unsupported("rewrite-mock", "mock 正文含换行，无法写成单行 Map Local")
+	}
+	contentType := ""
+	if json.Valid([]byte(body)) {
+		contentType = ` header="Content-Type:application/json"`
+	}
+	if strings.ContainsAny(body, `"\`) {
+		encoded := base64.StdEncoding.EncodeToString([]byte(body))
+		line := pattern + ` data="` + encoded + `" data-type=base64 status-code=200` + contentType
+		return []Emit{{"Map Local", line}}, nil
+	}
+	line := pattern + ` data-type=text data="` + body + `" status-code=200` + contentType
+	return []Emit{{"Map Local", line}}, nil
+}
+
 func redirectAction(pattern string, args []string) ([]Emit, error) {
 	if len(args) < 2 {
 		return nil, unsupported("rewrite-redirect", "redirect 需要目标地址和状态码")
 	}
-	target, code := args[0], args[1]
+	target, code := loonUnescape(args[0]), args[1]
 	if isDigits(args[0]) {
-		target, code = args[1], args[0]
+		target, code = loonUnescape(args[1]), args[0]
 	}
 	if code != "302" && code != "307" {
 		return nil, unsupported("rewrite-redirect", "Surge 只支持 302/307，收到 %s", code)
@@ -262,6 +386,12 @@ func redirectAction(pattern string, args []string) ([]Emit, error) {
 
 func headerAction(phase, pattern, op string, args []string) ([]Emit, error) {
 	prefix := prefixes[phase]
+	args = decodeAll(args)
+	// 改消息边界会让请求直接失败（Surge 会拒绝这次改写），不是"效果差一点"。
+	if len(args) > 0 && isFramingHeader(args[0]) {
+		return nil, unsupported("rewrite-header",
+			"不能改 %s：Surge 会拒绝这种改变消息边界的 Header 改写", args[0])
+	}
 	switch op {
 	case "add", "set":
 		if len(args) < 2 {
@@ -296,6 +426,23 @@ func headerAction(phase, pattern, op string, args []string) ([]Emit, error) {
 	return nil, unsupported("rewrite-header", "不支持的 header 动作：%s", op)
 }
 
+// decodeAll 把 Loon 参数层的转义还原成真实字符。
+func decodeAll(items []string) []string {
+	for i := range items {
+		items[i] = loonUnescape(items[i])
+	}
+	return items
+}
+
+// isFramingHeader 判断字段名是否影响 HTTP 消息边界。
+func isFramingHeader(name string) bool {
+	switch strings.ToLower(strings.TrimSpace(name)) {
+	case "content-length", "transfer-encoding":
+		return true
+	}
+	return false
+}
+
 func bodyAction(phase, pattern, op string, args []string) ([]Emit, error) {
 	if op != "replace" && op != "replace_regex" {
 		return nil, unsupported("rewrite-body", "不支持的 body 动作：%s", op)
@@ -303,9 +450,67 @@ func bodyAction(phase, pattern, op string, args []string) ([]Emit, error) {
 	if len(args) < 2 {
 		return nil, unsupported("rewrite-body", "body.replace 需要正则和替换值")
 	}
-	line := prefixes[phase] + "-replace-regex " + pattern + " " +
-		jqLiteral(regexLiteral(args[0])) + " " + jqLiteral(args[1])
+	// Surge 的 Body Rewrite 是 `http-request <url> <正则> <替换>`，
+	// 不是 `http-response-replace-regex`——后者是 Header Rewrite 那套命名，
+	// 写出来能导入但整行不生效。
+	regex, err := bodyRegexLiteral(loonUnescape(args[0]))
+	if err != nil {
+		return nil, err
+	}
+	regexToken, err := rewritToken(regex, "正则")
+	if err != nil {
+		return nil, err
+	}
+	replacement, err := rewritToken(loonUnescape(args[1]), "替换文本")
+	if err != nil {
+		return nil, err
+	}
+	line := prefixes[phase] + " " + pattern + " " + regexToken + " " + replacement
 	return []Emit{{"Body Rewrite", line}}, nil
+}
+
+// bodyRegexLiteral 把 Loon V2 的 `/re/flags` 转成带显式 flags 的 Surge 正则。
+//
+// Surge 的 Body Rewrite 默认按行锚定 `^`/`$`，Loon 的正则没有这层语义。
+// 只写 `(?i)` 是"在默认值上再加"，所以必须把 ims 三个 flag 一起写死：
+// 无 flags → `(?-ims)`，只有 /m → `(?m-is)`，以此类推。
+func bodyRegexLiteral(raw string) (string, error) {
+	body, flags, ok := splitRegexLiteral(raw)
+	if !ok || !allLowerAlpha(flags) {
+		return "", unsupported("rewrite-body", "body 正则要写成 /表达式/flags：%s", raw)
+	}
+	var on, off strings.Builder
+	for _, flag := range "ims" {
+		if strings.ContainsRune(flags, flag) {
+			on.WriteRune(flag)
+		} else {
+			off.WriteRune(flag)
+		}
+	}
+	for i := 0; i < len(flags); i++ {
+		if !strings.ContainsRune("ims", rune(flags[i])) {
+			return "", unsupported("rewrite-body", "body 正则不支持 flag /%c", flags[i])
+		}
+	}
+	modifier := on.String()
+	if off.Len() > 0 {
+		modifier += "-" + off.String()
+	}
+	return "(?" + modifier + ")" + body, nil
+}
+
+// rewritToken 给可能含空格的 token 加单引号。
+//
+// Surge 按空格切分 body 正则和替换文本，含空格不加引号会被切成两段；
+// 而单引号本身没法在 token 里安全转义，遇到就直接拒绝转换。
+func rewritToken(value, what string) (string, error) {
+	if !strings.ContainsAny(value, " \t") {
+		return value, nil
+	}
+	if strings.ContainsRune(value, '\'') {
+		return "", unsupported("rewrite-body", "%s同时含空格和单引号，无法安全加引号：%s", what, value)
+	}
+	return "'" + value + "'", nil
 }
 
 func jsonAction(ctx *Ctx, phase, pattern, op string, args []string) ([]Emit, error) {
@@ -315,8 +520,12 @@ func jsonAction(ctx *Ctx, phase, pattern, op string, args []string) ([]Emit, err
 		if len(args) == 0 {
 			return nil, unsupported("rewrite-jq", "json.jq 缺少表达式")
 		}
+		literal, err := jqLiteral(loonUnescape(args[0]))
+		if err != nil {
+			return nil, err
+		}
 		ctx.Need(ReqModern)
-		return []Emit{{"Body Rewrite", prefixes[phase] + "-jq " + pattern + " " + jqLiteral(args[0])}}, nil
+		return []Emit{{"Body Rewrite", prefixes[phase] + "-jq " + pattern + " " + literal}}, nil
 
 	case "delete":
 		paths, err := collectPaths(args)
@@ -344,8 +553,12 @@ func jsonAction(ctx *Ctx, phase, pattern, op string, args []string) ([]Emit, err
 		return nil, unsupported("rewrite-json", "不支持的 json 动作：%s", op)
 	}
 
+	literal, err := jqLiteral(expr)
+	if err != nil {
+		return nil, err
+	}
 	ctx.Need(ReqModern)
-	return []Emit{{"Body Rewrite", prefixes[phase] + "-jq " + pattern + " " + jqLiteral(expr)}}, nil
+	return []Emit{{"Body Rewrite", prefixes[phase] + "-jq " + pattern + " " + literal}}, nil
 }
 
 // collectPaths 接受 delete("a.b") 与 delete(["a.b","c"]) 两种写法。
@@ -495,7 +708,7 @@ func fromLegacy(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 }
 
 func legacyURL(pattern, rest string) ([]Emit, error) {
-	args := words(rest)
+	args := decodeAll(words(rest))
 	if len(args) == 0 {
 		return nil, unsupported("rewrite-legacy", "url 后缺少动作")
 	}
@@ -527,7 +740,7 @@ func legacyHeader(pattern, keyword, rest string) ([]Emit, error) {
 	}
 	prefix := prefixes[phase]
 	op := keyword[strings.LastIndex(keyword, "-")+1:]
-	args := words(rest)
+	args := decodeAll(words(rest))
 
 	switch op {
 	case "del":
@@ -566,15 +779,19 @@ func legacyBody(ctx *Ctx, pattern, keyword, rest string) ([]Emit, error) {
 		phase = "response"
 	}
 	prefix := prefixes[phase]
-	args := words(rest)
+	args := decodeAll(words(rest))
 
 	switch {
 	case strings.HasSuffix(keyword, "json-jq"):
 		if len(args) == 0 {
 			return nil, unsupported("rewrite-jq", "缺少 JQ 表达式")
 		}
+		literal, err := jqLiteral(args[0])
+		if err != nil {
+			return nil, err
+		}
 		ctx.Need(ReqModern)
-		return []Emit{{"Body Rewrite", prefix + "-jq " + pattern + " " + jqLiteral(args[0])}}, nil
+		return []Emit{{"Body Rewrite", prefix + "-jq " + pattern + " " + literal}}, nil
 
 	case strings.HasSuffix(keyword, "json-del"):
 		var parts []string
@@ -588,9 +805,12 @@ func legacyBody(ctx *Ctx, pattern, keyword, rest string) ([]Emit, error) {
 		if len(parts) == 0 {
 			return nil, unsupported("rewrite-json", "json-del 缺少路径")
 		}
+		literal, err := jqLiteral("delpaths([" + strings.Join(parts, ",") + "])")
+		if err != nil {
+			return nil, err
+		}
 		ctx.Need(ReqModern)
-		expr := "delpaths([" + strings.Join(parts, ",") + "])"
-		return []Emit{{"Body Rewrite", prefix + "-jq " + pattern + " " + jqLiteral(expr)}}, nil
+		return []Emit{{"Body Rewrite", prefix + "-jq " + pattern + " " + literal}}, nil
 
 	case strings.HasSuffix(keyword, "json-replace"):
 		if len(args)%2 != 0 {
@@ -604,15 +824,29 @@ func legacyBody(ctx *Ctx, pattern, keyword, rest string) ([]Emit, error) {
 			}
 			exprs = append(exprs, "try setpath("+jqPath(path)+"; "+args[i+1]+") catch .")
 		}
+		literal, err := jqLiteral(strings.Join(exprs, " | "))
+		if err != nil {
+			return nil, err
+		}
 		ctx.Need(ReqModern)
-		return []Emit{{"Body Rewrite", prefix + "-jq " + pattern + " " + jqLiteral(strings.Join(exprs, " | "))}}, nil
+		return []Emit{{"Body Rewrite", prefix + "-jq " + pattern + " " + literal}}, nil
 
 	case strings.HasSuffix(keyword, "replace-regex"):
 		if len(args) < 2 {
 			return nil, unsupported("rewrite-body", "body-replace-regex 需要正则和替换值")
 		}
+		// 旧语法的正则已经是"Loon 无 flags"语义，不套 V2 的 (?-ims) 前缀；
+		// 但 Surge 侧默认按行锚定，这里补 (?-m) 把 multiline 关掉才对得上。
+		regex, err := rewritToken("(?-m)"+args[0], "正则")
+		if err != nil {
+			return nil, err
+		}
+		replacement, err := rewritToken(loonUnescape(args[1]), "替换文本")
+		if err != nil {
+			return nil, err
+		}
 		ctx.Need(ReqBase)
-		line := prefix + "-replace-regex " + pattern + " " + jqLiteral(args[0]) + " " + jqLiteral(args[1])
+		line := prefix + " " + pattern + " " + regex + " " + replacement
 		return []Emit{{"Body Rewrite", line}}, nil
 	}
 	return nil, unsupported("rewrite-legacy", "不支持的旧语法动作：%s", keyword)

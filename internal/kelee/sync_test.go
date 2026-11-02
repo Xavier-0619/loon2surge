@@ -288,7 +288,7 @@ func TestSyncPipeline(t *testing.T) {
 
 // TestSyncExcludedIsNotFailure 锁住语义：Surge 表达不了的插件不算失败。
 //
-// 这类插件（例如整份规则都是 `…,PROXY`）不该每天在流水线里亮红灯，
+// 这类插件（例如整份规则都是 `…,PROXY`）不该每轮在流水线里亮红灯，
 // 但原始 .lpx 必须照常留下，报告里也要说清为什么没有模块。
 func TestSyncExcludedIsNotFailure(t *testing.T) {
 	proxyOnly := "#!name=DNS防泄露\n[Rule]\nDOMAIN-SUFFIX, dnsleaktest.com, PROXY\nDOMAIN, whoer.net, PROXY\n"
@@ -382,7 +382,7 @@ func TestSyncDedupesIdenticalNames(t *testing.T) {
 		t.Errorf("重名应加后缀：%s", entries[1].Stem)
 	}
 
-	// 再来一轮必须得到同样的名字，否则每天都会改名
+	// 再来一轮必须得到同样的名字，否则每轮都会改名
 	previous := stateOf(entries)
 	again := newSyncer(vault, site.sources(), 2, 0).run(site.remotes(t), previous, true, true)
 	for i := range entries {
@@ -601,7 +601,7 @@ func TestCommitMarks(t *testing.T) {
 		}
 	}
 
-	// 没被改动的模块不该因为"历史上需要确认"就每天重复出现在提交信息里
+	// 没被改动的模块不该因为"历史上需要确认"就每轮重复出现在提交信息里
 	quiet := commitMessage(changeSet{
 		entries: append(entries, Entry{Stem: "老账", Date: "2026-10-02 13:57:49", Status: StatusOK,
 			Review: []string{"1 行无法自动转换"}}),

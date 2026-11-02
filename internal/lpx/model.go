@@ -217,6 +217,9 @@ type Ctx struct {
 	emitted     map[string][]string
 	emitOrder   []string
 	names       map[string]bool // 已占用的 Script 名称
+	// platform 是插件 #!system 的原文。进程规则这类"只在某个平台成立"的语法
+	// 要靠它判断能不能转，光看规则本身看不出平台。
+	platform string
 }
 
 func newCtx(options Options) *Ctx {

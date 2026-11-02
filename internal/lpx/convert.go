@@ -19,6 +19,12 @@ import (
 //
 // 新增一种 section：写一个方法，在 run() 里排一次队即可。
 
+// Version 是转换行为的版本号。
+//
+// 只改输出结果时才递增：插件本身没变、但转换规则变了，同步流程必须重转一遍。
+// 同步层把它记进 index.json，版本不同就丢掉缓存重新生成。
+const Version = "2.1.0"
+
 // Surge 模块头部认识的 #! 字段，其余字段丢弃并写进报告。
 var surgeMeta = map[string]bool{
 	"name": true, "desc": true, "author": true, "icon": true, "category": true,
@@ -46,10 +52,10 @@ type Converter struct {
 
 // ConvertText 把插件正文转成模块。
 func ConvertText(source string, options Options) Result {
-	converter := &Converter{
-		plugin: parsePlugin(strings.TrimPrefix(source, "\ufeff")),
-		ctx:    newCtx(options),
-	}
+	plugin := parsePlugin(strings.TrimPrefix(source, "\ufeff"))
+	ctx := newCtx(options)
+	ctx.platform = plugin.Meta["system"]
+	converter := &Converter{plugin: plugin, ctx: ctx}
 	return converter.run()
 }
 
@@ -80,6 +86,13 @@ func (c *Converter) run() Result {
 	c.warnMissingMITM(sections)
 
 	text := c.render(sections, order) // 渲染时还会补 meta 诊断，之后再取 notes
+	// 产物自检：把自己刚写出来的文件当成品再读一遍。转换器漏掉的、写错的，
+	// 只有这一步能发现——它不依赖任何"我本意是什么"的信息。
+	if problems := Validate(text); len(problems) > 0 {
+		for _, problem := range problems {
+			c.ctx.Fail("product-invalid", "产物自检未通过："+problem.String(), 0)
+		}
+	}
 	name := c.plugin.Meta["name"]
 	if name == "" {
 		name = "Untitled"

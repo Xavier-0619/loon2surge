@@ -1,0 +1,233 @@
+name: 🧑‍⚖️ 上游 PR 自动审核
+
+# 审「上游更新监听」开出来的 PR（认 upstream-sync 标签）。
+# 先自己跑一遍测试，再让模型读 diff 逐条对照 RULES.md / AGENTS.md。
+#
+# 批准的条件是三个同时成立，缺一不可：
+#   1. 构建、测试、产物自检全过
+#   2. 机器检查干净（没动 .github/、改了转换逻辑就递增了 Version、没有硬编码密钥）
+#   3. 模型说 approve 且没留任何 concern
+#
+# 批准 = 转正成正式 PR 并 approve。**不会自动合并**，merge 永远由人点。
+#
+# 两种触发方式：
+#   pull_request  人工开的 PR 走这条；监听用 github.token 开的 PR 也会产生 run，
+#                 但会停在「需要审批」状态，得人工点一下才跑。
+#   workflow_dispatch  监听开完 PR 后主动调它，绕开上面那个审批提示。
+#                      所以真正的自动化链路走的是这条。
+#
+# 想让「自动批准」真的生效，得配一个 PAT：
+#   secret REVIEW_TOKEN  细粒度 token，勾选 Pull requests: Read and write
+# 不配就只能发评论（github-actions[bot] 批不了自己开的 PR，这是 GitHub 的硬限制）。
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "要审核的 PR 编号"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+  # 没配 AI_API_KEY 时用自带的 token 调 GitHub Models
+  models: read
+
+concurrency:
+  group: upstream-review-${{ github.event.inputs.pr || github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  GOFLAGS: -trimpath
+  CGO_ENABLED: 0
+  PYTHONIOENCODING: utf-8
+
+jobs:
+  audit:
+    name: 🔎 审核这份自动改动
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' &&
+       contains(github.event.pull_request.labels.*.name, 'upstream-sync'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 📥 检出仓库
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 认一下这是哪个 PR
+        id: pr
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -n "${{ github.event.inputs.pr }}" ]; then
+            number="${{ github.event.inputs.pr }}"
+          else
+            number="${{ github.event.pull_request.number }}"
+          fi
+
+          json=$(gh pr view "$number" --json baseRefOid,headRefOid,labels,isDraft)
+          base=$(echo "$json" | jq -r .baseRefOid)
+          head=$(echo "$json" | jq -r .headRefOid)
+          labels=$(echo "$json" | jq -r '[.labels[].name] | join(",")')
+          draft=$(echo "$json" | jq -r .isDraft)
+
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "head=$head" >> "$GITHUB_OUTPUT"
+
+          if [[ ",$labels," != *",upstream-sync,"* ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "PR #$number 没有 upstream-sync 标签，不归这条流水线管。"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "PR #$number  base=${base:0:8}  head=${head:0:8}  draft=$draft"
+          fi
+
+      - name: 🌿 切到 PR 的提交
+        if: steps.pr.outputs.skip != 'true'
+        shell: bash
+        run: git checkout "${{ steps.pr.outputs.head }}"
+
+      - name: 🐹 准备 Go 环境
+        if: steps.pr.outputs.skip != 'true'
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      - name: 🧪 先自己跑一遍
+        id: gate
+        if: steps.pr.outputs.skip != 'true'
+        shell: bash
+        run: |
+          mkdir -p .upstream-work
+          set +e
+          go build ./... > .upstream-work/test.log 2>&1
+          build_code=$?
+          go test ./... >> .upstream-work/test.log 2>&1
+          test_code=$?
+          go run . validate --dir surge >> .upstream-work/test.log 2>&1
+          validate_code=$?
+
+          ok=true
+          if [ $build_code -ne 0 ] || [ $test_code -ne 0 ] || [ $validate_code -ne 0 ]; then
+            ok=false
+          fi
+          echo "ok=$ok" >> "$GITHUB_OUTPUT"
+
+          if [ "$ok" = true ]; then verdict=通过; else verdict=失败; fi
+          {
+            echo ""
+            echo "### 🧪 构建与测试：$verdict"
+            echo ""
+            echo '```'
+            tail -25 .upstream-work/test.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+
+      - name: 🧑‍⚖️ 让模型读 diff
+        id: audit
+        if: steps.pr.outputs.skip != 'true'
+        shell: bash
+        env:
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_BASE_URL: ${{ vars.AI_BASE_URL }}
+          AI_MODEL: ${{ vars.AI_MODEL }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          # 这一步不判失败：审核没跑起来，后面照样要给出反馈
+          set +e
+          python3 tools/upstream_merge.py review \
+            --base "${{ steps.pr.outputs.base }}" \
+            --head "${{ steps.pr.outputs.head }}"
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "审核脚本退出码：$code"
+          exit 0
+
+      - name: 🧾 拼出要发的内容
+        id: note
+        if: steps.pr.outputs.skip != 'true'
+        shell: bash
+        run: |
+          file=.upstream-work/review.md
+          if [ ! -f "$file" ]; then
+            printf '%s\n' \
+              '## ⚠️ AI 审核没跑起来' \
+              '' \
+              '模型这次没给出可用结论（接口出错或返回的不是 JSON）。' \
+              '这不代表代码有问题，但也别当它被审过了——请人工看 diff。' > "$file"
+          fi
+
+          if [ "${{ steps.gate.outputs.ok }}" != "true" ]; then
+            {
+              echo ''
+              echo '### 🧪 测试没通过'
+              echo ''
+              echo '这种情况下不论模型怎么说都不会批准。'
+              echo ''
+              echo '```'
+              tail -25 .upstream-work/test.log
+              echo '```'
+            } >> "$file"
+          fi
+
+          approve=false
+          if [ "${{ steps.gate.outputs.ok }}" = "true" ] && [ "${{ steps.audit.outputs.code }}" = "0" ]; then
+            approve=true
+          fi
+          echo "approve=$approve" >> "$GITHUB_OUTPUT"
+
+          if [ "$approve" = true ]; then verdict=批准; else verdict=不批准; fi
+          echo "最终决定：$verdict"
+
+      - name: ✅ 通过就批准
+        if: steps.pr.outputs.skip != 'true' && steps.note.outputs.approve == 'true'
+        shell: bash
+        env:
+          # 配了 REVIEW_TOKEN 才有资格批准（bot 批不了自己开的 PR）
+          GH_TOKEN: ${{ secrets.REVIEW_TOKEN || github.token }}
+        run: |
+          number="${{ steps.pr.outputs.number }}"
+          # draft PR 不能 approve，先转正
+          gh pr ready "$number" 2>/dev/null || true
+
+          if gh pr review "$number" --approve --body-file .upstream-work/review.md; then
+            status="已自动批准"
+          else
+            status="批准失败（多半是缺 REVIEW_TOKEN），已改发评论"
+            echo "::warning::$status"
+            gh pr comment "$number" --body-file .upstream-work/review.md
+          fi
+
+          {
+            echo ""
+            echo "### ✅ $status"
+            echo ""
+            cat .upstream-work/review.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 💬 没通过就留评论
+        if: steps.pr.outputs.skip != 'true' && steps.note.outputs.approve != 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment "${{ steps.pr.outputs.number }}" \
+            --body-file .upstream-work/review.md
+
+          {
+            echo ""
+            echo "### 💬 未批准，已留言"
+            echo ""
+            cat .upstream-work/review.md
+          } >> "$GITHUB_STEP_SUMMARY"

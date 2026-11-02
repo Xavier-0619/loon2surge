@@ -25,6 +25,9 @@ type Entry struct {
 	ModuleSHA string   `json:"module_sha"`
 	Status    string   `json:"status"`
 	Notes     []string `json:"notes"`
+	// Converter 是生成这个模块时的转换器版本。插件没变但这个值变了，
+	// 说明规则升级过，必须重新生成，不能继续用旧产物。
+	Converter string `json:"converter,omitempty"`
 	// Adapted 记转换器做过的等价改写（属性名归一、重名脚本加后缀…），
 	// Review 记还没能自动处理、要人看一眼的地方。两者都会写进提交信息。
 	Adapted []string `json:"adapted,omitempty"`
@@ -74,7 +77,7 @@ func (v *Vault) ReadState() map[string]Entry {
 	return state
 }
 
-// WriteState 落盘 index.json；内容没变就不碰文件，避免每天多出一个只改时间戳的提交。
+// WriteState 落盘 index.json；内容没变就不碰文件，避免每轮多出一个只改时间戳的提交。
 func (v *Vault) WriteState(entries []Entry, syncedAt string) (bool, error) {
 	sorted := make([]Entry, len(entries))
 	copy(sorted, entries)

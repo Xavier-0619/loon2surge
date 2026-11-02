@@ -188,13 +188,23 @@ request if ${url} == "https://a.com/j" then redirect(302, "https://b.com")
 	t.Run("无法映射的动作被注释", func(t *testing.T) {
 		result := convert(t, `#!name=t
 [Rewrite]
-request if ${url} ~= /^https:\/\/a\.com\// then url.replace("a", "b")
+request if ${url} ~= /^https:\/\/a\.com\// then url.header.set("a", "b")
 `)
 		equalStrings(t, codes(result.Warnings()), []string{"rewrite-action"})
 		if !containsLine(strings.Split(result.Text, "\n"),
-			`# request if ${url} ~= /^https:\/\/a\.com\// then url.replace("a", "b")`) {
+			`# request if ${url} ~= /^https:\/\/a\.com\// then url.header.set("a", "b")`) {
 			t.Errorf("原文没有被注释保留：\n%s", result.Text)
 		}
+	})
+
+	t.Run("url.replace 只改 URL", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+request if ${url} ~= /^https:\/\/a\.com\// then url.replace("https://b.com/")
+`)
+		equalStrings(t, section(result, "URL Rewrite"), []string{
+			`^https:\/\/a\.com\/ https://b.com/ header`,
+		})
 	})
 }
 
@@ -307,7 +317,9 @@ func TestRealWorldZhihu(t *testing.T) {
 
 	t.Run("行内 flag 保留", func(t *testing.T) {
 		for _, line := range section(result, "Body Rewrite") {
-			if !strings.HasPrefix(line, "http-response-jq") && !strings.HasPrefix(line, "http-response-replace-regex") {
+			// Surge 的 Body Rewrite 只有 `http-response <url> <正则> <替换>` 与
+			// `http-response-jq <url> <表达式>` 两种写法，没有 *-replace-regex 变体。
+			if !strings.HasPrefix(line, "http-response-jq ") && !strings.HasPrefix(line, "http-response ") {
 				t.Errorf("意外的改写行：%s", line)
 			}
 		}
@@ -519,6 +531,159 @@ response if ${url} ~= /^https://////a//.com///x/i then script("https://e.com/a.j
 	if len(summary) != 0 {
 		t.Errorf("逐行注释的诊断应被压成一句计数，不该单独列出：%v", summary)
 	}
+}
+
+// ---------------------------------------------------------------------------
+// 与上游 loon_to_surge 对齐的行为
+// ---------------------------------------------------------------------------
+
+func TestBodyRewriteSyntax(t *testing.T) {
+	t.Run("V2 无 flag 时显式关掉 Surge 的按行锚定", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+response if ${url} ~= /^https:\/\/a\.com\// then response.body.replace(/foo/, "bar")
+`)
+		equalStrings(t, section(result, "Body Rewrite"), []string{
+			`http-response ^https:\/\/a\.com\/ (?-ims)foo bar`,
+		})
+	})
+
+	t.Run("flags 与 Surge 默认值互补", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+response if ${url} ~= /^https:\/\/a\.com\// then response.body.replace(/foo/m, "bar")
+response if ${url} ~= /^https:\/\/a\.com\// then response.body.replace(/foo/is, "bar")
+`)
+		equalStrings(t, section(result, "Body Rewrite"), []string{
+			`http-response ^https:\/\/a\.com\/ (?m-is)foo bar`,
+			`http-response ^https:\/\/a\.com\/ (?is-m)foo bar`,
+		})
+	})
+
+	t.Run("不支持的正则 flag 不硬转", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+response if ${url} ~= /^https:\/\/a\.com\// then response.body.replace(/foo/x, "bar")
+`)
+		if len(section(result, "Body Rewrite")) != 0 {
+			t.Errorf("带 /x 的正则应拒绝：%v", section(result, "Body Rewrite"))
+		}
+	})
+
+	t.Run("旧语法同样是 http-response 三段式", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+^https:\/\/a\.com\/ response-body-replace-regex foo bar
+`)
+		equalStrings(t, section(result, "Body Rewrite"), []string{
+			`http-response ^https:\/\/a\.com\/ (?-m)foo bar`,
+		})
+	})
+}
+
+func TestJQSerialization(t *testing.T) {
+	t.Run("行尾注释被删掉而不是吞掉后续代码", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+response if ${url} ~= /^https:\/\/a\.com\// then response.json.jq(".a = 1 # 去掉广告")
+`)
+		equalStrings(t, section(result, "Body Rewrite"), []string{
+			`http-response-jq ^https:\/\/a\.com\/ '.a = 1'`,
+		})
+	})
+
+	t.Run("字符串里的 # 不算注释", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+response if ${url} ~= /^https:\/\/a\.com\// then response.json.jq("\"#tag\" | ltrimstr(\"#\")")
+`)
+		lines := section(result, "Body Rewrite")
+		if len(lines) != 1 || !strings.Contains(lines[0], `"#tag"`) || !strings.Contains(lines[0], `"#"`) {
+			t.Errorf("字符串里的 # 被当成注释了：%v", lines)
+		}
+	})
+
+	t.Run("$__loc__ 依赖行号，直接拒绝", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+response if ${url} ~= /^https:\/\/a\.com\// then response.json.jq("$__loc__")
+`)
+		if len(section(result, "Body Rewrite")) != 0 {
+			t.Errorf("$__loc__ 不该被转换：%v", section(result, "Body Rewrite"))
+		}
+		if !strings.Contains(strings.Join(codes(result.Warnings()), ","), "rewrite-jq") {
+			t.Errorf("应记录 rewrite-jq 诊断：%v", codes(result.Warnings()))
+		}
+	})
+}
+
+func TestMockLocal(t *testing.T) {
+	t.Run("内联 JSON mock 走 base64 保住引号", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+response if ${url} ~= /^https:\/\/a\.com\/cf/ then response.body.mock("{\"ok\":true}")
+`)
+		equalStrings(t, section(result, "Map Local"), []string{
+			`^https:\/\/a\.com\/cf data="eyJvayI6dHJ1ZX0=" data-type=base64 status-code=200 header="Content-Type:application/json"`,
+		})
+	})
+
+	t.Run("远程 mock_file 转 data-type=file", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+response if ${url} ~= /^https:\/\/a\.com\/cf/ then response.body.mock_file("https://e.com/a.json")
+`)
+		equalStrings(t, section(result, "Map Local"), []string{
+			`^https:\/\/a\.com\/cf data-type=file data="https://e.com/a.json" status-code=200`,
+		})
+	})
+}
+
+func TestScriptRobustness(t *testing.T) {
+	t.Run("enable 与入参共用同一参数时不改默认值", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Argument]
+Capture=switch, false
+[Script]
+cron "0 8 * * *" script-path=https://e.com/c.js, tag=C, enable={Capture}, argument={"day": {Capture}}
+`)
+		lines := section(result, "Script")
+		if len(lines) != 1 {
+			t.Fatalf("应产出 1 条脚本：%v", lines)
+		}
+		if strings.HasPrefix(lines[0], "{{{Capture}}}") {
+			t.Errorf("共用参数不该变成行前缀：%s", lines[0])
+		}
+		if strings.HasPrefix(lines[0], "# ") {
+			t.Logf("按默认值静态注释：%s", lines[0])
+		}
+		if !strings.Contains(result.Text, "#!arguments=Capture:false") {
+			t.Errorf("默认值被改写了：\n%s", result.Text)
+		}
+		if !strings.Contains(strings.Join(codes(result.NeedsReview()), ","), "script-enable-shared") {
+			t.Errorf("应记录 script-enable-shared：%v", codes(result.NeedsReview()))
+		}
+	})
+
+	t.Run("cron 段数不对直接拒绝", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Script]
+cron "0 8 * *" script-path=https://e.com/c.js, tag=C
+`)
+		if len(section(result, "Script")) != 0 {
+			t.Errorf("4 段 cron 应拒绝：%v", section(result, "Script"))
+		}
+	})
+
+	t.Run("同一属性两个不同值时不猜", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Script]
+http-request ^https://a\.com script-path=https://e.com/a.js, tag=T, timeout=5, timeout=15
+`)
+		if len(section(result, "Script")) != 0 {
+			t.Errorf("冲突属性应拒绝：%v", section(result, "Script"))
+		}
+	})
 }
 
 func BenchmarkConvert(b *testing.B) {
