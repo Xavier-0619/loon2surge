@@ -11,15 +11,15 @@
   4. advance  记下处理到哪个提交，下次从这里继续
 
 设计取向：
-  * 只允许模型改源码和文档，不能碰 loon/、surge/、.github/workflows/ 以外的东西；
+  * 只允许模型改源码和文档，不能碰 loon/、surge/、external/、.github/ 这些产物与 CI 配置；
   * 每处替换必须唯一命中，命中不了就整体失败，绝不猜；
   * 模型不可用时不算失败——退化成"开个 issue 提醒"，让人自己看。
 
 用法：
-  python3 tools/upstream_merge.py collect
-  python3 tools/upstream_merge.py prompt
-  python3 tools/upstream_merge.py apply
-  python3 tools/upstream_merge.py advance --sha <sha>
+  python3 scripts/upstream_merge.py collect
+  python3 scripts/upstream_merge.py prompt
+  python3 scripts/upstream_merge.py apply
+  python3 scripts/upstream_merge.py advance --sha <sha>
 """
 
 from __future__ import annotations
@@ -52,8 +52,8 @@ INTERESTING_PREFIXES = ("scripts/", "tests/")
 INTERESTING_FILES = ("RULES.md", "AGENTS.md", "README.md")
 
 # 允许模型改动的路径。产物目录和 CI 配置一律不给改。
-EDITABLE_PREFIXES = ("internal/", "tools/", "tests/")
-EDITABLE_FILES = ("main.go", "README.md", "RULES.md", "AGENTS.md", "go.mod")
+EDITABLE_PREFIXES = ("cmd/", "internal/", "scripts/")
+EDITABLE_FILES = ("README.md", "RULES.md", "AGENTS.md", "go.mod")
 
 MAX_DIFF_PER_FILE = 3500
 MAX_PROMPT_CHARS = 55000
@@ -245,11 +245,9 @@ def read_repo_doc(path: str) -> str:
 def source_tree() -> str:
     """给模型一份当前实现的文件清单，避免它凭空猜路径。"""
     lines = []
-    for path in sorted(Path("internal").rglob("*.go")):
-        lines.append(f"- {path.as_posix()} ({len(path.read_text(encoding='utf-8').splitlines())} 行)")
-    for name in ("main.go",):
-        if Path(name).exists():
-            lines.append(f"- {name} ({len(Path(name).read_text(encoding='utf-8').splitlines())} 行)")
+    for root in ("cmd", "internal"):
+        for path in sorted(Path(root).rglob("*.go")):
+            lines.append(f"- {path.as_posix()} ({len(path.read_text(encoding='utf-8').splitlines())} 行)")
     return "\n".join(lines)
 
 
@@ -262,7 +260,7 @@ PROMPT_HEAD = """你是一个 Go 项目的维护者。这个项目把 Loon 插�
 1. **不确定就不转。** 上游新支持的语法如果语义没写清楚，宁可继续"注释保留 + 标需人工确认"，
    也不要猜。
 2. **只改源码和文档。** 允许改：<<EDITABLE>>。
-   绝对不要碰 loon/、surge/、index.json、INDEX.md、.github/ —— 那些是流水线产物和 CI 配置。
+   绝对不要碰 loon/、surge/、external/、index.json、INDEX.md、.github/ —— 那些是流水线产物和 CI 配置。
 3. **改动的每一处都必须能定位。** 用 find/replace 的形式给出，find 必须在该文件里
    唯一出现；做不到就说明原因、不要给这一条。
 4. **改了转换结果就递增版本号。** internal/lpx/convert.go 里的 `const Version` 控制

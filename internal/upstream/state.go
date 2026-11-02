@@ -1,15 +1,18 @@
-package kelee
+package upstream
+
+// index.json 与 INDEX.md 的读写：同步的"上一轮基线"和"对外索引"都落在这里。
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
 	"path/filepath"
 	"reflect"
-	"sort"
+	"slices"
 	"strings"
+
+	"loon2surge/internal/fsutil"
 )
 
 // Entry 是 index.json 里的一条，同时也是下一轮比对的基线。
@@ -80,60 +83,24 @@ func (v *Vault) ReadState() map[string]Entry {
 
 // WriteState 落盘 index.json；内容没变就不碰文件，避免每轮多出一个只改时间戳的提交。
 func (v *Vault) WriteState(entries []Entry, syncedAt string) (bool, error) {
-	sorted := make([]Entry, len(entries))
-	copy(sorted, entries)
-	sort.Slice(sorted, func(i, j int) bool { return sorted[i].Stem < sorted[j].Stem })
-
-	data, err := marshalJSON(indexFile{
+	sorted := slices.Clone(entries)
+	slices.SortFunc(sorted, func(a, b Entry) int { return strings.Compare(a.Stem, b.Stem) })
+	return fsutil.WriteJSON(v.indexPath(), indexFile{
 		Source:   IndexURL,
 		SyncedAt: syncedAt,
 		Count:    len(sorted),
 		Plugins:  sorted,
 	})
-	if err != nil {
-		return false, err
-	}
-	return writeIfChanged(v.indexPath(), data)
 }
 
 // WriteTable 落盘 INDEX.md，同样按内容变化与否决定是否写。
 func (v *Vault) WriteTable(entries []Entry, syncedAt string) (bool, error) {
-	return writeIfChanged(v.tablePath(), []byte(renderTable(entries, syncedAt)))
-}
-
-func marshalJSON(value any) ([]byte, error) {
-	var buf bytes.Buffer
-	encoder := json.NewEncoder(&buf)
-	encoder.SetEscapeHTML(false)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(value); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
-// writeIfChanged 先比对再写，返回是否真的发生了变化。
-func writeIfChanged(path string, data []byte) (bool, error) {
-	if existing, err := os.ReadFile(path); err == nil && bytes.Equal(existing, data) {
-		return false, nil
-	}
-	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
-		return false, err
-	}
-	temp := path + ".tmp"
-	if err := os.WriteFile(temp, data, 0o644); err != nil {
-		return false, err
-	}
-	if err := os.Rename(temp, path); err != nil {
-		return false, err
-	}
-	return true, nil
+	return fsutil.WriteString(v.tablePath(), renderTable(entries, syncedAt))
 }
 
 func renderTable(entries []Entry, syncedAt string) string {
-	sorted := make([]Entry, len(entries))
-	copy(sorted, entries)
-	sort.Slice(sorted, func(i, j int) bool { return sorted[i].Name < sorted[j].Name })
+	sorted := slices.Clone(entries)
+	slices.SortFunc(sorted, func(a, b Entry) int { return strings.Compare(a.Name, b.Name) })
 
 	var b strings.Builder
 	fmt.Fprintf(&b, "# 插件索引\n\n共 %d 个插件，同步于 %s。\n\n", len(entries), syncedAt)

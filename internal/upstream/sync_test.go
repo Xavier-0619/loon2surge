@@ -1,4 +1,4 @@
-package kelee
+package upstream
 
 import (
 	"encoding/json"
@@ -14,6 +14,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"loon2surge/internal/fsutil"
 	"loon2surge/internal/lpx"
 )
 
@@ -92,6 +93,15 @@ func (s *fakeSite) sources() *Sources {
 	src, _ := NewSourcesWith("", "go")
 	src.hosts = []string{s.server.URL}
 	return src
+}
+
+// testSources 造一个只走 Go 通道的 Sources，用于不需要发请求的用例。
+func testSources(mirror string) *Sources {
+	sources, err := NewSourcesWith(mirror, "go")
+	if err != nil {
+		panic(err)
+	}
+	return sources
 }
 
 func (s *fakeSite) remotes(t *testing.T) []Remote {
@@ -494,7 +504,7 @@ func TestSyncSkipsMassRemoval(t *testing.T) {
 	previous := map[string]Entry{}
 	for _, stem := range []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "Only"} {
 		previous[stem] = Entry{Stem: stem, Name: stem, Status: StatusOK}
-		if err := writeFile(vault.lpxPath(stem), []byte(samplePlugin)); err != nil {
+		if _, err := fsutil.WriteFile(vault.lpxPath(stem), []byte(samplePlugin)); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -751,13 +761,13 @@ func TestPythonChannel(t *testing.T) {
 // 早期实现会把索引地址 hub.kelee.one/list.json 改写成 kelee.one/list.json，
 // 那是另一个服务，只会返回 404，于是整轮同步在第一步就失败。
 func TestCandidatesKeepOriginalHost(t *testing.T) {
-	sources := NewSources("")
+	sources := testSources("")
 	got := sources.candidates(IndexURL)
 	if len(got) != 1 || got[0] != IndexURL {
 		t.Fatalf("索引地址被改写成 %v，hub 的路径不能搬到 kelee.one 上", got)
 	}
 
-	withMirror := NewSources("https://mirror.example")
+	withMirror := testSources("https://mirror.example")
 	got = withMirror.candidates("https://kelee.one/Tool/Loon/Lpx/a.lpx")
 	want := []string{
 		"https://kelee.one/Tool/Loon/Lpx/a.lpx",

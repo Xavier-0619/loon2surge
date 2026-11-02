@@ -1,8 +1,9 @@
-package kelee
+package upstream
 
 import (
 	"fmt"
 	"os"
+	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -181,13 +182,9 @@ func stamp(date string) string {
 	return date
 }
 
-// ToString 给改名记录一个稳定的排序键。
-func (r Rename) ToString() string { return r.From + "\x00" + r.To }
-
+// sortedStems 返回升序副本，提交信息里的顺序才不会随上游返回顺序漂移。
 func sortedStems(stems []string) []string {
-	out := append([]string(nil), stems...)
-	sort.Strings(out)
-	return out
+	return slices.Sorted(slices.Values(stems))
 }
 
 // writeCommitMessage 落盘到 action 指定的路径，交给 git commit -F 使用。

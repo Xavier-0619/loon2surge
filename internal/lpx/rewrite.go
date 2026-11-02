@@ -322,10 +322,10 @@ func urlReplaceAction(phase, pattern string, args []string) ([]Emit, error) {
 // mockAction 把 V2 的 response.body.mock / mock_file 转成静态 [Map Local]。
 func mockAction(phase, pattern, op string, args []string) ([]Emit, error) {
 	if phase != "response" {
-		return nil, unsupported("rewrite-mock", op+" 只能用在 response 阶段")
+		return nil, unsupported("rewrite-mock", "%s 只能用在 response 阶段", op)
 	}
 	if len(args) < 1 {
-		return nil, unsupported("rewrite-mock", op+" 缺少内容")
+		return nil, unsupported("rewrite-mock", "%s 缺少内容", op)
 	}
 	body := args[0]
 

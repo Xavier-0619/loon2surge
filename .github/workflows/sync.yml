@@ -30,7 +30,7 @@ permissions:
 
 # 上一轮没跑完时不要叠着跑，排队等它结束
 concurrency:
-  group: kelee-sync
+  group: upstream-sync
   cancel-in-progress: false
 
 env:

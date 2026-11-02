@@ -8,7 +8,7 @@ name: 🛰️ 上游更新监听
 #   2. 模型判断不需要移植 / 模型出错 → 开 issue 提醒，不产生代码
 #   3. 上游没有值得看的提交 → 什么都不做
 #
-# 用哪个模型（见 tools/upstream_merge.py 的 llm_endpoint）：
+# 用哪个模型（见 scripts/upstream_merge.py 的 llm_endpoint）：
 #   默认  仓库自带的 GITHUB_TOKEN → GitHub Models，零配置零成本
 #   可选  Settings → Secrets 里加 AI_API_KEY 覆盖（兼容 OpenAI 接口）
 #         可选 vars AI_BASE_URL（默认 https://api.deepseek.com/v1）、AI_MODEL（默认 deepseek-chat）
@@ -64,7 +64,7 @@ jobs:
       - name: 🛰️ 拉上游并挑出新提交
         id: collect
         shell: bash
-        run: python3 tools/upstream_merge.py collect
+        run: python3 scripts/upstream_merge.py collect
 
       - name: 😴 没有新东西就跳过后续
         if: steps.collect.outputs.has_new != 'true'
@@ -79,7 +79,7 @@ jobs:
       - name: 📝 生成给模型的材料
         if: steps.collect.outputs.has_new == 'true'
         shell: bash
-        run: python3 tools/upstream_merge.py prompt
+        run: python3 scripts/upstream_merge.py prompt
 
       - name: 🧠 让模型判断并生成补丁
         id: merge
@@ -93,7 +93,7 @@ jobs:
         run: |
           # 这一步本身不判失败：无论模型说了什么，后面都要记录进度并给出反馈
           set +e
-          python3 tools/upstream_merge.py apply
+          python3 scripts/upstream_merge.py apply
           echo "code=$?" >> "$GITHUB_OUTPUT"
           exit 0
 
@@ -112,12 +112,12 @@ jobs:
         shell: bash
         run: |
           set +e
-          gofmt -w internal main.go 2>/dev/null
+          gofmt -w cmd internal 2>/dev/null
           go build ./... > build.log 2>&1
           build_code=$?
           go test ./... > test.log 2>&1
           test_code=$?
-          go run . validate --dir surge > validate.log 2>&1
+          go run ./cmd/loon2surge validate --dir surge > validate.log 2>&1
           validate_code=$?
 
           status="通过"
@@ -155,7 +155,7 @@ jobs:
           result="ok"
           if [ "${{ steps.test.outputs.status }}" != "通过" ]; then result="failed"; fi
 
-          python3 tools/upstream_merge.py advance \
+          python3 scripts/upstream_merge.py advance \
             --sha "${{ steps.collect.outputs.head_sha }}" \
             --at "$date_str" --result "$result"
 
@@ -179,7 +179,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 tools/upstream_merge.py report \
+          python3 scripts/upstream_merge.py report \
             --kind pr --status "${{ steps.test.outputs.status }}" \
             --out .upstream-work/pr-body.md
 
@@ -232,7 +232,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 tools/upstream_merge.py report \
+          python3 scripts/upstream_merge.py report \
             --kind issue --sha "${{ steps.collect.outputs.head_sha }}" \
             --out .upstream-work/issue-body.md
 
