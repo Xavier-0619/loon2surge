@@ -25,7 +25,7 @@ http-response-jq (?i:^https:\/\/(mobile|mobilehera|mobwsa)\.ximalaya\.com\/footb
 http-response-jq (?i:^https:\/\/(mobile|mobilehera|mobwsa)\.ximalaya\.com\/nexus-web\/v\d\/tabs\/customTabs\?) '.data.feedTabs |= map(select(.name != "大赛"))'
 http-response-jq (?i:^https:\/\/mobwsa\.ximalaya\.com\/mobile-playpage\/playpage\/tabs\/v2\/) 'delpaths([["data","playpage","resourceMap","defaultResource"],["data","playpage","resourceMap","playPageTip"]])'
 http-response-jq (?i:^https:\/\/(mobile|mobilehera|mobwsa)\.ximalaya\.com\/mobile-user\/v\d\/homePage\/) 'delpaths([["data","freeListenV2"]])'
-http-response-jq (?i:^https:\/\/(mobile|mobilehera|mobwsa)\.ximalaya\.com\/mobile-user\/v\d\/homePage\/) '.data.serviceModule.entrances |= map(select(.name == "�\u0085�部服务"))'
+http-response-jq (?i:^https:\/\/(mobile|mobilehera|mobwsa)\.ximalaya\.com\/mobile-user\/v\d\/homePage\/) '.data.serviceModule.entrances |= map(select(.name == "全部服务"))'
 
 [Map Local]
 (?i:^https:\/\/(search|searchwsa)\.ximalaya\.com\/hub\/(guideWord|hotWord)V\d\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"

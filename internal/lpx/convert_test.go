@@ -603,6 +603,23 @@ response if ${url} ~= /^https:\/\/a\.com\// then response.json.jq("\"#tag\" | lt
 		}
 	})
 
+	t.Run("汉字里的 0x85 续字节不能被当成控制字符", func(t *testing.T) {
+		result := convert(t, `#!name=t
+[Rewrite]
+response if ${url} ~= /^https://////a//.com//// then response.json.jq(".a = \"关注\" | .b = \"推荐\"")
+`)
+		lines := section(result, "Body Rewrite")
+		if len(lines) != 1 {
+			t.Fatalf("没产出 Body Rewrite：%v", result.Warnings())
+		}
+		if !strings.Contains(lines[0], `"关注"`) || !strings.Contains(lines[0], `"推荐"`) {
+			t.Errorf("汉字被切断：%q", lines[0])
+		}
+		if strings.Contains(lines[0], `\u0085`) {
+			t.Errorf("续字节被当成 U+0085 转义：%q", lines[0])
+		}
+	})
+
 	t.Run("$__loc__ 依赖行号，直接拒绝", func(t *testing.T) {
 		result := convert(t, `#!name=t
 [Rewrite]
@@ -699,5 +716,18 @@ func BenchmarkConvert(b *testing.B) {
 		if result := ConvertText(text, options); !result.OK() {
 			b.Fatal("转换失败")
 		}
+	}
+}
+
+func TestJsonEscapeRuneHandlesNELOnlyAsWholeRune(t *testing.T) {
+	if escaped, size := jsonEscapeRune("\u0085x"); escaped != `\u0085` || size != len("\u0085") {
+		t.Errorf("U+0085 应整字转义，得到 %q size=%d", escaped, size)
+	}
+	// 「关」= E5 85 B3，第二字节是 0x85，但不是 U+0085
+	if escaped, _ := jsonEscapeRune("关"); escaped != "" {
+		t.Errorf("汉字被当成控制字符：%q", escaped)
+	}
+	if escaped, size := jsonEscapeRune("\u0007"); escaped != `\u0007` || size != 1 {
+		t.Errorf("BEL 转义不对：%q size=%d", escaped, size)
 	}
 }

@@ -23,7 +23,7 @@ import (
 //
 // 只改输出结果时才递增：插件本身没变、但转换规则变了，同步流程必须重转一遍。
 // 同步层把它记进 index.json，版本不同就丢掉缓存重新生成。
-const Version = "2.1.0"
+const Version = "2.1.1"
 
 // Surge 模块头部认识的 #! 字段，其余字段丢弃并写进报告。
 var surgeMeta = map[string]bool{

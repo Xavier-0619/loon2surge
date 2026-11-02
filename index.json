@@ -287,13 +287,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/CCLive_remove_ads.lpx",
       "lpx_sha": "a631ca36f8bd28733f59bbf68dea204c6d6f768676ac8a015de928f183464cc3",
-      "module_sha": "892f519e1f1d6cfea6b4050b63a38b7f60cffc4191c53f4c6697b75fe7e63c50",
+      "module_sha": "1dbfaa9af32b2ab1f367c58c7ffbefbdaafd2822b163e5cdac2f01ca629ba2bc",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "DJ多多去广告",
@@ -1611,13 +1611,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/EtouchEcalendar_remove_ads.lpx",
       "lpx_sha": "d3fcfc4a7cc8d332b53776ffee1e755e5d22476847dfb067590a30892269c57b",
-      "module_sha": "d3f844a29d80047ddb375cf03fc6da7048654282f86c9a7fe404bc185d65e443",
+      "module_sha": "74910c891bd80c46005c4a65e436cd83135892e191b01caf124a5e0ee469473c",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "中国人保去广告",
@@ -2436,13 +2436,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Himalaya_remove_ads.lpx",
       "lpx_sha": "c4fbddb80af7ba89e9cfa2226950178353745972194821df28692d74221dff36",
-      "module_sha": "1c1e9afc79ea2c32a5b6e4d2b9c49dc750b86eee15fa992852b391feaa85f751",
+      "module_sha": "81f4d19bf642e73edd4b37064f581a523708a9d979e7cbcc27f96f9069a3502e",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "图怪兽去广告",
@@ -2502,13 +2502,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/MojiWeather_remove_ads.lpx",
       "lpx_sha": "5bfca277969ca907f689a6095f5e23650a7220c88a9f559a8c3a327db2d757ca",
-      "module_sha": "b16e94b8bc3238247771de14a9d3cde2662ec1de5d0aa169fc405a5eb2fc7a1a",
+      "module_sha": "49a390d48a6b61e7018cfecc653d47bfc9d4880c97b94f20c09238d9955bcff3",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "多屏互动去广告",
@@ -3292,7 +3292,7 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/WexinMiniPrograms_Remove_ads.lpx",
       "lpx_sha": "a3e17aa9fa533f226fab0d178a3f1a7061f9833348af757dc14c03ef17469f20",
-      "module_sha": "5a0dd87a9f5d7494d34cb179d0f8ad3870dfab9ee7247de0f7a5250fc9a0849b",
+      "module_sha": "70aefc67f46de25a273e124e8e7bea7f92988ca8af4e83ad4117063229577a9d",
       "status": "ok",
       "notes": [
         "[script-attribute-alias] L213: 属性名归一 requires_body → requires-body",
@@ -3301,7 +3301,7 @@
         "[script-attribute-alias] L219: 属性名归一 requires_body → requires-body",
         "[script-attribute-alias] L221: 属性名归一 requires_body → requires-body"
       ],
-      "converter": "2.1.0",
+      "converter": "2.1.1",
       "adapted": [
         "属性名归一（下划线转连字符） ×12"
       ]
@@ -3466,13 +3466,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/KuaiShou_remove_ads.lpx",
       "lpx_sha": "fa1a189869564e9cbb21afe54c7f6f6b9c5fd518d2e551161e45676d4636fe05",
-      "module_sha": "a5febe71f19fdc85a00ea347b73158509f0660292e622ea08934e6c4aab78caf",
+      "module_sha": "17059c2943c29ef25d4e880680a257fa64707d4cb008553d71bde8d7252873fa",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "快捷搜索",
@@ -4517,13 +4517,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/CatEarFM_remove_ads.lpx",
       "lpx_sha": "c1c65ba389ac611b4fd265f5332f0c66953d468104108c6bfc66bec4a4bfda28",
-      "module_sha": "7540918c9404de95598d9b4f45ef355a0350e104bfa2a2ac73b6dd7241f9a8e0",
+      "module_sha": "7895bc1d81860d7ec62f1882d1b3170dd24d8216e95cbca3a486e733f96d27ec",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "瑞幸咖啡去广告",
@@ -4698,7 +4698,7 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/Tieba_remove_ads.lpx",
       "lpx_sha": "6a9cd398f460e6604307ac8a4010af644dda62cbade209864c6938d8449c2398",
-      "module_sha": "ced1b35ca444653ad4df62f4e5bc37d1819a90bc46d49741a96c09a145191bed",
+      "module_sha": "9d16d08ff4fcaa1c3c0cfa3fefaeb08a8fca5d3407439182e5ec912da4ae6501",
       "status": "ok",
       "notes": [
         "[script-object-adapted] 脚本参数清单已转成 Surge 的 argument JSON",
@@ -4707,7 +4707,7 @@
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0",
+      "converter": "2.1.1",
       "adapted": [
         "脚本参数清单转成 argument JSON",
         "属性名归一（下划线转连字符） ×2"
@@ -5741,13 +5741,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/OnTheWay_remove_ads.lpx",
       "lpx_sha": "1a0888cf708921ac4cacbc2dd90538506726ed2bebd6913c7cf85348f67c599e",
-      "module_sha": "74a6f8ce9d2bdd690d4c7d72f36211380fd9067bc4694f12f14da3367326f661",
+      "module_sha": "2b7217a80d90bde25120151b38abbb9f4e5ad405efe6d8a8ba3ad5a444bc2625",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "触站去广告",
@@ -5950,13 +5950,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/ZhuanZhuan_remove_ads.lpx",
       "lpx_sha": "40478aa9b4ab5ec361eff30b79d981b4c968de82d32fb43e478916c679d78ed3",
-      "module_sha": "231ba4ea32136dab80d6f66e1b6aa310f484e096950e401c0587a291c9bf36d4",
+      "module_sha": "764e37022780c294a3d6cde388536e34c1c14832368d6ad88fbadd42ae1a0499",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "迅雷去广告",
@@ -5972,13 +5972,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/XunLei_remove_ads.lpx",
       "lpx_sha": "f7dda29da8603d999e2a1593de0740bbf08b161d87f64d2b80db6031d73786de",
-      "module_sha": "b98fe4e0dfe86dbac30e32cbde7159be5f9b0627f9b0cb1715f119334a105ac2",
+      "module_sha": "f8bd17a89768a3a2d9854165db9622fccf4f9852df97194ae6a3def89730173f",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "配音秀去广告",
@@ -6021,13 +6021,13 @@
       "date": "2026-10-02 13:57:49",
       "url": "https://kelee.one/Tool/Loon/Lpx/CoolApk_remove_ads.lpx",
       "lpx_sha": "d77533ccb0adfe3039705d560ff9f784310093b522df8d6117cd05d4ad49f36a",
-      "module_sha": "d458751ab6a6c438a5e0a88ff31a5823148dd8641fc9a3adc8afbb93144ac272",
+      "module_sha": "10545bef2ed87821153b145190bee2abc05b13fa17626d68634ecaeaac61b1d1",
       "status": "ok",
       "notes": [
         "[meta-dropped] 头部字段 `system_version` 在 Surge 中无对应，已删除",
         "[meta-dropped] 头部字段 `loon_version` 在 Surge 中无对应，已删除"
       ],
-      "converter": "2.1.0"
+      "converter": "2.1.1"
     },
     {
       "stem": "酷我音乐去广告",

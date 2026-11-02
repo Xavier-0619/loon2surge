@@ -227,7 +227,9 @@ func compactJQ(program string) (string, error) {
 				out.WriteString(`\u0027`) // JQ 没有 \' 转义，只能在 JQ 层编码
 				i++
 				continue
-			case ch < 0x20 || ch == 0x85 || ch == 0xe2:
+			// C2 开头的两字节字符里只有 U+0085 要转义；0x85 本身是续字节，
+			// 汉字（比如「关」= E5 85 B3）的中间字节就是它，按字节比会把字切断。
+			case ch < 0x20 || ch == 0xc2 || ch == 0xe2:
 				escaped, size := jsonEscapeRune(program[i:])
 				if escaped == "" {
 					out.WriteByte(ch)
@@ -289,14 +291,17 @@ func compactJQ(program string) (string, error) {
 
 // jsonEscapeRune 处理字符串里的控制字符与 Unicode 行分隔符。
 // 返回空串表示这个字节不需要转义（非 ASCII 的正常字符）。
+//
+// U+0085 在 UTF-8 里是 C2 85，必须整字比较：只比 0x85 会命中汉字的中间字节，
+// 把「关」写成 `\xe5\u0085\xb3` 这种非法 UTF-8，jq 里也匹配不到原字符串。
 func jsonEscapeRune(text string) (string, int) {
 	if len(text) == 0 {
 		return "", 0
 	}
-	switch text[0] {
-	case 0x85:
-		return `\u0085`, 1
-	case 0xe2:
+	if strings.HasPrefix(text, "\u0085") {
+		return `\u0085`, len("\u0085")
+	}
+	if text[0] == 0xe2 {
 		if strings.HasPrefix(text, "\u2028") {
 			return `\u2028`, 3
 		}
