@@ -68,6 +68,11 @@ function avatarTone(module) {
   return hash % 6;
 }
 
+function avatarMarkup(module, name) {
+  const icon = /^https:\/\//i.test(String(module.icon || "").trim()) ? module.icon.trim() : "";
+  return `<div class="module-avatar tone-${avatarTone(module)}" aria-hidden="true">${icon ? `<img class="module-icon" src="${escapeHTML(icon)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ""}<span class="avatar-fallback">${escapeHTML(avatarText(name))}</span></div>`;
+}
+
 function hasReview(module) {
   return Array.isArray(module.review) && module.review.length > 0;
 }
@@ -97,7 +102,7 @@ function moduleCard(module, index) {
   return `
     <article class="module-card" style="animation-delay:${Math.min(index % PAGE_SIZE, 10) * 24}ms">
       <div class="card-top">
-        <div class="module-avatar tone-${avatarTone(module)}" aria-hidden="true">${escapeHTML(avatarText(name))}</div>
+        ${avatarMarkup(module, name)}
         <div class="card-title-wrap">
           <button class="card-title-button" type="button" data-action="details" data-id="${escapeHTML(module.stem)}" aria-label="查看 ${escapeHTML(name)} 的模块详情">
             <h3 class="card-title" title="${escapeHTML(name)}">${escapeHTML(name)}</h3>
@@ -224,7 +229,7 @@ function openDetails(module) {
   const authors = (module.authors || []).join(" / ") || "可莉插件中心";
   elements.dialogContent.innerHTML = `
     <div class="dialog-header">
-      <div class="module-avatar tone-${avatarTone(module)}" aria-hidden="true">${escapeHTML(avatarText(name))}</div>
+      ${avatarMarkup(module, name)}
       <div><h2 id="dialog-title">${escapeHTML(name)}</h2><p>by ${escapeHTML(authors)}</p></div>
     </div>
     <p class="dialog-description">${escapeHTML(module.desc || "暂无模块描述。")}</p>
@@ -364,6 +369,12 @@ document.addEventListener("click", event => {
   const install = event.target.closest("[data-install]");
   if (install) showToast(`正在唤起 Surge 导入「${install.dataset.install}」…`);
 });
+
+document.addEventListener("error", event => {
+  if (event.target instanceof HTMLImageElement && event.target.classList.contains("module-icon")) {
+    event.target.remove();
+  }
+}, true);
 
 document.addEventListener("keydown", event => {
   const tagName = document.activeElement?.tagName;

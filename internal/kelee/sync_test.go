@@ -193,6 +193,36 @@ func TestPluginName(t *testing.T) {
 	}
 }
 
+func TestPluginMeta(t *testing.T) {
+	text := "#!name=测试插件\n#!Icon= https://example.com/icon.png \n[Rule]\n#!icon=https://late.example.com/icon.png\n"
+	if got := lpx.PluginIcon(text); got != "https://example.com/icon.png" {
+		t.Errorf("图标没有正确提取：%q", got)
+	}
+	if got := lpx.PluginMeta(text, "desc"); got != "" {
+		t.Errorf("缺失字段应为空：%q", got)
+	}
+}
+
+func TestSyncKeepsIcon(t *testing.T) {
+	path := "/Tool/Loon/Lpx/Icon.lpx"
+	icon := "https://example.com/module.png"
+	plugin := strings.Replace(samplePlugin, "#!desc=单元测试用的假插件",
+		"#!desc=单元测试用的假插件\n#!icon="+icon, 1)
+	site := newFakeSite(t, map[string]string{path: plugin})
+	vault := NewVault(t.TempDir())
+
+	entries := newSyncer(vault, site.sources(), 2, 0).run(site.remotes(t), map[string]Entry{}, true, true)
+	if len(entries) != 1 || entries[0].Icon != icon {
+		t.Fatalf("图标没有写进索引条目：%+v", entries)
+	}
+	if _, err := vault.WriteState(entries, "2026-11-03 00:00:00 UTC"); err != nil {
+		t.Fatalf("写索引失败：%v", err)
+	}
+	if !strings.Contains(readFile(t, vault.indexPath()), `"icon": "`+icon+`"`) {
+		t.Errorf("index.json 里没有图标字段")
+	}
+}
+
 func TestFileStem(t *testing.T) {
 	cases := []struct {
 		name, fallback, want string

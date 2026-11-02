@@ -150,7 +150,10 @@ img, svg { display: block; }
 .module-card { min-width: 0; position: relative; display: flex; flex-direction: column; padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,.8); transition: transform .25s, border-color .25s, box-shadow .25s; animation: card-in .35s both; }
 .module-card:hover { z-index: 1; transform: translateY(-5px); border-color: #cdd1c3; box-shadow: var(--shadow); }
 .card-top { display: flex; align-items: flex-start; gap: 13px; }
-.module-avatar { width: 46px; height: 46px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 14px; color: #373052; background: linear-gradient(145deg, #ebe7ff, #d8cffb); font-size: 16px; font-weight: 780; letter-spacing: -.5px; }
+.module-avatar { width: 46px; height: 46px; position: relative; display: grid; place-items: center; flex: 0 0 auto; overflow: hidden; border-radius: 14px; color: #373052; background: linear-gradient(145deg, #ebe7ff, #d8cffb); font-size: 16px; font-weight: 780; letter-spacing: -.5px; }
+.module-avatar .avatar-fallback { position: relative; z-index: 0; }
+.module-avatar .module-icon { width: 100%; height: 100%; position: absolute; inset: 0; z-index: 1; object-fit: cover; background: #fff; transition: transform .25s; }
+.module-card:hover .module-avatar .module-icon { transform: scale(1.04); }
 .module-avatar.tone-1 { color: #35533b; background: linear-gradient(145deg, #edf6df, #d9edbd); }.module-avatar.tone-2 { color: #644b31; background: linear-gradient(145deg, #fff0dc, #f6d7ae); }.module-avatar.tone-3 { color: #315361; background: linear-gradient(145deg, #e2f3f5, #c9e4e9); }.module-avatar.tone-4 { color: #673e50; background: linear-gradient(145deg, #fbe8ef, #efccda); }.module-avatar.tone-5 { color: #394c68; background: linear-gradient(145deg, #e7eefb, #cedcf3); }
 .card-title-wrap { min-width: 0; flex: 1; }
 .card-title-button { max-width: 100%; display: block; padding: 0; border: 0; background: transparent; cursor: pointer; text-align: left; }

@@ -17,6 +17,7 @@ type Entry struct {
 	Stem      string   `json:"stem"`
 	Name      string   `json:"name"`
 	Desc      string   `json:"desc"`
+	Icon      string   `json:"icon,omitempty"`
 	Tags      []string `json:"tags"`
 	Authors   []string `json:"authors"`
 	Date      string   `json:"date"`

@@ -371,10 +371,11 @@ func (s *Syncer) finish(remote Remote, got fetched, old *Entry, write bool, used
 		return s.keep(old, remote, got.err, used)
 	}
 
+	source := decode(got.data)
 	entry := Entry{
-		Name: remote.Name, Desc: remote.Desc, Tags: remote.Tags,
+		Name: remote.Name, Desc: remote.Desc, Icon: lpx.PluginIcon(source), Tags: remote.Tags,
 		Authors: remote.Authors, Date: remote.Date, URL: remote.URL,
-		Stem:   uniqueStem(fileStem(lpx.PluginName(decode(got.data)), remote.Stem), used),
+		Stem:   uniqueStem(fileStem(lpx.PluginName(source), remote.Stem), used),
 		LpxSHA: hashOf(got.data),
 	}
 

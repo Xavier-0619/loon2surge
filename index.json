@@ -7,6 +7,7 @@
       "stem": "1.1.1.1配置管理",
       "name": "1.1.1.1配置管理",
       "desc": "提取1.1.1.1应用的配置并生成Loon可用的节点配置，点击下面署名前往配置1.1.1.1的BoxJs配置。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/1.1.1.1.png",
       "tags": [
         "配置管理"
       ],
@@ -35,6 +36,7 @@
       "stem": "12306去广告",
       "name": "12306去广告",
       "desc": "过滤12306应用内广告及开屏广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/12306.png",
       "tags": [
         "去广告"
       ],
@@ -57,6 +59,7 @@
       "stem": "123云盘去广告",
       "name": "123云盘去广告",
       "desc": "移除开屏广告、应用内横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/123NetWorkDisk.png",
       "tags": [
         "去广告"
       ],
@@ -78,6 +81,7 @@
       "stem": "360摄像机去广告",
       "name": "360摄像机去广告",
       "desc": "移除开屏广告、首页推广、底栏商城入口及我的页面推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/360SmartCamera.png",
       "tags": [
         "去广告"
       ],
@@ -99,6 +103,7 @@
       "stem": "360智慧生活去广告",
       "name": "360智慧生活去广告",
       "desc": "移除开屏广告、首页推广横幅、商城入口及我的页面推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SafetyHome.png",
       "tags": [
         "去广告"
       ],
@@ -120,6 +125,7 @@
       "stem": "36氪去广告",
       "name": "36氪去广告",
       "desc": "移除开屏广告、首页右上角运营位、信息流广告、文末广告，移除相关文章推荐、大家都在看及皮肤配置，精简搜索页面、我的页面及底栏。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/36Kr.png",
       "tags": [
         "去广告"
       ],
@@ -141,6 +147,7 @@
       "stem": "555电影去广告",
       "name": "555电影去广告",
       "desc": "移除开屏广告和各类横幅广告，支持iPadOS。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/555DY.png",
       "tags": [
         "去广告"
       ],
@@ -162,6 +169,7 @@
       "stem": "5EPlay去广告",
       "name": "5EPlay去广告",
       "desc": "移除开屏广告、弹窗广告、活动角标、商城。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/5EPlay.png",
       "tags": [
         "去广告"
       ],
@@ -183,6 +191,7 @@
       "stem": "Apple天气增强",
       "name": "Apple天气增强",
       "desc": "解锁Apple天气的全部功能、替换空气质量数据源、添加下一小时降水数据、添加天气数据。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/AppleWeather.png",
       "tags": [
         "功能增强"
       ],
@@ -216,6 +225,7 @@
       "stem": "B612咔叽去广告",
       "name": "B612咔叽去广告",
       "desc": "移除开屏广告、弹窗及拍摄页面底部横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SnowCamera.png",
       "tags": [
         "去广告"
       ],
@@ -237,6 +247,7 @@
       "stem": "BoxJs",
       "name": "BoxJs",
       "desc": "JavaScript数据管理器，用于管理脚本储存的数据。使用前请在本插件的详情页面为[PROXY]项分配代理策略。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/Other_icon/120px/BoxJS.png",
       "tags": [
         "数据管理"
       ],
@@ -266,6 +277,7 @@
       "stem": "CC直播去广告",
       "name": "CC直播去广告",
       "desc": "移除信息流推广和横幅，精简顶部标签。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/CCLive.png",
       "tags": [
         "去广告"
       ],
@@ -287,6 +299,7 @@
       "stem": "DJ多多去广告",
       "name": "DJ多多去广告",
       "desc": "移除开屏广告及歌单广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DjDuoDuo.png",
       "tags": [
         "去广告"
       ],
@@ -312,6 +325,7 @@
       "stem": "DNS防泄露",
       "name": "DNS防泄露",
       "desc": "专为小白设计的DNS防泄露",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/Other_icon/120px/Prevent_DNS_Leaks.png",
       "tags": [
         "DNS"
       ],
@@ -332,6 +346,7 @@
       "stem": "DREAME去广告",
       "name": "DREAME去广告",
       "desc": "移除开屏广告、首页大图推广、横幅推广，精简底栏，阻止桌面图标替换。仅支持2.5.1版。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DREAME.png",
       "tags": [
         "去广告"
       ],
@@ -353,6 +368,7 @@
       "stem": "Dlabel云标签去广告",
       "name": "Dlabel云标签去广告",
       "desc": "移除开屏广告及首页横幅。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Dlabel.png",
       "tags": [
         "去广告"
       ],
@@ -374,6 +390,7 @@
       "stem": "ECOVACS HOME去广告",
       "name": "ECOVACS HOME去广告",
       "desc": "移除横幅推广，精简底栏。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/EcovacsHome.png",
       "tags": [
         "去广告"
       ],
@@ -395,6 +412,7 @@
       "stem": "Fileball网盘挂载",
       "name": "Fileball网盘挂载",
       "desc": "支持挂载阿里云盘、夸克网盘和PikPak网盘，点击下方署名查看使用方法。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Fileball.png",
       "tags": [
         "功能增强"
       ],
@@ -420,6 +438,7 @@
       "stem": "Follow每日签到",
       "name": "Follow每日签到",
       "desc": "Follow每日签到，需要进入此插件的主页链接，阅读使用说明操作。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/FollowRSS.png",
       "tags": [
         "签到"
       ],
@@ -446,6 +465,7 @@
       "stem": "Foodie去广告",
       "name": "Foodie去广告",
       "desc": "移除开屏广告和弹窗广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Foodie.png",
       "tags": [
         "去广告"
       ],
@@ -467,6 +487,7 @@
       "stem": "Google搜索重定向",
       "name": "Google搜索重定向",
       "desc": "将Google搜索重定向至.com域名，如遇频繁跳转请禁用本插件。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Google.png",
       "tags": [
         "去广告"
       ],
@@ -488,6 +509,7 @@
       "stem": "HTTPDNS拦截器",
       "name": "HTTPDNS拦截器",
       "desc": "此插件是所有去广告插件的依赖，拦截常见的HTTPDNS服务，以确保这些请求都能够在Loon的DNS框架下工作。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/Other_icon/120px/HTTPDNS.png",
       "tags": [
         "去广告",
         "依赖"
@@ -514,6 +536,7 @@
       "stem": "Hong Kong Toolbar去广告",
       "name": "Hong Kong Toolbar去广告",
       "desc": "移除开屏互动广告、直播前贴片广告及视频广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/HongKongToolbar.png",
       "tags": [
         "去广告"
       ],
@@ -540,6 +563,7 @@
       "stem": "IPA工具箱助手",
       "name": "IPA工具箱助手",
       "desc": "这是IPA工具箱的辅助插件，用于下载IPA包和应用降级。IPA工具箱是运行在Scripting应用中的脚本，需要购买Scripting的Pro版本才能运行。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/Other_icon/120px/IPATool.png",
       "tags": [
         "功能增强"
       ],
@@ -565,6 +589,7 @@
       "stem": "IT之家去广告",
       "name": "IT之家去广告",
       "desc": "过滤IT之家信息流广告和文末广告，自定义移除置顶和轮播图，自定义移除项需在插件配置。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/IThome.png",
       "tags": [
         "去广告"
       ],
@@ -592,6 +617,7 @@
       "stem": "Jump去广告",
       "name": "Jump去广告",
       "desc": "移除Jump开屏广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Jump.png",
       "tags": [
         "去广告"
       ],
@@ -613,6 +639,7 @@
       "stem": "KOOK去广告",
       "name": "KOOK去广告",
       "desc": "移除开屏广告、房间横幅推广、促销活动、精简发现页面频道及我的页面，移除底栏商城入口。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KOOK.png",
       "tags": [
         "去广告"
       ],
@@ -634,6 +661,7 @@
       "stem": "Keep去广告",
       "name": "Keep去广告",
       "desc": "移除开屏广告、搜索推荐和弹窗广告，精简底栏和首页标签。移除关注推荐、文章相关推荐和信息流中的课程推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Keep.png",
       "tags": [
         "去广告"
       ],
@@ -655,6 +683,7 @@
       "stem": "Line去广告",
       "name": "Line去广告",
       "desc": "移除Line各类广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Line.png",
       "tags": [
         "去广告"
       ],
@@ -682,6 +711,7 @@
       "stem": "OKOK去广告",
       "name": "OKOK去广告",
       "desc": "移除开屏广告、横幅广告，精简首页，拦截优惠购页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/OKOK.png",
       "tags": [
         "去广告"
       ],
@@ -703,6 +733,7 @@
       "stem": "PICOOC去广告",
       "name": "PICOOC去广告",
       "desc": "移除开屏广告、悬浮广告，拦截发现页，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/PICOOC.png",
       "tags": [
         "去广告"
       ],
@@ -724,6 +755,7 @@
       "stem": "Pinterest去广告",
       "name": "Pinterest去广告",
       "desc": "移除瀑布流、更多探索内容中的广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Pinterest.png",
       "tags": [
         "去广告"
       ],
@@ -745,6 +777,7 @@
       "stem": "QQ链接解锁",
       "name": "QQ链接解锁",
       "desc": "解除QQ内访问非白名单之外的地址提示停止访问该页面的限制，并移除跟踪参数，使用前需要清除QQ的缓存数据。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/QQ.png",
       "tags": [
         "去广告"
       ],
@@ -766,6 +799,7 @@
       "stem": "QQ音乐去广告",
       "name": "QQ音乐去广告",
       "desc": "过滤QQ音乐广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/QQMusic.png",
       "tags": [
         "去广告"
       ],
@@ -787,6 +821,7 @@
       "stem": "RQrun去广告",
       "name": "RQrun去广告",
       "desc": "移除开屏广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/RQrun.png",
       "tags": [
         "去广告"
       ],
@@ -808,6 +843,7 @@
       "stem": "Reddit去广告",
       "name": "Reddit去广告",
       "desc": "过滤应用内推广，阻止NSFW提示。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Reddit.png",
       "tags": [
         "去广告"
       ],
@@ -833,6 +869,7 @@
       "stem": "ReelShort去广告",
       "name": "ReelShort去广告",
       "desc": "移除开屏广告、为你推荐及各类弹窗，移除搜索栏填充词。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ReelShort.png",
       "tags": [
         "去广告"
       ],
@@ -854,6 +891,7 @@
       "stem": "Roborock去广告",
       "name": "Roborock去广告",
       "desc": "移除横幅、活动推广、机器人图标，精简服务中心。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Roborock.png",
       "tags": [
         "去广告"
       ],
@@ -875,6 +913,7 @@
       "stem": "Script-Hub",
       "name": "Script-Hub",
       "desc": "将其他工具的Rewrite、Rule和JavaScript资源转换为Loon能识别的格式，使用前请在本插件的详情页面为[PROXY]项分配代理策略。在插件列表中点击此插件上的链接查看使用方法。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/Other_icon/120px/Script-Hub.png",
       "tags": [
         "资源转换"
       ],
@@ -905,6 +944,7 @@
       "stem": "Sofascore去广告",
       "name": "Sofascore去广告",
       "desc": "移除横幅及信息流广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Sofascore.png",
       "tags": [
         "去广告"
       ],
@@ -926,6 +966,7 @@
       "stem": "Soul去广告",
       "name": "Soul去广告",
       "desc": "移除开屏广告、移除话题页面热Soul话题、移除评论区礼物榜、移除更新提示、移除青少年弹窗、移除我的页面推广、移除悬浮部件。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Soul.png",
       "tags": [
         "去广告"
       ],
@@ -953,6 +994,7 @@
       "stem": "Spotify去广告",
       "name": "Spotify去广告",
       "desc": "移除播放广告，恢复歌手和专辑列表的正常展示。修改插件自定义配置项需要重新登陆方可生效。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Spotify.png",
       "tags": [
         "去广告"
       ],
@@ -981,6 +1023,7 @@
       "stem": "Spotify歌词增强",
       "name": "Spotify歌词增强",
       "desc": "将Spotify的外语歌词翻译为简体中文，并提供双语翻译支持。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Spotify.png",
       "tags": [
         "功能增强"
       ],
@@ -1008,6 +1051,7 @@
       "stem": "Sub-Store",
       "name": "Sub-Store",
       "desc": "高级订阅管理工具，定时任务默认为每天23点55分，可在插件设置中自定义。使用前请在本插件的详情页面为[PROXY]项分配代理策略。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/Other_icon/120px/Sub-Store.png",
       "tags": [
         "订阅管理"
       ],
@@ -1038,6 +1082,7 @@
       "stem": "Telegram重定向",
       "name": "Telegram重定向",
       "desc": "适用于安装了多个不同Telegram客户端的用户，用于在指定客户端中打开公开或私有群组及频道的Telegram短链。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Telegram.png",
       "tags": [
         "去广告"
       ],
@@ -1059,6 +1104,7 @@
       "stem": "TeraBox去广告",
       "name": "TeraBox去广告",
       "desc": "移除开屏广告、应用内悬浮窗、弹窗广告及横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TeraBox.png",
       "tags": [
         "去广告"
       ],
@@ -1080,6 +1126,7 @@
       "stem": "TestFlight地区解锁",
       "name": "TestFlight地区解锁",
       "desc": "解除TestFlight的区域限制，支持tvOS。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TestFlight.png",
       "tags": [
         "功能增强"
       ],
@@ -1105,6 +1152,7 @@
       "stem": "TubeMax去广告",
       "name": "TubeMax去广告",
       "desc": "过滤TubeMax广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TubeMax.png",
       "tags": [
         "去广告"
       ],
@@ -1130,6 +1178,7 @@
       "stem": "Tumblr去广告",
       "name": "Tumblr去广告",
       "desc": "移除信息流广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Tumblr.png",
       "tags": [
         "去广告"
       ],
@@ -1151,6 +1200,7 @@
       "stem": "Uki去广告",
       "name": "Uki去广告",
       "desc": "移除开屏广告、应用内悬浮窗，各类横幅、信息流广告、搜索填充词、我的页面广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Uki.png",
       "tags": [
         "去广告"
       ],
@@ -1178,6 +1228,7 @@
       "stem": "VVebo时间线修复",
       "name": "VVebo时间线修复",
       "desc": "修复失效的用户时间线和我的页面。使用此插件前需要禁用微博去广告插件，避免插件冲突导致失效。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/VVebo.png",
       "tags": [
         "功能增强"
       ],
@@ -1207,6 +1258,7 @@
       "stem": "WARP节点查询",
       "name": "WARP节点查询",
       "desc": "显示WARP节点的详细信息，请在所有节点页面选择一个节点长按，出现菜单后进行测试。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/1.1.1.1.png",
       "tags": [
         "节点检测"
       ],
@@ -1237,6 +1289,7 @@
       "stem": "WPS每日签到",
       "name": "WPS每日签到",
       "desc": "WPS每日签到并兑换会员，需要进入此插件的主页链接，阅读使用说明操作。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WPS.png",
       "tags": [
         "签到"
       ],
@@ -1266,6 +1319,7 @@
       "stem": "WakeUp课程表去广告",
       "name": "WakeUp课程表去广告",
       "desc": "移除横幅广告、弹窗广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WakeupSchedule.png",
       "tags": [
         "去广告"
       ],
@@ -1287,6 +1341,7 @@
       "stem": "YY去广告",
       "name": "YY去广告",
       "desc": "移除开屏广告、应用内弹窗，精简底栏和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YY_Voice.png",
       "tags": [
         "去广告"
       ],
@@ -1308,6 +1363,7 @@
       "stem": "YY语音去广告",
       "name": "YY语音去广告",
       "desc": "移除开屏广告、应用内弹窗、任务推广、频道横幅推广，精简广场顶部标签。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YYVoiceTool.png",
       "tags": [
         "去广告"
       ],
@@ -1329,6 +1385,7 @@
       "stem": "YouTube去广告",
       "name": "YouTube去广告",
       "desc": "移除YouTube视频、瀑布流、搜索和Shorts中的广告，移除底栏的Shorts按钮和上传按钮，增加画中画及字幕翻译功能。移除YouTube Music底栏的上传、选段和升级按钮，增加歌词翻译，支持二者的后台播放。此插件需要启用MitM over HTTP/2和QUIC回退保护。支持Premium订阅用户使用，不支持tvOS设备。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YouTube.png",
       "tags": [
         "去广告"
       ],
@@ -1361,6 +1418,7 @@
       "stem": "YouTube双语翻译",
       "name": "YouTube双语翻译",
       "desc": "字幕增强及双语翻译，支持Youtube Music歌词翻译。此插件需要置于YouTube去广告插件之下，且和YouTube去广告插件的歌词翻译冲突，不支持tvOS设备。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YouTube.png",
       "tags": [
         "功能增强"
       ],
@@ -1389,6 +1447,7 @@
       "stem": "ZAKER去广告",
       "name": "ZAKER去广告",
       "desc": "移除开屏广告、置顶轮播图广告和文末广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ZAKER.png",
       "tags": [
         "去广告"
       ],
@@ -1410,6 +1469,7 @@
       "stem": "e充电去广告",
       "name": "e充电去广告",
       "desc": "移除开屏广告、活动及发现页面，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/EasyCharge.png",
       "tags": [
         "去广告"
       ],
@@ -1431,6 +1491,7 @@
       "stem": "一刻相册去广告",
       "name": "一刻相册去广告",
       "desc": "移除开屏广告、横幅广告和弹窗推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BaiduPhoto.png",
       "tags": [
         "去广告"
       ],
@@ -1452,6 +1513,7 @@
       "stem": "一甜相机去广告",
       "name": "一甜相机去广告",
       "desc": "移除开屏广告、悬浮广告及图片选择器横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Yitian.png",
       "tags": [
         "去广告"
       ],
@@ -1473,6 +1535,7 @@
       "stem": "七猫小说去广告",
       "name": "七猫小说去广告",
       "desc": "移除大部分七猫小说广告，但受限于七猫小说自身对MitM和VPN状态的检测，部分页面广告无法移除。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SevenCat.png",
       "tags": [
         "去广告"
       ],
@@ -1494,6 +1557,7 @@
       "stem": "下厨房去广告",
       "name": "下厨房去广告",
       "desc": "移除开屏广告、页面推广及横幅，精简首页标签。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/XiaChuFang.png",
       "tags": [
         "去广告"
       ],
@@ -1515,6 +1579,7 @@
       "stem": "两步路户外助手去广告",
       "name": "两步路户外助手去广告",
       "desc": "移除开屏广告、弹窗广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/2bulu.png",
       "tags": [
         "去广告"
       ],
@@ -1536,6 +1601,7 @@
       "stem": "中华万年历去广告",
       "name": "中华万年历去广告",
       "desc": "移除开屏广告、弹窗、信息流推广，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/EtouchEcalendar.png",
       "tags": [
         "去广告"
       ],
@@ -1557,6 +1623,7 @@
       "stem": "中国人保去广告",
       "name": "中国人保去广告",
       "desc": "移除中国人保开屏广告和应用内广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/PICC_Insurance.png",
       "tags": [
         "去广告"
       ],
@@ -1583,6 +1650,7 @@
       "stem": "中国天气去广告",
       "name": "中国天气去广告",
       "desc": "移除开屏广告、弹窗广告、横幅广告，移除焦点视频、精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WeatherChina.png",
       "tags": [
         "去广告"
       ],
@@ -1604,6 +1672,7 @@
       "stem": "中国移动云盘去广告",
       "name": "中国移动云盘去广告",
       "desc": "移除中国移动云盘开屏广告及应用内广告，首页的多余卡片可滑到最底部自定义隐藏掉，插件对此不做处理。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/mobileClouds.png",
       "tags": [
         "去广告"
       ],
@@ -1630,6 +1699,7 @@
       "stem": "丰巢去广告",
       "name": "丰巢去广告",
       "desc": "移除弹窗，精简首页和生活服务。此插件需要IPA签名方可使用，App Store用户请勿使用此插件，务必点击下方主页链接查看详细教程。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/FC_Box.png",
       "tags": [
         "去广告"
       ],
@@ -1651,6 +1721,7 @@
       "stem": "乐播投屏去广告",
       "name": "乐播投屏去广告",
       "desc": "移除开屏广告、首页横幅推广、全网全网热投榜，移除我的页面横幅推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TV_Assistant.png",
       "tags": [
         "去广告"
       ],
@@ -1676,6 +1747,7 @@
       "stem": "书旗小说去广告",
       "name": "书旗小说去广告",
       "desc": "移除书城横幅广告、听书广告、阅读广告、章末推荐、福利入口、悬浮窗、推荐搜索词，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ShuQiCenterReader.png",
       "tags": [
         "去广告"
       ],
@@ -1701,6 +1773,7 @@
       "stem": "云鲸智能去广告",
       "name": "云鲸智能去广告",
       "desc": "移除开屏广告、横幅推广，禁用商城。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/NarwelRobots.png",
       "tags": [
         "去广告"
       ],
@@ -1722,6 +1795,7 @@
       "stem": "京东去广告",
       "name": "京东去广告",
       "desc": "移除京东开屏广告，精简我的页面产品推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/JD.png",
       "tags": [
         "去广告"
       ],
@@ -1748,6 +1822,7 @@
       "stem": "京东外卖去广告",
       "name": "京东外卖去广告",
       "desc": "移除首页推广、点评页面非美食内容、购物车及我的页面推荐、搜索发现、搜索榜单，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/JDWaimai.png",
       "tags": [
         "去广告"
       ],
@@ -1769,6 +1844,7 @@
       "stem": "京东比价",
       "name": "京东比价",
       "desc": "首次使用需安装慢慢买应用，之后点击进入[我的]页面以捕获Cookie，捕获成功后方可在商品详情页面查看比价内容。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/JD.png",
       "tags": [
         "功能增强"
       ],
@@ -1797,6 +1873,7 @@
       "stem": "亲宝宝去广告",
       "name": "亲宝宝去广告",
       "desc": "移除开屏广告、弹窗广告、广告下发、用户行为上报，精简搜索页、育儿页和我的页面，拦截商城页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Qbb.png",
       "tags": [
         "去广告"
       ],
@@ -1823,6 +1900,7 @@
       "stem": "什么值得买去广告",
       "name": "什么值得买去广告",
       "desc": "移除开屏广告、信息流广告、各类横幅广告、搜索页广告、文章内广告，移除活动皮肤、精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/smzdm.png",
       "tags": [
         "去广告"
       ],
@@ -1848,6 +1926,7 @@
       "stem": "他趣去广告",
       "name": "他趣去广告",
       "desc": "移除各类弹窗、横幅，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Taqu.png",
       "tags": [
         "去广告"
       ],
@@ -1869,6 +1948,7 @@
       "stem": "代理链路检测",
       "name": "代理链路检测",
       "desc": "查看目标节点的代理走向，在插件列表中点击此插件上的链接查看使用方法。",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Stack.png",
       "tags": [
         "节点检测"
       ],
@@ -1898,6 +1978,7 @@
       "stem": "优酷视频去广告",
       "name": "优酷视频去广告",
       "desc": "移除开屏广告、视频广告、信息流广告。其余广告由于请求已加密，故无法移除。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YouKu_Video.png",
       "tags": [
         "去广告"
       ],
@@ -1922,6 +2003,7 @@
       "stem": "健康160去广告",
       "name": "健康160去广告",
       "desc": "移除开屏广告、应用内悬浮窗、弹窗广告、横幅广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/91160.png",
       "tags": [
         "去广告"
       ],
@@ -1943,6 +2025,7 @@
       "stem": "全民K歌去广告",
       "name": "全民K歌去广告",
       "desc": "移除开屏广告、歌房页面弹窗广告、消息页广告和我的页面广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/QQKSong.png",
       "tags": [
         "去广告"
       ],
@@ -1964,6 +2047,7 @@
       "stem": "凤凰新闻去广告",
       "name": "凤凰新闻去广告",
       "desc": "移除皮肤、开屏广告、信息流广告、文末广告、视频流广告、评论区广告，移除信息流订阅号文章、文末推荐阅读，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ifengNews.png",
       "tags": [
         "去广告"
       ],
@@ -1985,6 +2069,7 @@
       "stem": "创维智慧云去广告",
       "name": "创维智慧云去广告",
       "desc": "移除开屏广告、横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SkyworthDigitalPicamera.png",
       "tags": [
         "去广告"
       ],
@@ -2006,6 +2091,7 @@
       "stem": "前程无忧去广告",
       "name": "前程无忧去广告",
       "desc": "移除开屏广告、弹窗、信息流推广、职位页面推广和各类横幅推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/51Job.png",
       "tags": [
         "去广告"
       ],
@@ -2027,6 +2113,7 @@
       "stem": "剑网三无界去广告",
       "name": "剑网三无界去广告",
       "desc": "移除热门推送活动，并解决无法在Loon运行时更新和登录的问题。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SeasunJX3.png",
       "tags": [
         "去广告"
       ],
@@ -2048,6 +2135,7 @@
       "stem": "医考帮去广告",
       "name": "医考帮去广告",
       "desc": "移除横幅推广、弹窗、首页悬浮挂件。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YiKaoBang.png",
       "tags": [
         "去广告"
       ],
@@ -2069,6 +2157,7 @@
       "stem": "华住会去广告",
       "name": "华住会去广告",
       "desc": "移除弹窗、横幅，精简首页。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/HantingHotels.png",
       "tags": [
         "去广告"
       ],
@@ -2090,6 +2179,7 @@
       "stem": "华尔街见闻去广告",
       "name": "华尔街见闻去广告",
       "desc": "移除开屏广告、文末广告、信息流广告，精简底栏。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/FinanceNews.png",
       "tags": [
         "去广告"
       ],
@@ -2111,6 +2201,7 @@
       "stem": "南网在线去广告",
       "name": "南网在线去广告",
       "desc": "移除首页推广，精简搜索页和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/CSG.png",
       "tags": [
         "去广告"
       ],
@@ -2132,6 +2223,7 @@
       "stem": "口袋壁纸去广告",
       "name": "口袋壁纸去广告",
       "desc": "移除悬浮广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ShoujiDesk.png",
       "tags": [
         "去广告"
       ],
@@ -2157,6 +2249,7 @@
       "stem": "叮咚买菜去广告",
       "name": "叮咚买菜去广告",
       "desc": "移除开屏广告、弹窗推广、搜索推荐、信息流广告、悬浮广告、各页面购物推荐、精简我的页面，移除底栏和各页面AI入口。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DingdongMaicai.png",
       "tags": [
         "去广告"
       ],
@@ -2180,6 +2273,7 @@
       "stem": "可莉广告过滤器",
       "name": "可莉广告过滤器",
       "desc": "可莉自用的广告过滤器",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/Other_icon/120px/KeLee.png",
       "tags": [
         "去广告"
       ],
@@ -2202,6 +2296,7 @@
       "stem": "向日葵去广告",
       "name": "向日葵去广告",
       "desc": "移除开屏广告、广告横幅。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/OraySunlogin.png",
       "tags": [
         "去广告"
       ],
@@ -2223,6 +2318,7 @@
       "stem": "启信宝去广告",
       "name": "启信宝去广告",
       "desc": "移除开屏广告、应用内弹窗、首页轮播图、悬浮部件和个性化推荐信息流。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/QiXinBao.png",
       "tags": [
         "去广告"
       ],
@@ -2244,6 +2340,7 @@
       "stem": "哈罗去广告",
       "name": "哈罗去广告",
       "desc": "移除开屏广告及歌单广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/EasyBike.png",
       "tags": [
         "去广告"
       ],
@@ -2269,6 +2366,7 @@
       "stem": "哔哩哔哩去广告",
       "name": "哔哩哔哩去广告",
       "desc": "过滤哔哩哔哩广告、移除青少年模式弹窗和交互式弹幕、移除无用功能和链接跟踪参数，增加空降助手以便跳过视频中插入的广告。此插件仅建议iOS 15以上设备使用，且必须启用MitM-over-HTTP/2功能。\\n\\n空降助手是第三方提供的功能，依赖于Android版空降助手的服务器数据运作，可能会存在不准确或者失效的问题，此功能与哔哩哔哩官方无关。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Bilibili.png",
       "tags": [
         "去广告"
       ],
@@ -2301,6 +2399,7 @@
       "stem": "哔哩哔哩漫画去广告",
       "name": "哔哩哔哩漫画去广告",
       "desc": "移除开屏广告、应用内悬浮窗、各类横幅广告、你可能喜欢、小说推荐、首页弹窗，精简首页标签、底栏活动按钮和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BiliComic.png",
       "tags": [
         "去广告"
       ],
@@ -2327,6 +2426,7 @@
       "stem": "喜马拉雅去广告",
       "name": "喜马拉雅去广告",
       "desc": "移除开屏广告、播放器广告、各类推荐内容，精简频道和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Himalaya.png",
       "tags": [
         "去广告"
       ],
@@ -2348,6 +2448,7 @@
       "stem": "图怪兽去广告",
       "name": "图怪兽去广告",
       "desc": "移除开屏广告、弹窗广告、各页面横幅推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TuGuaiShou.png",
       "tags": [
         "去广告"
       ],
@@ -2369,6 +2470,7 @@
       "stem": "堆糖去广告",
       "name": "堆糖去广告",
       "desc": "移除开屏广告、信息流广告、热搜排行榜广告、我的页面横幅广告，移除关注推荐，精简底部导航栏。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DuiTang.png",
       "tags": [
         "去广告"
       ],
@@ -2390,6 +2492,7 @@
       "stem": "墨迹天气去广告",
       "name": "墨迹天气去广告",
       "desc": "移除天气页面横幅、工具栏，移除时景关注页面推荐，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MojiWeather.png",
       "tags": [
         "去广告"
       ],
@@ -2411,6 +2514,7 @@
       "stem": "多屏互动去广告",
       "name": "多屏互动去广告",
       "desc": "移除开屏广告、横幅推广、搜索填充词，移除广告下发。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TCLnScreen.png",
       "tags": [
         "去广告"
       ],
@@ -2432,6 +2536,7 @@
       "stem": "大姨妈月经期助手去广告",
       "name": "大姨妈月经期助手去广告",
       "desc": "移除信息流广告，精简首页金刚位及我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Dayima.png",
       "tags": [
         "去广告"
       ],
@@ -2453,6 +2558,7 @@
       "stem": "大麦去广告",
       "name": "大麦去广告",
       "desc": "移除开屏广告、轮播图广告和弹窗广告，移除搜索填充词和专属推荐。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Damai.png",
       "tags": [
         "去广告"
       ],
@@ -2474,6 +2580,7 @@
       "stem": "天天跳绳去广告",
       "name": "天天跳绳去广告",
       "desc": "移除开屏广告、横幅广告、弹窗广告、活动推广，精简首页标签和搜索页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/CrazyRope.png",
       "tags": [
         "去广告"
       ],
@@ -2495,6 +2602,7 @@
       "stem": "天气通去广告",
       "name": "天气通去广告",
       "desc": "移除开屏广告、横幅广告、弹窗广告，精简底栏及我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TianQiTong.png",
       "tags": [
         "去广告"
       ],
@@ -2516,6 +2624,7 @@
       "stem": "天气预报去广告",
       "name": "天气预报去广告",
       "desc": "移除开屏广告、弹窗广告、横幅广告、悬浮挂件，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/iReaderCityWeather.png",
       "tags": [
         "去广告"
       ],
@@ -2541,6 +2650,7 @@
       "stem": "天猫校园去广告",
       "name": "天猫校园去广告",
       "desc": "移除广告配置、开屏广告、弹窗广告、AI助手、促销模块，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TmallCampus.png",
       "tags": [
         "去广告"
       ],
@@ -2562,6 +2672,7 @@
       "stem": "夸克去广告",
       "name": "夸克去广告",
       "desc": "移除阅读广告、各页面弹窗及横幅，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/QuarkBrowser.png",
       "tags": [
         "去广告"
       ],
@@ -2583,6 +2694,7 @@
       "stem": "夸克扫描王去广告",
       "name": "夸克扫描王去广告",
       "desc": "移除弹窗广告、横幅广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/QuarkScanking.png",
       "tags": [
         "去广告"
       ],
@@ -2604,6 +2716,7 @@
       "stem": "好轻去广告",
       "name": "好轻去广告",
       "desc": "移除开屏广告、弹窗广告、横幅推广、商品推广，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YunmaiScale.png",
       "tags": [
         "去广告"
       ],
@@ -2625,6 +2738,7 @@
       "stem": "威锋去广告",
       "name": "威锋去广告",
       "desc": "移除开屏广告、信息流广告、文末广告、首页轮播图推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WPForum.png",
       "tags": [
         "去广告"
       ],
@@ -2646,6 +2760,7 @@
       "stem": "学习通去广告",
       "name": "学习通去广告",
       "desc": "移除开屏广告、横幅推广，精简校园补给站频道。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ChaoXingStudy.png",
       "tags": [
         "去广告"
       ],
@@ -2667,6 +2782,7 @@
       "stem": "完美世界电竞去广告",
       "name": "完美世界电竞去广告",
       "desc": "移除开屏广告，精简搜索页。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/PerfectWorldEsport.png",
       "tags": [
         "去广告"
       ],
@@ -2688,6 +2804,7 @@
       "stem": "宝宝树孕育去广告",
       "name": "宝宝树孕育去广告",
       "desc": "过滤宝宝树孕育广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BabyTree.png",
       "tags": [
         "去广告"
       ],
@@ -2715,6 +2832,7 @@
       "stem": "小喵看书去广告",
       "name": "小喵看书去广告",
       "desc": "移除小喵看书章末广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MiaoRead.png",
       "tags": [
         "去广告"
       ],
@@ -2736,6 +2854,7 @@
       "stem": "小宇宙去广告",
       "name": "小宇宙去广告",
       "desc": "移除开屏广告、搜索框推荐词和AI总结。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/CosmosPodcast.png",
       "tags": [
         "去广告"
       ],
@@ -2757,6 +2876,7 @@
       "stem": "小店掌柜去广告",
       "name": "小店掌柜去广告",
       "desc": "移除开屏广告、活动推广和页面跳转。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ShopKeeperAdmin.png",
       "tags": [
         "去广告"
       ],
@@ -2778,6 +2898,7 @@
       "stem": "小桔充电去广告",
       "name": "小桔充电去广告",
       "desc": "移除横幅广告、弹窗广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/XiaojukejiCharge.png",
       "tags": [
         "去广告"
       ],
@@ -2799,6 +2920,7 @@
       "stem": "小白智慧打印去广告",
       "name": "小白智慧打印去广告",
       "desc": "移除开屏广告、首页推广金刚位、热门内容推荐、横幅广告、搜索填充词、搜索发现，精简我的页面。账户页面错误是已知问题，无需反馈。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/XiaobaiPrint.png",
       "tags": [
         "去广告"
       ],
@@ -2820,6 +2942,7 @@
       "stem": "小睡眠去广告",
       "name": "小睡眠去广告",
       "desc": "移除开屏广告、信息流广告、弹窗广告、轮播图广告、侧边栏横幅广告，精简搜索页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/HeartideBrainWave.png",
       "tags": [
         "去广告"
       ],
@@ -2841,6 +2964,7 @@
       "stem": "小米音箱去广告",
       "name": "小米音箱去广告",
       "desc": "移除开屏广告、应用内横幅广告及弹窗广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/XiaomiSpeaker.png",
       "tags": [
         "去广告"
       ],
@@ -2862,6 +2986,7 @@
       "stem": "小红书去广告",
       "name": "小红书去广告",
       "desc": "过滤信息流推广，移除图片及视频水印，如有异常，请先清除缓存再尝试。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/RedPaper.png",
       "tags": [
         "去广告"
       ],
@@ -2891,6 +3016,7 @@
       "stem": "小蚕霸王餐去广告",
       "name": "小蚕霸王餐去广告",
       "desc": "移除开屏广告、首页横幅推广、红包推广、更新弹窗。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/XiaoCan.png",
       "tags": [
         "去广告"
       ],
@@ -2913,6 +3039,7 @@
       "stem": "小象超市去广告",
       "name": "小象超市去广告",
       "desc": "移除开屏广告、应用内弹窗、猜你想买、横幅推广和悬浮窗。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/iMaiCai.png",
       "tags": [
         "去广告"
       ],
@@ -2938,6 +3065,7 @@
       "stem": "小黑盒去广告",
       "name": "小黑盒去广告",
       "desc": "移除开屏广告和热点板块信息流广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/XiaoHeiHe.png",
       "tags": [
         "去广告"
       ],
@@ -2959,6 +3087,7 @@
       "stem": "帆书去广告",
       "name": "帆书去广告",
       "desc": "移除弹窗和会员任务，精简首页、听书页面、课程菜单和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KebidaDushu.png",
       "tags": [
         "去广告"
       ],
@@ -2987,6 +3116,7 @@
       "stem": "广告平台拦截器",
       "name": "广告平台拦截器",
       "desc": "此插件是所有去广告插件的依赖，只针对广告平台处理。你依然需要安装其他去广告插件来搭配使用，并确保此插件始终排序在顶部。\\n\\n支持拦截腾讯、字节跳动、快手、百度、邑盟、倍孜、艾狄墨搏、袤博、极光、个推、友盟、阿里巴巴、阿里妈妈、阿里百川、超级汇川、优比客思、秒针、网易、美团、小米、京东、天目、讯飞、泛连、锐讯灵通、聚次方、美数、嗨量、维快网络、变现猫、章鱼、分秒、泰之菩、翼信、快易、数萤技术、方麟、益起、上量优选、新义互联、腾云天下、布里奇、塔酷、丽声、推啊、旺脉、新度博望、新多广告、快易科技、封狐信息、互裕科技、旺脉信息、佳量动力、享点科技、游昆信息、小川科技、旺脉科技、萃弈、泛为、米漫、易量跃动、秒针、贵士移动、星讯、倍业科技、创聚科技、硬核聚视、数因科技、芒拓网络、上海领页、神蓍科技、酷盈、凡提科技、亿帆、作业帮、畅行未来、华夏乐游、邑维、趣小猫、极准网络、元气智广、Google、SupersonicAds、APPSAD、Adjust、Sigmob、TradPlus、Fancy、MedPro、AppLovin、Unity3D、Tapjoy、Liftoff、Vungle、Moloco、Smadex、Tapad、Appier、InMobi、AppsFlyer、AppLovin、Moloco、RayJump、RixEngine、Amazon、Skarb、Amplitude、ToBid、UMS等广告平台的广告请求，更适合iOS平台的应用。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/Website_icon/120px/TencentAd.png",
       "tags": [
         "去广告",
         "依赖"
@@ -3012,6 +3142,7 @@
       "stem": "库街区去广告",
       "name": "库街区去广告",
       "desc": "移除开屏广告、弹窗广告、搜索页面的热搜及话题热榜。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KuroBBS.png",
       "tags": [
         "去广告"
       ],
@@ -3033,6 +3164,7 @@
       "stem": "彩云天气去广告",
       "name": "彩云天气去广告",
       "desc": "移除首页推广、弹窗、悬浮窗、底栏天气助手和工具箱入口，移除我的页面广告横幅。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ColorfulClouds.png",
       "tags": [
         "去广告"
       ],
@@ -3058,6 +3190,7 @@
       "stem": "得物去广告",
       "name": "得物去广告",
       "desc": "移除开屏广告、弹窗、搜索词填充、热搜榜、猜你想搜、推荐关注、推荐信息流，精简消息中心和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Dewu.png",
       "tags": [
         "去广告"
       ],
@@ -3079,6 +3212,7 @@
       "stem": "得间小说去广告",
       "name": "得间小说去广告",
       "desc": "移除开屏广告、章末广告，移除扉页广告提示、听书界面广告提示、搜索栏填充词。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/iReaderDejian.png",
       "tags": [
         "去广告"
       ],
@@ -3100,6 +3234,7 @@
       "stem": "微信公众号去广告",
       "name": "微信公众号去广告",
       "desc": "过滤微信公众号广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Weixin.png",
       "tags": [
         "去广告"
       ],
@@ -3121,6 +3256,7 @@
       "stem": "微信外部链接解锁",
       "name": "微信外部链接解锁",
       "desc": "解锁微信外部链接访问限制，跳过中间界面。支付宝链接、被封禁链接进行通知弹窗跳转，在微信中用快照显示被封禁的链接（可选），在微信中进行强制重定向（可选），群聊及扫码均可使用，可选项可在脚本的2~3行更改，也可在BoxJs中更改。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Weixin.png",
       "tags": [
         "功能增强"
       ],
@@ -3146,6 +3282,7 @@
       "stem": "微信小程序去广告",
       "name": "微信小程序去广告",
       "desc": "收录常用小程序的去广告，作者署名在插件内。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WeixinMiniPrograms.png",
       "tags": [
         "去广告"
       ],
@@ -3173,6 +3310,7 @@
       "stem": "微博去广告",
       "name": "微博去广告",
       "desc": "过滤微博广告及去除各部分推广模块",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Weibo.png",
       "tags": [
         "去广告"
       ],
@@ -3202,6 +3340,7 @@
       "stem": "微博轻享版去广告",
       "name": "微博轻享版去广告",
       "desc": "移除开屏广告、时间线广告及评论区广告，移除发现页面横幅推广、最常访问、主页访客及热门视频，移除搜索填充词。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Weibo_intl.png",
       "tags": [
         "去广告"
       ],
@@ -3223,6 +3362,7 @@
       "stem": "微店去广告",
       "name": "微店去广告",
       "desc": "移除开屏广告、弹窗广告、猜你喜欢、猜你想搜、关注推荐，精简搜索页和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Weidian.png",
       "tags": [
         "去广告"
       ],
@@ -3250,6 +3390,7 @@
       "stem": "微脉圈去广告",
       "name": "微脉圈去广告",
       "desc": "移除开屏广告、聊天页横幅提示及发现页面的横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Weimai.png",
       "tags": [
         "去广告"
       ],
@@ -3271,6 +3412,7 @@
       "stem": "快对去广告",
       "name": "快对去广告",
       "desc": "移除开屏广告、横幅推广，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KuaiDuiZuoYe.png",
       "tags": [
         "去广告"
       ],
@@ -3292,6 +3434,7 @@
       "stem": "快影去广告",
       "name": "快影去广告",
       "desc": "移除开屏广告、信息流推广、横幅推广，移除悬浮部件。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KwaiVideoeditor.png",
       "tags": [
         "去广告"
       ],
@@ -3313,6 +3456,7 @@
       "stem": "快手去广告",
       "name": "快手去广告",
       "desc": "移除开屏广告、视频流广告、底栏皮肤、右下角悬浮推广，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KuaiShou.png",
       "tags": [
         "去广告"
       ],
@@ -3334,6 +3478,7 @@
       "stem": "快捷搜索",
       "name": "快捷搜索",
       "desc": "为Safari提供快速切换搜索引擎的能力，在插件列表中点击此插件上的链接查看使用方法。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Safari.png",
       "tags": [
         "去广告"
       ],
@@ -3355,6 +3500,7 @@
       "stem": "快看漫画去广告",
       "name": "快看漫画去广告",
       "desc": "移除开屏广告、悬浮窗、漫画广告、社区广告、各类弹窗，精简顶部标签、我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KuaiKanComic.png",
       "tags": [
         "去广告"
       ],
@@ -3382,6 +3528,7 @@
       "stem": "快递100去广告",
       "name": "快递100去广告",
       "desc": "移除横幅广告、弹窗广告，精简首页。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KuaiDi100.png",
       "tags": [
         "去广告"
       ],
@@ -3403,6 +3550,7 @@
       "stem": "慧生活798去广告",
       "name": "慧生活798去广告",
       "desc": "移除开屏广告、横幅广告，精简底栏。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SmartLife.png",
       "tags": [
         "去广告"
       ],
@@ -3424,6 +3572,7 @@
       "stem": "成分喵去广告",
       "name": "成分喵去广告",
       "desc": "移除首页推广活动、广告组件请求、移除被查商品购买链接、搜索发现。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ChengFenMiao.png",
       "tags": [
         "去广告"
       ],
@@ -3445,6 +3594,7 @@
       "stem": "拼多多去广告",
       "name": "拼多多去广告",
       "desc": "移除开屏广告、底栏多多视频、会场入口、聊天页面精选推荐及推广，精简首页和个人中心。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/PinDuoDuo.png",
       "tags": [
         "去广告"
       ],
@@ -3472,6 +3622,7 @@
       "stem": "挖财记账去广告",
       "name": "挖财记账去广告",
       "desc": "移除弹窗广告、推广语横幅和右下角悬浮广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WaCaiJiZhang.png",
       "tags": [
         "去广告"
       ],
@@ -3493,6 +3644,7 @@
       "stem": "挖财记账去广告-2",
       "name": "挖财记账去广告",
       "desc": "移除开屏广告、横幅广告，顶部推广、活动配置。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Wacai.png",
       "tags": [
         "去广告"
       ],
@@ -3514,6 +3666,7 @@
       "stem": "掌上无畏契约去广告",
       "name": "掌上无畏契约去广告",
       "desc": "移除开屏广告、弹窗推广、搜索热搜、搜索热榜。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ValorantBible.png",
       "tags": [
         "去广告"
       ],
@@ -3535,6 +3688,7 @@
       "stem": "掌上英雄联盟去广告",
       "name": "掌上英雄联盟去广告",
       "desc": "移除开屏广告、弹窗推广、搜索热搜、搜索热榜、底栏推广图标。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/LOL_Bible.png",
       "tags": [
         "去广告"
       ],
@@ -3556,6 +3710,7 @@
       "stem": "掌阅去广告",
       "name": "掌阅去广告",
       "desc": "移除开屏广告、悬浮广告、弹窗广告、朗读音色广告及我的页面广告，移除各页面的横幅轮播图。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/iReader.png",
       "tags": [
         "去广告"
       ],
@@ -3577,6 +3732,7 @@
       "stem": "排班日历去广告",
       "name": "排班日历去广告",
       "desc": "移除开屏广告、横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/AxWorkSchedule.png",
       "tags": [
         "去广告"
       ],
@@ -3598,6 +3754,7 @@
       "stem": "推栏去广告",
       "name": "推栏去广告",
       "desc": "过滤推栏广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Daily.png",
       "tags": [
         "去广告"
       ],
@@ -3619,6 +3776,7 @@
       "stem": "摩天轮去广告",
       "name": "摩天轮去广告",
       "desc": "移除开屏广告、弹窗，精简底栏。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/FerrisWheel.png",
       "tags": [
         "去广告"
       ],
@@ -3640,6 +3798,7 @@
       "stem": "摩托范去广告",
       "name": "摩托范去广告",
       "desc": "移除开屏广告、弹窗广告、横幅广告、文末广告及相关文章推荐、广告下发，移除我的页面商品推荐，精简搜索页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MotorFans.png",
       "tags": [
         "去广告"
       ],
@@ -3665,6 +3824,7 @@
       "stem": "收银通商户端去广告",
       "name": "收银通商户端去广告",
       "desc": "移除开屏广告和首页推广",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ShouYinTongMerchant.png",
       "tags": [
         "去广告"
       ],
@@ -3686,6 +3846,7 @@
       "stem": "数字心动去广告",
       "name": "数字心动去广告",
       "desc": "移除开屏广告、首页顶部标签、轮播图、悬浮挂件、热门搜索、信息流广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DigitalHeartbeat.png",
       "tags": [
         "去广告"
       ],
@@ -3707,6 +3868,7 @@
       "stem": "斗鱼去广告",
       "name": "斗鱼去广告",
       "desc": "移除开屏、首页视频流、首页轮播图广告，移除直播间悬浮窗。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Douyu.png",
       "tags": [
         "去广告"
       ],
@@ -3732,6 +3894,7 @@
       "stem": "新浪财经去广告",
       "name": "新浪财经去广告",
       "desc": "移除开屏广告、弹窗广告、横幅广告、信息流广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SinaStock.png",
       "tags": [
         "去广告"
       ],
@@ -3753,6 +3916,7 @@
       "stem": "无他相机去广告",
       "name": "无他相机去广告",
       "desc": "移除开屏广告、拍摄页面广告、右小角广告，精简底栏。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WutaCamera.png",
       "tags": [
         "去广告"
       ],
@@ -3774,6 +3938,7 @@
       "stem": "易校园去广告",
       "name": "易校园去广告",
       "desc": "移除开屏广告、横幅广告、弹窗广告、悬浮广告、文末广告、消息广告、校园头条，精简首页金刚位和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YiSchool.png",
       "tags": [
         "去广告"
       ],
@@ -3795,6 +3960,7 @@
       "stem": "智慧苏州去广告",
       "name": "智慧苏州去广告",
       "desc": "移除开屏广告、横幅，移除信息流推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SuZhouCitizenCard.png",
       "tags": [
         "去广告"
       ],
@@ -3816,6 +3982,7 @@
       "stem": "智联招聘去广告",
       "name": "智联招聘去广告",
       "desc": "移除开屏广告、弹窗、职位页面推广和各类横幅推广。此插件需要IPA签名方可使用，App Store用户请勿使用此插件，务必点击下方主页链接查看详细教程。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ZhiLianZhaoPin.png",
       "tags": [
         "去广告"
       ],
@@ -3837,6 +4004,7 @@
       "stem": "最右去广告",
       "name": "最右去广告",
       "desc": "移除开屏广告、信息流广告和广告轮播图。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ZuiYou.png",
       "tags": [
         "去广告"
       ],
@@ -3858,6 +4026,7 @@
       "stem": "最美壁纸去广告",
       "name": "最美壁纸去广告",
       "desc": "移除悬浮广告、横幅广告、轮播图广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/iWallBiZhi.png",
       "tags": [
         "去广告"
       ],
@@ -3885,6 +4054,7 @@
       "stem": "有道云笔记去广告",
       "name": "有道云笔记去广告",
       "desc": "移除开屏广告、弹窗广告及横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YoudaoNote.png",
       "tags": [
         "去广告"
       ],
@@ -3906,6 +4076,7 @@
       "stem": "有道翻译官去广告",
       "name": "有道翻译官去广告",
       "desc": "移除开屏广告、横幅推广，精简首页。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YoudaoTrans.png",
       "tags": [
         "去广告"
       ],
@@ -3927,6 +4098,7 @@
       "stem": "朴朴超市去广告",
       "name": "朴朴超市去广告",
       "desc": "移除超市去开屏广告，移除首页顶部轮播图和图标广告、启动小弹图广告、首页右下角悬浮动画、搜索热搜榜、搜索建议词、搜索发现热词、订单页面商，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/PuPuMall.png",
       "tags": [
         "去广告"
       ],
@@ -3956,6 +4128,7 @@
       "stem": "每日赛车去广告",
       "name": "每日赛车去广告",
       "desc": "移除开屏广告、信息流广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MeiRiSaiChe.png",
       "tags": [
         "去广告"
       ],
@@ -3977,6 +4150,7 @@
       "stem": "比心去广告",
       "name": "比心去广告",
       "desc": "移除弹窗广告、悬浮广告、横幅广告、轮播图广告，精简搜索页及我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Bixin.png",
       "tags": [
         "去广告"
       ],
@@ -4003,6 +4177,7 @@
       "stem": "比特球云盘去广告",
       "name": "比特球云盘去广告",
       "desc": "移除开屏广告和各类横幅推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BitqiuPan.png",
       "tags": [
         "去广告"
       ],
@@ -4024,6 +4199,7 @@
       "stem": "汽水音乐去广告",
       "name": "汽水音乐去广告",
       "desc": "移除开屏广告、弹窗广告、播放器推广、歌曲详情界面视频推广、播放页面的歌曲视频，精简首页和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SodaMusic.png",
       "tags": [
         "去广告"
       ],
@@ -4049,6 +4225,7 @@
       "stem": "汽车之家去广告",
       "name": "汽车之家去广告",
       "desc": "移除开屏广告、各类广告横幅、各类信息流广告、各类弹窗推广、各类浮窗、我的页面广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/AutoHome.png",
       "tags": [
         "去广告"
       ],
@@ -4077,6 +4254,7 @@
       "stem": "沃尔玛去广告",
       "name": "沃尔玛去广告",
       "desc": "移除操作引导、商品详情页用户调研、搜索填充词和搜索发现，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Walmart.png",
       "tags": [
         "去广告"
       ],
@@ -4098,6 +4276,7 @@
       "stem": "波点音乐去广告",
       "name": "波点音乐去广告",
       "desc": "精简应用配置，禁用P2P传输。移除开屏广告、横幅推广、悬浮广告、歌曲广告、商城入口、搜索推广、评论区推广、试听语音提醒。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BodianMusic.png",
       "tags": [
         "去广告"
       ],
@@ -4119,6 +4298,7 @@
       "stem": "测测去广告",
       "name": "测测去广告",
       "desc": "移除开屏广告、活动皮肤、各类弹窗及横幅、金刚位红点文字，精简首页标签及搜索页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Cece.png",
       "tags": [
         "去广告"
       ],
@@ -4140,6 +4320,7 @@
       "stem": "海雀去广告",
       "name": "海雀去广告",
       "desc": "移除开屏广告、横幅广告、弹窗广告，拦截商城和资讯页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/AlcidaeVideo.png",
       "tags": [
         "去广告"
       ],
@@ -4161,6 +4342,7 @@
       "stem": "淘宝去广告",
       "name": "淘宝去广告",
       "desc": "过滤淘宝开屏广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Taobao.png",
       "tags": [
         "去广告"
       ],
@@ -4189,6 +4371,7 @@
       "stem": "淘票票去广告",
       "name": "淘票票去广告",
       "desc": "移除开屏广告、悬浮广告、轮播图广告和弹窗广告，移除搜索填充词和为你推荐。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Taopiaopiao.png",
       "tags": [
         "去广告"
       ],
@@ -4210,6 +4393,7 @@
       "stem": "滴滴去广告",
       "name": "滴滴去广告",
       "desc": "移除开屏广告、弹窗广告、横幅推广，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DiDi.png",
       "tags": [
         "去广告"
       ],
@@ -4231,6 +4415,7 @@
       "stem": "滴答出行去广告",
       "name": "滴答出行去广告",
       "desc": "移除开屏广告、弹窗广告、横幅广告，精简底栏和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DidaPincheTaxi.png",
       "tags": [
         "去广告"
       ],
@@ -4252,6 +4437,7 @@
       "stem": "漫客栈去广告",
       "name": "漫客栈去广告",
       "desc": "移除开屏广告、漫画广告、小说章末广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MKZ.png",
       "tags": [
         "去广告"
       ],
@@ -4277,6 +4463,7 @@
       "stem": "爱企查去广告",
       "name": "爱企查去广告",
       "desc": "移除开屏广告、应用内弹窗、首页轮播图、悬浮部件、信息流和搜索填充词。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Aiinquiry.png",
       "tags": [
         "去广告"
       ],
@@ -4298,6 +4485,7 @@
       "stem": "爱奇艺去广告",
       "name": "爱奇艺去广告",
       "desc": "移除开屏广告、焦点图广告、瀑布流广告、搜索页面广告、移除青少年弹窗，精简底栏和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/iQiYi_Video.png",
       "tags": [
         "去广告"
       ],
@@ -4319,6 +4507,7 @@
       "stem": "猫耳FM去广告",
       "name": "猫耳FM去广告",
       "desc": "移除开屏广告、青少年模式弹窗、首页顶部入口，替换底栏的直播入口为发现入口。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/CatEarFM.png",
       "tags": [
         "去广告"
       ],
@@ -4340,6 +4529,7 @@
       "stem": "瑞幸咖啡去广告",
       "name": "瑞幸咖啡去广告",
       "desc": "移除开屏广告、弹窗和各类横幅推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/LuckinCoffee.png",
       "tags": [
         "去广告"
       ],
@@ -4361,6 +4551,7 @@
       "stem": "番茄小说去广告",
       "name": "番茄小说去广告",
       "desc": "移除番茄小说开屏广告、移除文章底部和章末广告、移除听书页面广告、移除悬浮部件和底栏多余的福利标签。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DragonRead.png",
       "tags": [
         "去广告"
       ],
@@ -4382,6 +4573,7 @@
       "stem": "百度地图去广告",
       "name": "百度地图去广告",
       "desc": "移除开屏广告、出行页面推广、周边页面推广、打车页面推广，精简我的页面。此插件需要IPA签名方可使用，App Store用户请勿使用此插件，务必点击下方主页链接查看详细教程。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BaiduMap.png",
       "tags": [
         "去广告"
       ],
@@ -4403,6 +4595,7 @@
       "stem": "百度文库去广告",
       "name": "百度文库去广告",
       "desc": "移除开屏广告、横幅广告、弹窗广告、信息流推广、搜索发现、热门搜索、资料库搜索推荐，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BaiduWenku.png",
       "tags": [
         "去广告"
       ],
@@ -4424,6 +4617,7 @@
       "stem": "百度网盘去广告",
       "name": "百度网盘去广告",
       "desc": "移除开屏广告、首页卡片广告、传输页面广告、各类弹窗，精简侧拉抽屉和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BaiduNetDisk.png",
       "tags": [
         "去广告"
       ],
@@ -4445,6 +4639,7 @@
       "stem": "百度网页去广告",
       "name": "百度网页去广告",
       "desc": "移除百度搜索移动端网页的首页广告信息流",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Baidu.png",
       "tags": [
         "去广告"
       ],
@@ -4470,6 +4665,7 @@
       "stem": "百度翻译去广告",
       "name": "百度翻译去广告",
       "desc": "移除开屏广告、横幅广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BaiduTranslate.png",
       "tags": [
         "去广告"
       ],
@@ -4491,6 +4687,7 @@
       "stem": "百度贴吧去广告",
       "name": "百度贴吧去广告",
       "desc": "移除开屏广告、信息流广告和帖内广告，精简侧拉抽屉及我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Tieba.png",
       "tags": [
         "去广告"
       ],
@@ -4520,6 +4717,7 @@
       "stem": "百度输入法去广告",
       "name": "百度输入法去广告",
       "desc": "过滤百度输入法广告，替换个人主页随机图。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Baidu_input_method.png",
       "tags": [
         "去广告"
       ],
@@ -4545,6 +4743,7 @@
       "stem": "皮皮虾去广告",
       "name": "皮皮虾去广告",
       "desc": "移除开屏广告、评论区广告、视频流广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/PiPiXia.png",
       "tags": [
         "去广告"
       ],
@@ -4566,6 +4765,7 @@
       "stem": "盒马去广告",
       "name": "盒马去广告",
       "desc": "移除开屏广告、首页信息流广告及推广、弹窗广告、悬浮挂件、商品及购物车推荐，精简底栏及我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MrHema.png",
       "tags": [
         "去广告"
       ],
@@ -4587,6 +4787,7 @@
       "stem": "盖得排行去广告",
       "name": "盖得排行去广告",
       "desc": "精简首页、移除分类横幅推广、单单返猜你喜欢和编辑精选，移除我的页面推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/GuideRank.png",
       "tags": [
         "去广告"
       ],
@@ -4608,6 +4809,7 @@
       "stem": "直播吧去广告",
       "name": "直播吧去广告",
       "desc": "移除信息流广告、横幅广告、弹窗广告、皮肤配置、悬浮挂件、热门搜索，移除青少年模式，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Zhibo8.png",
       "tags": [
         "去广告"
       ],
@@ -4629,6 +4831,7 @@
       "stem": "省钱快报去广告",
       "name": "省钱快报去广告",
       "desc": "移除开屏广告、横幅广告、商品推荐，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YueDanBa.png",
       "tags": [
         "去广告"
       ],
@@ -4650,6 +4853,7 @@
       "stem": "看家王去广告",
       "name": "看家王去广告",
       "desc": "移除开屏广告、横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ChatCam.png",
       "tags": [
         "去广告"
       ],
@@ -4671,6 +4875,7 @@
       "stem": "知乎去广告",
       "name": "知乎去广告",
       "desc": "移除HTTPDNS和QUIC传输配置，移除开屏广告、信息流广告、回答页广告，移除回答页下的相关回答、专栏卡片及圈子卡片，移除直答页面推荐知识库和提问推荐，移除评论区评论氛围满意度调查，精简首页顶部标签及我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Zhihu.png",
       "tags": [
         "去广告"
       ],
@@ -4692,6 +4897,7 @@
       "stem": "知识星球去水印",
       "name": "知识星球去水印",
       "desc": "移除内容的水印编号",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/UnnooQuan.png",
       "tags": [],
       "authors": [
         "可莉🅥"
@@ -4711,6 +4917,7 @@
       "stem": "磁力宅播放器去广告",
       "name": "磁力宅播放器去广告",
       "desc": "移除开屏广告、弹窗和文件列表广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/XFuse.png",
       "tags": [
         "去广告"
       ],
@@ -4732,6 +4939,7 @@
       "stem": "稿定设计去广告",
       "name": "稿定设计去广告",
       "desc": "移除稿定设计开屏广告、首页轮播图和弹窗，移除功能入口角标。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/GaoDing.png",
       "tags": [
         "去广告"
       ],
@@ -4753,6 +4961,7 @@
       "stem": "米游社去广告",
       "name": "米游社去广告",
       "desc": "移除开屏广告、搜索栏热搜及资讯、青少年模式弹窗。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/miHoYoBBS.png",
       "tags": [
         "去广告"
       ],
@@ -4774,6 +4983,7 @@
       "stem": "粉笔去广告",
       "name": "粉笔去广告",
       "desc": "移除开屏广告、弹窗广告、悬浮广告、热门搜索，移除底栏皮肤，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/FenBi.png",
       "tags": [
         "去广告"
       ],
@@ -4795,6 +5005,7 @@
       "stem": "纵横小说去广告",
       "name": "纵横小说去广告",
       "desc": "移除纵横小说开屏广告和弹窗",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ZongHeng.png",
       "tags": [
         "去广告"
       ],
@@ -4816,6 +5027,7 @@
       "stem": "纷玩岛去广告",
       "name": "纷玩岛去广告",
       "desc": "移除开屏广告、弹窗广告、信息横幅推广、票夹页面横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/LiveLab.png",
       "tags": [
         "去广告"
       ],
@@ -4837,6 +5049,7 @@
       "stem": "网易云音乐去广告",
       "name": "网易云音乐去广告",
       "desc": "过滤网易云音乐广告，并允许自定义界面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/NeteaseCloudMusic.png",
       "tags": [
         "去广告"
       ],
@@ -4866,6 +5079,7 @@
       "stem": "网易大神去广告",
       "name": "网易大神去广告",
       "desc": "移除开屏广告，精简大量冗余的配置文件，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/NetEaseGodlike.png",
       "tags": [
         "去广告"
       ],
@@ -4891,6 +5105,7 @@
       "stem": "网易新闻去广告",
       "name": "网易新闻去广告",
       "desc": "移除开屏广告、置顶新闻、热搜列表和搜索栏填充词。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/NeteaseNews.png",
       "tags": [
         "去广告"
       ],
@@ -4919,6 +5134,7 @@
       "stem": "网易有道词典去广告",
       "name": "网易有道词典去广告",
       "desc": "移除开屏广告、弹窗广告、右上角推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/YoudaoDict.png",
       "tags": [
         "去广告"
       ],
@@ -4940,6 +5156,7 @@
       "stem": "网易邮箱大师去广告",
       "name": "网易邮箱大师去广告",
       "desc": "移除网易邮箱大师开屏广告、签到任务提醒，精简侧拉抽屉和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MailMaster.png",
       "tags": [
         "去广告"
       ],
@@ -4961,6 +5178,7 @@
       "stem": "美丽修行去广告",
       "name": "美丽修行去广告",
       "desc": "移除开屏广告、首页广告、发现页广告、美修盒页面广告、下拉广告、弹窗广告、搜索推广、版本更新弹窗及我的页面广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Meizhixiuxing.png",
       "tags": [
         "去广告"
       ],
@@ -4982,6 +5200,7 @@
       "stem": "美图秀秀去广告",
       "name": "美图秀秀去广告",
       "desc": "移除开屏广告、横幅推广，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MeiTu.png",
       "tags": [
         "去广告"
       ],
@@ -5003,6 +5222,7 @@
       "stem": "美柚去广告",
       "name": "美柚去广告",
       "desc": "移除开屏广告、弹窗推广和信息流推广，移除青少年模式弹窗和我的页面推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MeetYou.png",
       "tags": [
         "去广告"
       ],
@@ -5024,6 +5244,7 @@
       "stem": "美颜相机去广告",
       "name": "美颜相机去广告",
       "desc": "移除开屏广告、应用内弹窗，精简首页和我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MeituMYXJ.png",
       "tags": [
         "去广告"
       ],
@@ -5049,6 +5270,7 @@
       "stem": "美食杰去广告",
       "name": "美食杰去广告",
       "desc": "移除开屏广告和信息流广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MeiShiJie.png",
       "tags": [
         "去广告"
       ],
@@ -5070,6 +5292,7 @@
       "stem": "联掌门户去广告",
       "name": "联掌门户去广告",
       "desc": "移除开屏广告、弹窗，移除首页、服务和发现页面无用内容。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/LZMH.png",
       "tags": [
         "去广告"
       ],
@@ -5091,6 +5314,7 @@
       "stem": "胖乖生活去广告",
       "name": "胖乖生活去广告",
       "desc": "移除开屏广告、横幅轮播图、网格广告、信息流广告、浮窗广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/PangguaiLife.png",
       "tags": [
         "去广告"
       ],
@@ -5112,6 +5336,7 @@
       "stem": "脉脉去广告",
       "name": "脉脉去广告",
       "desc": "移除开屏广告、信息流广告、横幅推广、相关帖子推荐。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MaiMai.png",
       "tags": [
         "去广告"
       ],
@@ -5137,6 +5362,7 @@
       "stem": "腾讯文档去广告",
       "name": "腾讯文档去广告",
       "desc": "移除开屏广告、首页横幅推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TXDocs.png",
       "tags": [
         "去广告"
       ],
@@ -5158,6 +5384,7 @@
       "stem": "腾讯视频去广告",
       "name": "腾讯视频去广告",
       "desc": "过滤腾讯视频客户端广告，如遇失效，则需要重新安装腾讯视频客户端。由于此插件不再维护，客户端版本高于8.9.40可能会导致此插件失效，请勿升级客户端。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Tencent_Video.png",
       "tags": [
         "去广告"
       ],
@@ -5183,6 +5410,7 @@
       "stem": "自动加入TestFlight",
       "name": "自动加入TestFlight",
       "desc": "自动监控TestFlight名额，一旦有新的名额即刻加入。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TestFlight.png",
       "tags": [
         "定时任务"
       ],
@@ -5215,6 +5443,7 @@
       "stem": "航旅纵横去广告",
       "name": "航旅纵横去广告",
       "desc": "过滤航旅纵横广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Umetrip.png",
       "tags": [
         "去广告"
       ],
@@ -5236,6 +5465,7 @@
       "stem": "节点检测工具",
       "name": "节点检测工具",
       "desc": "适用于Loon的节点检测工具，可进行地理位置、节点解锁、入口落地等查询。请在所有节点页面选择一个节点长按，出现菜单后进行测试。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/Other_icon/120px/Node_detection_tool.png",
       "tags": [
         "节点检测"
       ],
@@ -5269,6 +5499,7 @@
       "stem": "芒果TV去广告",
       "name": "芒果TV去广告",
       "desc": "移除开屏广告、信息流广告、播放页广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Mango_TV.png",
       "tags": [
         "去广告"
       ],
@@ -5291,6 +5522,7 @@
       "stem": "菜鸟去广告",
       "name": "菜鸟去广告",
       "desc": "过滤菜鸟广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Cainiao.png",
       "tags": [
         "去广告"
       ],
@@ -5312,6 +5544,7 @@
       "stem": "萌娘百科去广告",
       "name": "萌娘百科去广告",
       "desc": "移除开屏广告、弹窗、首页横幅。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MoeGirlWiki.png",
       "tags": [
         "去广告"
       ],
@@ -5333,6 +5566,7 @@
       "stem": "萝卜快跑去广告",
       "name": "萝卜快跑去广告",
       "desc": "移除开屏广告、弹窗广告、横幅广告、新用户活动皮肤，保留优惠活动。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/RoboTaxi.png",
       "tags": [
         "去广告"
       ],
@@ -5354,6 +5588,7 @@
       "stem": "萤石云视频去广告",
       "name": "萤石云视频去广告",
       "desc": "移除开屏广告、首页推广、我的页面推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/VideoGo.png",
       "tags": [
         "去广告"
       ],
@@ -5375,6 +5610,7 @@
       "stem": "薄荷健康去广告",
       "name": "薄荷健康去广告",
       "desc": "移除记录页大家都在看、移除各类弹窗，移除广场横幅推广，精简代谢中心页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/BooHee.png",
       "tags": [
         "去广告"
       ],
@@ -5400,6 +5636,7 @@
       "stem": "虎嗅去广告",
       "name": "虎嗅去广告",
       "desc": "移除广告配置、信息流直播预约横幅、相关文章推荐、48小时热文推荐，精简搜索页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Huxiu.png",
       "tags": [
         "去广告"
       ],
@@ -5421,6 +5658,7 @@
       "stem": "虎扑去广告",
       "name": "虎扑去广告",
       "desc": "移除虎扑开屏广告、首页顶部推广、我的页面多余模块及各类横幅推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/HUPU.png",
       "tags": [
         "去广告"
       ],
@@ -5449,6 +5687,7 @@
       "stem": "蜗牛睡眠去广告",
       "name": "蜗牛睡眠去广告",
       "desc": "移除音乐页面横幅、日报告解决方案商品推广，移除我的页面服务推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SnailSleep.png",
       "tags": [
         "去广告"
       ],
@@ -5470,6 +5709,7 @@
       "stem": "蜻蜓FM去广告",
       "name": "蜻蜓FM去广告",
       "desc": "移除开屏广告、信息流广告、各类相关内容推荐，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/QtingFM.png",
       "tags": [
         "去广告"
       ],
@@ -5491,6 +5731,7 @@
       "stem": "行者户外去广告",
       "name": "行者户外去广告",
       "desc": "移除弹窗广告、发现页面横幅推广的推广金刚位，移除我的页面横幅推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/OnTheWay.png",
       "tags": [
         "去广告"
       ],
@@ -5512,6 +5753,7 @@
       "stem": "触站去广告",
       "name": "触站去广告",
       "desc": "移除开屏广告、弹窗广告、各页面横幅推广，移除首页悬浮挂件。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Chuzhan.png",
       "tags": [
         "去广告"
       ],
@@ -5533,6 +5775,7 @@
       "stem": "豆瓣去广告",
       "name": "豆瓣去广告",
       "desc": "移除开屏广告、各页面信息流广告、首页横幅、搜索填充词。此插件需要IPA签名方可使用，App Store用户请勿使用此插件，务必点击下方主页链接查看详细教程。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DouBan.png",
       "tags": [
         "去广告"
       ],
@@ -5554,6 +5797,7 @@
       "stem": "豆瓣阅读去广告",
       "name": "豆瓣阅读去广告",
       "desc": "移除开屏广告、弹窗广告、热门搜索、热搜榜。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DoubanRead.png",
       "tags": [
         "去广告"
       ],
@@ -5575,6 +5819,7 @@
       "stem": "贝壳找房去广告",
       "name": "贝壳找房去广告",
       "desc": "移除开屏广告、弹窗广告、悬浮广告、信息流推广、我家页面的装修推荐。移除我的页面的专属推荐、游戏入口、钱包入口。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Beike.png",
       "tags": [
         "去广告"
       ],
@@ -5596,6 +5841,7 @@
       "stem": "财新去广告",
       "name": "财新去广告",
       "desc": "过滤财新广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/CaixinMedia.png",
       "tags": [
         "去广告"
       ],
@@ -5624,6 +5870,7 @@
       "stem": "起点读书去广告",
       "name": "起点读书去广告",
       "desc": "移除起点读书开屏广告、每日导读、各类弹窗、文末广告、搜索填充词，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/QiDian.png",
       "tags": [
         "去广告"
       ],
@@ -5645,6 +5892,7 @@
       "stem": "超级课程表去广告",
       "name": "超级课程表去广告",
       "desc": "移除开屏广告、首页头图、悬浮挂件。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MyFriday.png",
       "tags": [
         "去广告"
       ],
@@ -5666,6 +5914,7 @@
       "stem": "车来了去广告",
       "name": "车来了去广告",
       "desc": "清洗配置，移除开屏广告、首页金刚位、文章推荐，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Chelaile.png",
       "tags": [
         "去广告"
       ],
@@ -5691,6 +5940,7 @@
       "stem": "转转去广告",
       "name": "转转去广告",
       "desc": "移除开屏广告、应用内悬浮窗、信息流推广、商品推荐、首页弹窗，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ZhuanZhuan.png",
       "tags": [
         "去广告"
       ],
@@ -5712,6 +5962,7 @@
       "stem": "迅雷去广告",
       "name": "迅雷去广告",
       "desc": "移除开屏广告、首页横幅广告、左上角广告入口，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/XunLei.png",
       "tags": [
         "去广告"
       ],
@@ -5733,6 +5984,7 @@
       "stem": "配音秀去广告",
       "name": "配音秀去广告",
       "desc": "移除开屏广告、弹窗、横幅、各类关注推荐。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DubbingShow.png",
       "tags": [
         "去广告"
       ],
@@ -5758,6 +6010,7 @@
       "stem": "酷安去广告",
       "name": "酷安去广告",
       "desc": "过滤酷安广告",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/CoolApk.png",
       "tags": [
         "去广告"
       ],
@@ -5780,6 +6033,7 @@
       "stem": "酷我音乐去广告",
       "name": "酷我音乐去广告",
       "desc": "移除开屏广告、各类弹窗、悬浮窗、各类横幅广告、信息流广告、歌词评论区广告和播放器界面广告，精简侧边栏。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Kuwo.png",
       "tags": [
         "去广告"
       ],
@@ -5801,6 +6055,7 @@
       "stem": "酷狗概念版去广告",
       "name": "酷狗概念版去广告",
       "desc": "移除广告服务模块、播放器广告，精简乐库及搜索页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KuGouYouth.png",
       "tags": [
         "去广告"
       ],
@@ -5822,6 +6077,7 @@
       "stem": "酷狗铃声去广告",
       "name": "酷狗铃声去广告",
       "desc": "移除开屏广告，移除歌曲列表、播放器、搜索界面广告，移除悬浮广告和弹窗广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KGRing.png",
       "tags": [
         "去广告"
       ],
@@ -5843,6 +6099,7 @@
       "stem": "酷狗音乐去广告",
       "name": "酷狗音乐去广告",
       "desc": "移除开屏广告、应用各类弹窗、各类横幅广告、评论区广告和播放器界面广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KuGou.png",
       "tags": [
         "去广告"
       ],
@@ -5864,6 +6121,7 @@
       "stem": "金十数据去广告",
       "name": "金十数据去广告",
       "desc": "移除开屏广告、侧滑页面广告、消息广告、浮窗广告、横幅广告、信息流广告、弹窗广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Jin10Data.png",
       "tags": [
         "去广告"
       ],
@@ -5885,6 +6143,7 @@
       "stem": "金山文档去广告",
       "name": "金山文档去广告",
       "desc": "移除首页横幅推广、表单收集页面推广和我的页面推广。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/WPS_Documents.png",
       "tags": [
         "去广告"
       ],
@@ -5906,6 +6165,7 @@
       "stem": "闪动校园去广告",
       "name": "闪动校园去广告",
       "desc": "精简首页和底部导航",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/ShandongSchool.png",
       "tags": [
         "去广告"
       ],
@@ -5927,6 +6187,7 @@
       "stem": "闲鱼去广告",
       "name": "闲鱼去广告",
       "desc": "移除开屏广告、商品信息流广告、关注推荐、搜索栏填充词、首页签到入口及悬浮广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/FleaMarket.png",
       "tags": [
         "去广告"
       ],
@@ -5948,6 +6209,7 @@
       "stem": "阅友去广告",
       "name": "阅友去广告",
       "desc": "移除开屏广告、弹窗广告和阅读页面广告，移除底栏福利按钮。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Yueyou.png",
       "tags": [
         "去广告"
       ],
@@ -5969,6 +6231,7 @@
       "stem": "阿里云盘去广告",
       "name": "阿里云盘去广告",
       "desc": "移除首页广告横幅、弹窗和顶部奖励。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/AliYunDrive.png",
       "tags": [
         "去广告"
       ],
@@ -5997,6 +6260,7 @@
       "stem": "随手记去广告",
       "name": "随手记去广告",
       "desc": "移除开屏广告、神象云账本内部广告、我的页面广告，移除社区入口。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/KingdeeMyMoney.png",
       "tags": [
         "去广告"
       ],
@@ -6018,6 +6282,7 @@
       "stem": "雪球去广告",
       "name": "雪球去广告",
       "desc": "移除开屏广告、各类横幅广告、信息流广告、帖内广告、新用户定向广告、各类弹窗、股票精选推荐、基金精选推荐、聪明的投资者推荐、私募推荐、直播推荐。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Snowball.png",
       "tags": [
         "去广告"
       ],
@@ -6039,6 +6304,7 @@
       "stem": "顺丰速运去广告",
       "name": "顺丰速运去广告",
       "desc": "移除开屏广告、首页下拉抽屉、首页推广、应用内悬浮窗、横幅广告，移除主题，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/SF-Express.png",
       "tags": [
         "去广告"
       ],
@@ -6060,6 +6326,7 @@
       "stem": "风鸟去广告",
       "name": "风鸟去广告",
       "desc": "移除首页信息流和轮播图",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/RiskBird.png",
       "tags": [
         "去广告"
       ],
@@ -6085,6 +6352,7 @@
       "stem": "飞客去广告",
       "name": "飞客去广告",
       "desc": "移除开屏广告、首页广告、板块广告、帖内广告和我的页面广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/FlyerTea.png",
       "tags": [
         "去广告"
       ],
@@ -6111,6 +6379,7 @@
       "stem": "飞猪旅行去广告",
       "name": "飞猪旅行去广告",
       "desc": "移除开屏广告、精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TaobaoTravel.png",
       "tags": [
         "去广告"
       ],
@@ -6132,6 +6401,7 @@
       "stem": "香港抖音去广告",
       "name": "香港抖音去广告",
       "desc": "精简左右侧边栏、移除底栏切换，其余内容后续再完善。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/TikTok.png",
       "tags": [
         "去广告"
       ],
@@ -6157,6 +6427,7 @@
       "stem": "马克水印相机去广告",
       "name": "马克水印相机去广告",
       "desc": "移除开屏广告，拍摄首页悬浮挂件，侧边栏横幅广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/marki.png",
       "tags": [
         "去广告"
       ],
@@ -6178,6 +6449,7 @@
       "stem": "马蜂窝去广告",
       "name": "马蜂窝去广告",
       "desc": "移除首页信息流广告、商城横幅推广、我的页面弹窗。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MaFengWo.png",
       "tags": [
         "去广告"
       ],
@@ -6199,6 +6471,7 @@
       "stem": "驾校一点通去广告",
       "name": "驾校一点通去广告",
       "desc": "移除开屏广告、各页面广告横幅、弹窗广告，移除社区广告。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/JiaXiaoDrive.png",
       "tags": [
         "去广告"
       ],
@@ -6220,6 +6493,7 @@
       "stem": "驾考宝典去广告",
       "name": "驾考宝典去广告",
       "desc": "移除开屏广告、横幅广告、悬浮窗广告、社区帖子广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/JiaKaoBaoDian.png",
       "tags": [
         "去广告"
       ],
@@ -6241,6 +6515,7 @@
       "stem": "高德地图去广告",
       "name": "高德地图去广告",
       "desc": "移除开屏广告、首页推荐、搜索推荐、打车广告、地点推荐及广告，精简我的页面。",
+      "icon": "https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Amap.png",
       "tags": [
         "去广告"
       ],
