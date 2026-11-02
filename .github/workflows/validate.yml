@@ -1,12 +1,13 @@
 name: ✅ 代码与产物校验
 
-# 每次 PR 和推送到 main 都跑：单元测试、格式、以及"仓库里躺着的模块是不是还合规"。
+# 每次 PR 和推送到 main / beta 都跑：单元测试、格式、以及"仓库里躺着的模块是不是还合规"。
 # 这里不联网、不抓上游，只验证已经提交的东西——抓取那件事归每日同步。
+# beta 是开发分支，日常改动先落在这里，所以它也要有同样的闸。
 
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, beta]
   workflow_dispatch:
 
 permissions:
