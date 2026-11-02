@@ -73,7 +73,8 @@ function avatarMarkup(module, name) {
   return `<div class="module-avatar tone-${avatarTone(module)}" aria-hidden="true">${icon ? `<img class="module-icon" src="${escapeHTML(icon)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ""}<span class="avatar-fallback">${escapeHTML(avatarText(name))}</span></div>`;
 }
 
-function hasReview(module) {
+// 含无法自动确认的转换内容，需人工核对，不在网页上架
+function needsReview(module) {
   return Array.isArray(module.review) && module.review.length > 0;
 }
 
@@ -82,9 +83,6 @@ function hasAdapted(module) {
 }
 
 function statusMarkup(module) {
-  if (hasReview(module)) {
-    return '<span class="card-status review"><svg class="icon"><use href="#i-info"/></svg>需确认</span>';
-  }
   if (hasAdapted(module)) {
     return '<span class="card-status"><svg class="icon"><use href="#i-check"/></svg>已适配</span>';
   }
@@ -244,7 +242,6 @@ function openDetails(module) {
       <div><dt>模块文件</dt><dd>${escapeHTML(module.stem)}.sgmodule</dd></div>
       <div><dt>模块作者</dt><dd>${escapeHTML(authors)}</dd></div>
     </dl>
-    ${diagnosticList("需要人工确认", module.review, "review")}
     ${diagnosticList("已自动适配", module.adapted)}
     ${diagnosticList("转换记录", module.notes)}
     <div class="dialog-source"><a href="${escapeHTML(sourcePageUrl(module))}" target="_blank" rel="noreferrer">在 GitHub 查看原始模块 <svg class="icon"><use href="#i-external"/></svg></a></div>`;
@@ -290,6 +287,8 @@ async function loadModules() {
 
     state.modules = data.plugins
       .filter(module => module && module.status === "ok" && module.stem)
+      // 需要人工确认的模块不上架：部分内容无法自动验证，导入后行为不确定
+      .filter(module => !needsReview(module))
       .map(module => ({
         ...module,
         searchText: normalize([

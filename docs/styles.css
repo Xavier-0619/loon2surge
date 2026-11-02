@@ -161,7 +161,7 @@ img, svg { display: block; }
 .card-title-button:hover .card-title { color: var(--accent); }
 .card-author { display: block; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #8a8e83; font-size: 10px; }
 .card-status { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; padding: 3px 7px; border-radius: 6px; color: #5a743e; background: #eff6e6; font-size: 9px; font-weight: 650; }
-.card-status.review { color: var(--warning); background: var(--warning-bg); }.card-status .icon { width: 11px; height: 11px; stroke-width: 2.2; }
+.card-status .icon { width: 11px; height: 11px; stroke-width: 2.2; }
 .card-desc { min-height: 43px; display: -webkit-box; margin: 18px 0 15px; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: #72766b; font-size: 12px; line-height: 1.8; }
 .card-tags { min-height: 25px; display: flex; gap: 6px; overflow: hidden; }
 .card-tag { flex: 0 0 auto; padding: 3px 8px; border: 1px solid #e4e6de; border-radius: 6px; color: #777b70; background: #f8f9f5; font-size: 9px; }
