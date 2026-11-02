@@ -19,6 +19,7 @@ import (
 	"sync"
 
 	"loon2surge/internal/cliargs"
+	"loon2surge/internal/external"
 	"loon2surge/internal/kelee"
 	"loon2surge/internal/lpx"
 )
@@ -32,6 +33,7 @@ const usage = `loon2surge %s —— Loon 插件 → Surge 模块
   loon2surge sync                   [选项]     同步可莉插件中心并转换
   loon2surge validate               [选项]     校验已发布的模块产物
   loon2surge audit                  [选项]     检查模块引用的远程脚本还能不能下载
+  loon2surge external               [选项]     把第三方仓库的 Surge 模块并入 surge
   loon2surge <文件|目录>                       等价于 convert
 
 convert 选项：
@@ -43,6 +45,7 @@ convert 选项：
 
 validate 选项：
   --dir           模块目录，默认 surge
+  --external      外部模块清单，默认 "ios151 Rewrite/manifest.json"
 
 audit 选项：
   --dir           模块目录，默认 surge
@@ -86,6 +89,8 @@ func main() {
 		os.Exit(runValidate(args[1:]))
 	case "audit":
 		os.Exit(kelee.AuditMain(args[1:]))
+	case "external":
+		os.Exit(external.Main(args[1:]))
 	case "version", "-v", "--version":
 		fmt.Println("loon2surge " + version)
 	case "help", "-h", "--help":
@@ -106,9 +111,12 @@ func main() {
 func runValidate(argv []string) int {
 	fs := flag.NewFlagSet("validate", flag.ContinueOnError)
 	dir := fs.String("dir", "surge", "要校验的模块目录")
+	externalPath := fs.String("external", "ios151 Rewrite/manifest.json", "外部模块清单，用于豁免上游写法带来的已知问题")
 	if err := fs.Parse(argv); err != nil {
 		return 2
 	}
+
+	waivers := loadWaivers(*externalPath)
 
 	entries, err := os.ReadDir(*dir)
 	if err != nil {
@@ -121,7 +129,7 @@ func runValidate(argv []string) int {
 		return 2
 	}
 
-	total, bad := 0, 0
+	total, bad, waived := 0, 0, 0
 	for _, entry := range entries {
 		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".sgmodule") {
 			continue
@@ -134,7 +142,10 @@ func runValidate(argv []string) int {
 			bad++
 			continue
 		}
-		if problems := lpx.Validate(string(data)); len(problems) > 0 {
+		problems := lpx.Validate(string(data))
+		problems, skipped := waiveProblems(problems, waivers[strings.TrimSuffix(entry.Name(), ".sgmodule")])
+		waived += skipped
+		if len(problems) > 0 {
 			for _, problem := range problems {
 				fmt.Printf("✗ %s L%d [%s] %s\n", entry.Name(), problem.Line, problem.Code, problem.Message)
 			}
@@ -146,8 +157,60 @@ func runValidate(argv []string) int {
 		fmt.Printf("\n校验 %d 个模块，%d 个有问题\n", total, bad)
 		return 1
 	}
+	if waived > 0 {
+		fmt.Printf("校验 %d 个模块，全部通过（外部模块按清单豁免 %d 条）\n", total, waived)
+		return 0
+	}
 	fmt.Printf("校验 %d 个模块，全部通过\n", total)
 	return 0
+}
+
+// waivers 记录外部模块被允许保留的问题类型：模块主干 → 问题代码集合。
+//
+// 上游手写模块有自己的习惯（比如中文参数名），既不归转换器管，也不该让转换器的
+// 校验规则去改它。豁免写在清单里而不是写死在代码里，谁被放宽了、放宽了哪一条，都能查。
+func loadWaivers(path string) map[string]map[string]bool {
+	waivers := map[string]map[string]bool{}
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return waivers
+	}
+	var manifest external.Manifest
+	if err := json.Unmarshal(data, &manifest); err != nil {
+		fmt.Fprintf(os.Stderr, "! %s 读不了，本轮不豁免任何问题：%v\n", path, err)
+		return waivers
+	}
+	for _, entry := range manifest.Entries {
+		if entry.Stem == "" || len(entry.Accepted) == 0 {
+			continue
+		}
+		codes := waivers[entry.Stem]
+		if codes == nil {
+			codes = map[string]bool{}
+			waivers[entry.Stem] = codes
+		}
+		for _, code := range entry.Accepted {
+			codes[code] = true
+		}
+	}
+	return waivers
+}
+
+// waiveProblems 去掉清单允许的问题，返回剩下的和被豁免的条数。
+func waiveProblems(problems []lpx.Problem, allowed map[string]bool) ([]lpx.Problem, int) {
+	if len(allowed) == 0 {
+		return problems, 0
+	}
+	kept := problems[:0]
+	waived := 0
+	for _, problem := range problems {
+		if allowed[problem.Code] {
+			waived++
+			continue
+		}
+		kept = append(kept, problem)
+	}
+	return kept, waived
 }
 
 // ---------------------------------------------------------------------------

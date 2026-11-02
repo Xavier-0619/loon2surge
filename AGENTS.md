@@ -16,6 +16,8 @@
 | `internal/kelee/` | 同步流水线：抓取（`http.go`/`transport.go`）、落盘（`store.go`）、提交信息（`commit.go`）、文件命名（`name.go`）、远程脚本审计（`audit.go`） |
 | `internal/cliargs/` | 让 flag 和位置参数可以混着写 |
 | `docs/` | GitHub Pages 模块网站；`data/index.json` 是发布用索引副本，由 `pages.yml` 在部署时更新 |
+| `internal/external/` | 并入第三方仓库（ios151/Rewrite）现成的 Surge 模块：抓取、规范化、按 `#!name` 去重、写清单 |
+| `ios151 Rewrite/` | 第三方模块快照 + `manifest.json`，由 `loon2surge external` 生成，**不要手改** |
 | `loon/`、`surge/`、`index.json`、`INDEX.md` | 生成物，**不要手改** |
 | `.github/workflows/` | 每日同步、PR 校验、上游监听、上游 PR 审核、Pages 发布 |
 | `tools/` | 上游监听用的脚本（Python，只在 CI 里跑） |

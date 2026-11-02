@@ -33,6 +33,10 @@ var (
 	stemSpaceRun     = regexp.MustCompile(`\s+`)
 )
 
+// FileStem 是 fileStem 的导出形态：外部仓库并入 surge/ 时也要用同一套命名规则，
+// 免得同一个 #!name 在两条流水线里落成两个不同的文件名。
+func FileStem(name, fallback string) string { return fileStem(name, fallback) }
+
 // fileStem 把 #!name 变成文件名主干；name 不可用时退回 fallback（从插件地址取的名字）。
 func fileStem(name, fallback string) string {
 	cleaned := stemSpaceRun.ReplaceAllString(strings.TrimSpace(name), " ")

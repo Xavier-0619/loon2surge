@@ -1,0 +1,225 @@
+package external
+
+import (
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+const moduleTemplate = `#!name=%s
+#!desc=测试模块
+#!author=上游作者
+#!category=测试
+
+[Script]
+main = type=http-response, pattern=^https://example\.com/api, script-path=https://example.com/a.js
+`
+
+const moduleWithRule = `#!name=%s
+#!desc=测试模块
+
+[Rule]
+DOMAIN,example.com,REJECT
+
+[Script]
+main = type=http-response, pattern=^https://example\.com/api, script-path=https://example.com/a.js
+`
+
+func write(t *testing.T, root, path, content string) {
+	t.Helper()
+	full := filepath.Join(root, filepath.FromSlash(path))
+	if err := os.MkdirAll(filepath.Dir(full), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(full, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestNormalizeReordersSectionsAndStripsBOM(t *testing.T) {
+	input := "\ufeff#!name=乱序\r\n\r\n[MITM]\r\nhostname = %APPEND% example.com\r\n\r\n[Rule]\r\nDOMAIN,a.com,REJECT\r\n"
+	got := normalize(input)
+	if strings.Contains(got, "\ufeff") {
+		t.Error("BOM 没去掉")
+	}
+	if strings.Contains(got, "\r") {
+		t.Error("换行没统一")
+	}
+	rule := strings.Index(got, "[Rule]")
+	mitm := strings.Index(got, "[MITM]")
+	if rule < 0 || mitm < 0 || rule > mitm {
+		t.Errorf("section 顺序没排对：\n%s", got)
+	}
+	if !strings.HasPrefix(got, "#!name=乱序") {
+		t.Errorf("头部被改坏了：\n%s", got)
+	}
+}
+
+func TestMatchExistingKeepsKeleeModule(t *testing.T) {
+	existing := []existingModule{
+		{Stem: "酷狗音乐去广告", Name: "酷狗音乐去广告"},
+		{Stem: "Telegram重定向", Name: "Telegram重定向"},
+		{Stem: "快对去广告", Name: "快对去广告"},
+		{Stem: "Line去广告", Name: "Line去广告"},
+		{Stem: "Line去广告-2", Name: "linearitcurve"},
+	}
+	cases := []struct {
+		name string
+		dup  bool
+	}{
+		{"酷狗音乐会员解锁", true},      // 同一个 App，功能不同也算重复
+		{"Telegram跳转", true},    // 摘掉"跳转/重定向"后同名
+		{"快对答案", true},          // 前缀重合
+		{"linearitcurve", true}, // 与同名模块内容重复
+		{"咪咕视频", false},         // 不同 App
+		{"Speedtest 广告vip & 净化", false},
+		{"ins社区", false},
+	}
+	for _, item := range cases {
+		_, reason, ok := matchExisting(item.name, existing)
+		if ok != item.dup {
+			t.Errorf("%s 判成 %v（%s），期望 %v", item.name, ok, reason, item.dup)
+		}
+	}
+}
+
+func TestRunMergesOnlyMissingModules(t *testing.T) {
+	root := t.TempDir()
+	source := filepath.Join(root, "upstream")
+	surge := filepath.Join(root, "surge")
+	snapshot := filepath.Join(root, "ios151 Rewrite")
+	if err := os.MkdirAll(surge, 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	write(t, surge, "已有模块.sgmodule", "#!name=已有模块\n\n[Rule]\nDOMAIN,a.com,REJECT\n")
+	write(t, source, "new.sgmodule", strings.Replace(moduleTemplate, "%s", "全新模块", 1))
+	write(t, source, "dup.sgmodule", strings.Replace(moduleWithRule, "%s", "已有模块", 1))
+	write(t, source, "no-name.sgmodule", "[Rule]\nDOMAIN,b.com,REJECT\n")
+	write(t, source, "shadow.sgmodule", "#!name=小火箭模块\n#!desc=小火箭专用模块\n\n[Rule]\nDOMAIN,c.com,REJECT\n")
+	// 上游仓库里大量是脚本，不是模块；这些不该被当成模块处理
+	write(t, source, "script.js", "console.log('hello')\n")
+	write(t, source, "assets/icon.png", "not really a png\n")
+
+	report, err := Run(Options{SourceDir: source, SurgeDir: surge, Dir: snapshot, Repo: "ios151/Rewrite"})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := os.Stat(filepath.Join(surge, "全新模块.sgmodule")); err != nil {
+		t.Error("缺的模块应该并进 surge/")
+	}
+	if _, err := os.Stat(filepath.Join(snapshot, "new.sgmodule")); err != nil {
+		t.Error("快照应该保留上游原文件")
+	}
+	if len(report.Added) != 1 {
+		t.Errorf("新增应该是 1 个，实际 %d：%+v", len(report.Added), report.Added)
+	}
+	if len(report.Skipped) < 3 {
+		t.Errorf("同名、无名字、小火箭专用都应该跳过，实际 %+v", report.Skipped)
+	}
+
+	// 再跑一次：内容没变就不该再报"新增"，也不能把自己的产物当成别人的而自我下线
+	again, err := Run(Options{SourceDir: source, SurgeDir: surge, Dir: snapshot, Repo: "ios151/Rewrite"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(again.Added) != 0 || len(again.Updated) != 0 {
+		t.Errorf("重复运行不该产生变化：新增 %d 更新 %d", len(again.Added), len(again.Updated))
+	}
+	if len(again.Removed) != 0 {
+		t.Errorf("重复运行不该下线任何模块：%+v", again.Removed)
+	}
+	if _, err := os.Stat(filepath.Join(surge, "全新模块.sgmodule")); err != nil {
+		t.Error("上一轮并进来的模块不该被自己顶掉")
+	}
+	status := map[string]string{}
+	for _, entry := range again.Manifest.Entries {
+		status[entry.Name] = entry.Status
+	}
+	if status["全新模块"] != "merged" {
+		t.Errorf("第二轮仍然应该记为 merged，实际 %q", status["全新模块"])
+	}
+
+	// 上游内容变了要认成"更新"，而不是新增一个同名文件
+	write(t, source, "new.sgmodule", strings.Replace(moduleWithRule, "%s", "全新模块", 1))
+	third, err := Run(Options{SourceDir: source, SurgeDir: surge, Dir: snapshot, Repo: "ios151/Rewrite"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(third.Added) != 0 || len(third.Updated) != 1 {
+		t.Errorf("内容变化应记为更新：新增 %d 更新 %d", len(third.Added), len(third.Updated))
+	}
+	if _, err := os.Stat(filepath.Join(surge, "全新模块-2.sgmodule")); err == nil {
+		t.Error("更新不该生成带后缀的第二个文件")
+	}
+}
+
+func TestRunWaivesChineseArgumentNamesOnly(t *testing.T) {
+	root := t.TempDir()
+	source := filepath.Join(root, "upstream")
+	surge := filepath.Join(root, "surge")
+	snapshot := filepath.Join(root, "ios151 Rewrite")
+
+	write(t, source, "args.sgmodule", `#!name=中文参数模块
+#!desc=上游写法
+#!arguments=日志级别:info, 播放器:lenna
+
+[Script]
+main = type=http-response, pattern=^https://example\.com/api, script-path=https://example.com/a.js
+`)
+	write(t, source, "loon.sgmodule", `#!name=洛恩语法模块
+#!desc=其实是 Loon 写法
+
+[Script]
+http-request ^https://example\.com/api script-path=https://example.com/a.js
+`)
+
+	report, err := Run(Options{SourceDir: source, SurgeDir: surge, Dir: snapshot, Repo: "ios151/Rewrite"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(report.Added) != 1 || report.Added[0].Name != "中文参数模块" {
+		t.Fatalf("中文参数名应该被收下：%+v", report.Added)
+	}
+	if len(report.Added[0].Accepted) != 1 || report.Added[0].Accepted[0] != "argument-name" {
+		t.Errorf("豁免要写进清单：%+v", report.Added[0].Accepted)
+	}
+	if _, err := os.Stat(filepath.Join(surge, "洛恩语法模块.sgmodule")); err == nil {
+		t.Error("混着 Loon 语法的模块不该进 surge/")
+	}
+}
+
+func TestRunRetiresModuleDroppedUpstream(t *testing.T) {
+	root := t.TempDir()
+	source := filepath.Join(root, "upstream")
+	surge := filepath.Join(root, "surge")
+	snapshot := filepath.Join(root, "ios151 Rewrite")
+	write(t, source, "gone.sgmodule", strings.Replace(moduleTemplate, "%s", "会下线的模块", 1))
+
+	if _, err := Run(Options{SourceDir: source, SurgeDir: surge, Dir: snapshot, Repo: "ios151/Rewrite"}); err != nil {
+		t.Fatal(err)
+	}
+	target := filepath.Join(surge, "会下线的模块.sgmodule")
+	if _, err := os.Stat(target); err != nil {
+		t.Fatal("首轮应该并进来")
+	}
+
+	if err := os.Remove(filepath.Join(source, "gone.sgmodule")); err != nil {
+		t.Fatal(err)
+	}
+	report, err := Run(Options{SourceDir: source, SurgeDir: surge, Dir: snapshot, Repo: "ios151/Rewrite"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(report.Removed) != 1 {
+		t.Fatalf("上游下线的应该被回收：%+v", report.Removed)
+	}
+	if _, err := os.Stat(target); err == nil {
+		t.Error("上游没了，surge/ 里的副本也该删掉")
+	}
+	if _, err := os.Stat(filepath.Join(snapshot, "gone.sgmodule")); err == nil {
+		t.Error("快照也要跟着清掉")
+	}
+}

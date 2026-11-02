@@ -24,14 +24,42 @@ python -m http.server 8080 --directory docs
 # 打开 http://127.0.0.1:8080
 ```
 
+## 外部模块（ios151 Rewrite）
+
+可莉那边只覆盖 Loon 插件。有些功能上游没人写成 Loon 插件，但别的仓库已经有现成的
+Surge 模块，所以每天转换完之后会再跑一次 `loon2surge external`：
+
+- **快照**：把 [ios151/Rewrite](https://github.com/ios151/Rewrite) 里的 `.sgmodule`
+  同步到 [`ios151 Rewrite/`](ios151%20Rewrite)，保留上游目录结构，外加一份 `manifest.json`
+  记下每个文件的下场（并入 / 重复 / 不兼容）
+- **只收上游独有的**：按 `#!name` 比而不是文件名。比对前先摘掉「解锁 / 去广告 / VIP」
+  这类只说明"怎么处理"的词，所以「酷狗音乐会员解锁」认得和「酷狗音乐去广告」是同一件事；
+  中文名允许前缀重合与高相似度，纯英文名只认完全一致（否则 `linearitcurve` 会被判成 `Line去广告`）
+- **撞名保留可莉的**：Loon 插件是转换器逐行核对出来的，比手写模块可靠
+- **机械修复**：去 BOM、统一换行、按 Surge 的 section 顺序重排——只动顺序，不动任何一行内容
+- **不收**：缺 `#!name`、小火箭专用、混着 Loon 语法（`script-type` 报错）。这些在清单里写明原因
+- **中文参数名**：Surge 认 `日志级别:info` 这种写法，转换器的校验规则只认 ASCII。
+  这类问题只在清单里登记豁免，`validate` 按清单逐文件放行这一条，其它问题照旧报错
+- **跟着上游下线**：上游删掉的模块会从 `surge/` 移除，但只删"我们还是当初写进去那份"的文件，
+  人工改过的不动
+
+手动跑：
+
+```bash
+./loon2surge external --dry-run      # 只看会加什么
+./loon2surge external                # 落盘
+```
+
 ## 目录速览
 
 ```
-main.go                命令行入口（convert / sync / validate / audit）
+main.go                命令行入口（convert / sync / validate / audit / external）
 internal/lpx/          转换引擎：规则 / 改写 / 脚本 / 头部 / 组装 / 产物自检
 internal/kelee/        同步：拉列表、比哈希、下载、转换、写索引、远程脚本审计
+internal/external/     并入第三方仓库现成的 Surge 模块（按 #!name 去重）
 internal/cliargs/      让标志可以写在路径后面
 loon/  surge/          Loon 原始插件 / 转换后的 Surge 模块（按插件里的 #!name 命名）
+ios151 Rewrite/        第三方模块快照与清单（自动生成，不要手改）
 index.json             每个插件的哈希、状态与诊断（自动生成）
 INDEX.md               给人看的插件索引（自动生成）
 tools/                 上游监听脚本（只在 CI 里跑）
@@ -67,6 +95,7 @@ go build -o loon2surge .          # 需要 Go 1.22+
 | `loon2surge sync --only A,B --limit 5` | 只处理指定/前 N 个（调试用，不会误删其它插件） |
 | `loon2surge validate [--dir surge]` | 把已发布的模块当成品再校验一遍（语法残留、策略、状态码、section 顺序） |
 | `loon2surge audit [--strict]` | 抓一遍模块引用的远程脚本，记录状态码与 SHA-256 |
+| `loon2surge external [--dir "ios151 Rewrite"] [--dry-run]` | 把第三方仓库的模块同步到快照目录，并把 `surge/` 里没有的并进去 |
 | `loon2surge version` | 版本号 |
 
 转换时并行读取与解析（`runtime.NumCPU()` 个 worker），进度按文件顺序输出，日志不会交错。
