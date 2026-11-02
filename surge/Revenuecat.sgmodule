@@ -1,13 +1,18 @@
 #!name=Revenuecat
 #!desc=Revenuecat
+#!author=ios151[https://github.com/ios151/Rewrite]
+#!category=ios151
+# 由 loon2surge 从 ios151/Rewrite 同步整理
 
 [URL Rewrite]
 https://api.lianjiu.fun/app/api/v1/profile - reject
+
 [Script]
 #修改
-Revenuecat = type=http-response, pattern=^https?:\/\/api\.revenuecat\.com\/v1\/(subscribers\/[^\/]+$|receipts$), script-path=https://raw.githubusercontent.com/ios151/Rewrite/main/Revenuecat.js, requires-body=true, max-size=-1, timeout=60
+Revenuecat = type=http-response, pattern=^https?:\/\/api\.revenuecat\.com\/v1\/(subscribers\/[^\/]+$|receipts$), script-path=https://raw.githubusercontent.com/ios151/Rewrite/main/Revenuecat.js, requires-body=1, max-size=-1, timeout=60
 
 #清理
 Revenuecat = type=http-request, pattern=^https?:\/\/api\.revenuecat\.com\/v1\/(subscribers\/[^\/]+$|receipts$), script-path=https://raw.githubusercontent.com/ios151/Rewrite/main/Revenuecat.js, timeout=60
+
 [MITM]
 hostname = %APPEND% api.revenuecat.com, api.lianjiu.fun

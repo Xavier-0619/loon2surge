@@ -1,9 +1,10 @@
 #!name=酷狗音乐会员解锁
 #!desc=解锁酷狗音乐会员功能，包括VIP歌曲、无损音质、去广告、皮肤等
-#!category=KuGouMusic
 #!author=bb
-#!version=1.2.2.6
+#!category=KuGouMusic
 #!homepage=https://github.com/ios151/Rewrite
+#!version=1.2.2.6
+# 由 loon2surge 从 ios151/Rewrite 同步整理
 
 [Rule]
 # > (广告/弹窗)
@@ -27,6 +28,7 @@ DOMAIN, adserviceretry.kugou.com, REJECT
 # > (开屏广告)
 IP-CIDR, 157.255.11.247/32, REJECT, no-resolve
 IP-CIDR, 111.206.99.202/32, REJECT, no-resolve
+
 [Script]
 # > SSR首页装饰中心
 酷狗SSR首页 = type=http-response, pattern=^https:\/\/m\.kugou\.com\/ssr\/decocenter\/home, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/ios151/Rewrite/refs/heads/main/kugou.js
@@ -34,9 +36,9 @@ IP-CIDR, 111.206.99.202/32, REJECT, no-resolve
 # > 登录相关接口
 酷狗登录Token = type=http-response, pattern=^https:\/\/.*\.kugou\.com\/v5\/login_by_token, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/ios151/Rewrite/refs/heads/main/kugou.js
 
-酷狗K歌 = type=http-response, pattern=^https?:\/\/(nacsing\.kugou\.com|acsing\.service\.kugou\.com|vipos\.kugou\.com|gateway\.kugou\.com|gamecenter\.kugou\.com|acsing\.tx\.kugou\.com)\/(sing7\/json\/v2\/user\/login|ccktv\/v1\/ktv_room\/room\/room_config|fxsing\/vip\/member\/info|sing7\/homepage\/json\/v3\/vip\/tip|v4\/price\/get_tips|vipenergy\/v2\/entrance\/vip_center_user_info|fxsing\/vip\/user\/info|sing7\/homepage\/json\/v3\/cdn\/kroom_tab_enter|v1\/home\/member_game|sing7\/homepage\/json\/v3\/cdn\/kroom_tab\/banners), requires-body=true, max-size=0, script-path=https://raw.githubusercontent.com/ios151/Rewrite/refs/heads/main/kugouksong.js
+酷狗K歌 = type=http-response, pattern=^https?:\/\/(nacsing\.kugou\.com|acsing\.service\.kugou\.com|vipos\.kugou\.com|gateway\.kugou\.com|gamecenter\.kugou\.com|acsing\.tx\.kugou\.com)\/(sing7\/json\/v2\/user\/login|ccktv\/v1\/ktv_room\/room\/room_config|fxsing\/vip\/member\/info|sing7\/homepage\/json\/v3\/vip\/tip|v4\/price\/get_tips|vipenergy\/v2\/entrance\/vip_center_user_info|fxsing\/vip\/user\/info|sing7\/homepage\/json\/v3\/cdn\/kroom_tab_enter|v1\/home\/member_game|sing7\/homepage\/json\/v3\/cdn\/kroom_tab\/banners), requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/ios151/Rewrite/refs/heads/main/kugouksong.js
 
-酷狗播放v5 = type=http-response, pattern=^https?:\/\/gateway\.kugou\.com\/tracker\/v5\/url, requires-body=true, max-size=0, script-path=https://raw.githubusercontent.com/ios151/Rewrite/refs/heads/main/kugouv5.js
+酷狗播放v5 = type=http-response, pattern=^https?:\/\/gateway\.kugou\.com\/tracker\/v5\/url, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/ios151/Rewrite/refs/heads/main/kugouv5.js
 
 酷狗快速登录 = type=http-response, pattern=^https:\/\/.*\.kugou\.com\/v1\/login_by_quick_token, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/ios151/Rewrite/refs/heads/main/kugou.js
 
@@ -134,5 +136,6 @@ IP-CIDR, 111.206.99.202/32, REJECT, no-resolve
 
 # > 我的顶部横幅
 酷狗我的顶部横幅 = type=http-response, pattern=^https:\/\/.*\.kugou\.com\/mine_top_banner, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/ios151/Rewrite/refs/heads/main/kugou.js
+
 [MITM]
-hostname = %APPEND% *.kugou.com  
+hostname = %APPEND% *.kugou.com

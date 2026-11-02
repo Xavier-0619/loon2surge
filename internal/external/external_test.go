@@ -37,22 +37,74 @@ func write(t *testing.T, root, path, content string) {
 	}
 }
 
-func TestNormalizeReordersSectionsAndStripsBOM(t *testing.T) {
-	input := "\ufeff#!name=乱序\r\n\r\n[MITM]\r\nhostname = %APPEND% example.com\r\n\r\n[Rule]\r\nDOMAIN,a.com,REJECT\r\n"
-	got := normalize(input)
-	if strings.Contains(got, "\ufeff") {
-		t.Error("BOM 没去掉")
+func TestTidyNormalizesModule(t *testing.T) {
+	input := "\ufeff#!name = 乱序模块   \r\n#!desc= 测试  \r\n\r\n[MITM]\r\nhostname = %APPEND% example.com:8443, example.com\r\n\r\n[Script]\r\nmain = type=http-response, pattern=^https://api.example.com/v1, requires-body=true, script-path=https://example.com/a.js,\r\n"
+	got, notes := tidy(input, "ios151/Rewrite")
+
+	if strings.Contains(got, "\ufeff") || strings.Contains(got, "\r") {
+		t.Errorf("BOM / CRLF 没清掉：\n%s", got)
 	}
-	if strings.Contains(got, "\r") {
-		t.Error("换行没统一")
+	for _, line := range strings.Split(got, "\n") {
+		if strings.HasPrefix(line, "#!") && strings.Contains(line, " = ") {
+			t.Errorf("头部等号两侧还留着空格：%q", line)
+		}
+		if line != strings.TrimRight(line, " \t") {
+			t.Errorf("行尾还留着空白：%q", line)
+		}
 	}
-	rule := strings.Index(got, "[Rule]")
-	mitm := strings.Index(got, "[MITM]")
-	if rule < 0 || mitm < 0 || rule > mitm {
-		t.Errorf("section 顺序没排对：\n%s", got)
+	if !strings.HasPrefix(got, "#!name=乱序模块\n") {
+		t.Errorf("头部没按 MetaOrder 排好：\n%s", got)
 	}
-	if !strings.HasPrefix(got, "#!name=乱序") {
-		t.Errorf("头部被改坏了：\n%s", got)
+	for _, want := range []string{
+		"#!desc=测试",
+		"#!author=ios151[https://github.com/ios151/Rewrite]",
+		"#!category=ios151",
+		"[Script]\nmain = type=http-response, pattern=^https://api\\.example\\.com/v1, requires-body=1, script-path=https://example.com/a.js\n",
+		"hostname = %APPEND% example.com\n",
+	} {
+		if !strings.Contains(got, want) {
+			t.Errorf("缺少 %q：\n%s", want, got)
+		}
+	}
+	if strings.Index(got, "[Script]") > strings.Index(got, "[MITM]") {
+		t.Errorf("section 顺序不对：\n%s", got)
+	}
+	if !strings.Contains(got, "]\n\n[") && !strings.Contains(got, "\n\n[") {
+		t.Errorf("段与段之间没有空行：\n%s", got)
+	}
+	if strings.Contains(got, ":8443") {
+		t.Errorf("MITM 端口没去掉：\n%s", got)
+	}
+	if len(notes) == 0 {
+		t.Error("整理动作没记录")
+	}
+}
+
+func TestTidyIsIdempotent(t *testing.T) {
+	input := "#!name=模块\n#!desc=说明\n\n[MITM]\nhostname = %APPEND% a.com, a.com\n\n[Script]\nmain = type=http-response,pattern=^https://a.com/v1,requires-body=true,script-path=https://a.com/a.js\n"
+	once, _ := tidy(input, "ios151/Rewrite")
+	twice, _ := tidy(once, "ios151/Rewrite")
+	if once != twice {
+		t.Errorf("二次整理又改了东西：\n--- once ---\n%s\n--- twice ---\n%s", once, twice)
+	}
+}
+
+func TestTidyLeavesComplicatedRegexAlone(t *testing.T) {
+	line := "main = type=http-response, pattern=^https?://(a|b)\\.example\\.com/x.y, script-path=https://a.com/a.js"
+	got, _ := tidy("#!name=x\n\n[Script]\n"+line+"\n", "")
+	if !strings.Contains(got, line) {
+		t.Errorf("带分组的正则被改动了：\n%s", got)
+	}
+}
+
+func TestTidyDropsDuplicateLinesAndEmptySections(t *testing.T) {
+	input := "#!name=x\n\n[Rule]\nDOMAIN,a.com,REJECT\nDOMAIN,a.com,REJECT\n\n[Panel]\n"
+	got, _ := tidy(input, "")
+	if strings.Count(got, "DOMAIN,a.com,REJECT") != 1 {
+		t.Errorf("重复规则没去掉：\n%s", got)
+	}
+	if strings.Contains(got, "[Panel]") {
+		t.Errorf("空 section 没删：\n%s", got)
 	}
 }
 

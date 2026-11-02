@@ -5,6 +5,7 @@
 #!category=AppRaven
 #!arguments=UserId:12345678,RunCount:2
 #!arguments-desc=1. UserId: 主账号的数字ID。\n2. RunCount: 单次运行次数 (建议 < 5)。
+# 由 loon2surge 从 ios151/Rewrite 同步整理
 
 [Script]
 # 每周1四点运行
