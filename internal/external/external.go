@@ -9,6 +9,7 @@
 package external
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"os"
@@ -36,12 +37,9 @@ var DefaultManifestPath = filepath.Join(DefaultDir, ManifestName)
 
 // Source 是上游的一个模块文件。
 type Source struct {
-	Path  string // 上游仓库内的相对路径
-	Data  []byte // 规范化之后的正文
-	Name  string // #!name
-	Desc  string
-	Icon  string
-	Date  string
+	Path  string   // 上游仓库内的相对路径
+	Data  []byte   // 规范化之后的正文
+	Name  string   // #!name
 	Stamp string   // 整理后正文的 SHA-256，作为"这份内容有没有变"的基准
 	Tidy  []string // 整理时动了什么，写进清单备查
 }
@@ -337,14 +335,13 @@ func judge(problems []lpx.Problem) (accepted []string, reject string) {
 }
 
 // syncTo 只在内容变化时写文件，返回是否真的变了。
+//
+// "没变就不写"这件事 fsutil 已经做过一次，这里不再自己读一遍文件；
+// dry-run 要报出差异，才单独读一次。
 func syncTo(path string, data []byte, dryRun bool) (bool, error) {
-	existing, err := os.ReadFile(path)
-	if err == nil && string(existing) == string(data) {
-		return false, nil
-	}
 	if dryRun {
-		return true, nil
+		existing, err := os.ReadFile(path)
+		return err != nil || !bytes.Equal(existing, data), nil
 	}
-	_, err = fsutil.WriteFile(path, data)
-	return true, err
+	return fsutil.WriteFile(path, data)
 }

@@ -42,14 +42,16 @@ func fetchTarball(repo, ref, token string) ([]byte, error) {
 			lastErr = err
 			continue
 		}
-		body, readErr := io.ReadAll(response.Body)
-		response.Body.Close()
-		if readErr != nil {
-			lastErr = readErr
+		// 先看状态码：错误页不必整份读进内存，直接换下一条 URL。
+		if response.StatusCode != http.StatusOK {
+			_ = response.Body.Close()
+			lastErr = fmt.Errorf("%s 返回 %d", url, response.StatusCode)
 			continue
 		}
-		if response.StatusCode != http.StatusOK {
-			lastErr = fmt.Errorf("%s 返回 %d", url, response.StatusCode)
+		body, readErr := io.ReadAll(response.Body)
+		_ = response.Body.Close()
+		if readErr != nil {
+			lastErr = readErr
 			continue
 		}
 		return body, nil
@@ -84,7 +86,7 @@ func readTarball(blob []byte, repo string) ([]Source, []Entry, error) {
 		if index := strings.IndexByte(path, '/'); index >= 0 {
 			path = path[index+1:]
 		}
-		if path == "" {
+		if path == "" || escapesDir(path) {
 			continue
 		}
 		data, err := io.ReadAll(reader)
@@ -100,6 +102,16 @@ func readTarball(blob []byte, repo string) ([]Source, []Entry, error) {
 		}
 	}
 	return sources, dropped, nil
+}
+
+// escapesDir 判断压缩包里的路径会不会写到目标目录外面。
+//
+// 快照和 surge 产物都按这个相对路径落盘，所以在收进来之前先把它关在目录里：
+// `../../x.sgmodule` 这种条目一旦穿过 Join，写到的就是仓库别处的文件。
+func escapesDir(path string) bool {
+	// 只在相对路径上判断越界：Clean("/"+path) 会把 `../` 直接抹掉，永远测不出来。
+	cleaned := filepath.ToSlash(filepath.Clean(path))
+	return cleaned == ".." || strings.HasPrefix(cleaned, "../")
 }
 
 // readLocal 读一个已解压的仓库目录，规则与拆包一致。
@@ -166,9 +178,6 @@ func classify(path string, data []byte, repo string) (*Source, *Entry) {
 		Path:  path,
 		Data:  []byte(text),
 		Name:  name,
-		Desc:  lpx.PluginMeta(text, "desc"),
-		Icon:  lpx.PluginMeta(text, "icon"),
-		Date:  lpx.PluginMeta(text, "date"),
 		Stamp: entry.SHA,
 		Tidy:  notes,
 	}, nil

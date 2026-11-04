@@ -24,7 +24,9 @@ import (
 // 只改输出结果时才递增：插件本身没变、但转换规则变了，同步流程必须重转一遍。
 // 同步层把它记进 index.json，版本不同就丢掉缓存重新生成。
 // 2.2.0：同名插件由「各写一份 / 加 -2 后缀」改为融合成一个模块。
-const Version = "2.2.0"
+// 2.2.1：逻辑规则的匹配项也抬门槛——原先只有简单规则抬，
+// URL-REGEX / DOMAIN-WILDCARD / 进程规则写进 AND/OR/NOT 时声明的版本偏低。
+const Version = "2.2.1"
 
 // Surge 模块头部认识的 #! 字段，其余字段丢弃并写进报告。
 var surgeMeta = map[string]bool{
