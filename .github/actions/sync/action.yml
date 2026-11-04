@@ -1,0 +1,142 @@
+name: 同步插件并转换
+description: 拉取可莉插件中心的 Loon 插件、转换成 Surge 模块，有变更就提交推送
+
+# 抽成 composite action 的原因：抓取能不能成，取于这台 runner 的出口 IP 有没有被
+# Cloudflare 拒。失败时整份流程要换一台 runner 再跑一遍，步骤不能写两遍。
+
+inputs:
+  mirror:
+    description: 可选镜像前缀，官方站被拒时按同路径回退
+    required: false
+    default: ""
+  limit:
+    description: 只处理前 N 个插件，0 表示全部（调试用）
+    required: false
+    default: "0"
+  probe:
+    description: 只做上游连通性自检，不落盘
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - name: 🐹 准备 Go 环境
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
+        cache: false
+
+    - name: 🔨 编译转换器
+      shell: bash
+      run: go build -o bin/loon2surge ./cmd/loon2surge
+
+    - name: 📡 上游连通性自检
+      if: inputs.probe == 'true'
+      shell: bash
+      env:
+        KLEE_MIRROR: ${{ inputs.mirror }}
+      run: ./bin/loon2surge sync --probe
+
+    - name: 🔄 拉取插件并转换
+      if: inputs.probe != 'true'
+      shell: bash
+      env:
+        KLEE_MIRROR: ${{ inputs.mirror }}
+        LIMIT: ${{ inputs.limit }}
+      run: |
+        set -o pipefail
+        # --fetcher auto：有 python3 就借它的 OpenSSL TLS 栈下载（Cloudflare 认指纹），
+        # 没有才退回 Go 原生。并发压在 4，避免在 Cloudflare 面前形成突发。
+        # --commit-file：让程序把"改了哪些模块 + 可莉更新时间"写成提交信息，shell 拼不出来
+        ARGS="--fetcher auto --jobs 4 --delay 0.15 --commit-file $RUNNER_TEMP/commit-msg.txt"
+        case "$LIMIT" in
+          ""|0) ;;
+          *) ARGS="$ARGS --limit $LIMIT" ;;
+        esac
+        ./bin/loon2surge sync $ARGS | tee sync.log
+
+    - name: 🌐 同步外部模块（ios151）
+      # 可莉那边转换完之后，再把第三方仓库里现成的模块并进来：同名的一律留可莉那份，
+      # 上游独有的才进 surge/。这个仓库挂了不该拖累主流程，所以 continue-on-error。
+      if: inputs.probe != 'true'
+      continue-on-error: true
+      shell: bash
+      run: |
+        set -o pipefail
+        ./bin/loon2surge external --dir external/ios151 --surge surge 2>&1 | tee "$RUNNER_TEMP/external.log"
+
+    - name: 📊 汇总仓库现状
+      if: inputs.probe != 'true'
+      shell: bash
+      run: |
+        plugins=$(find loon -name '*.lpx' 2>/dev/null | wc -l)
+        modules=$(find surge -name '*.sgmodule' 2>/dev/null | wc -l)
+        channel=$(grep -m1 '下载通道' sync.log 2>/dev/null | sed 's/^下载通道：//' || true)
+        external=$(grep -m1 '^外部同步：' "$RUNNER_TEMP/external.log" 2>/dev/null | sed 's/^外部同步：//' || true)
+        {
+          echo ""
+          echo "### 📊 仓库现状"
+          echo ""
+          echo "| 项目 | 数量 |"
+          echo "| --- | --- |"
+          echo "| 🧩 Loon 插件 | $plugins |"
+          echo "| 📦 Surge 模块 | $modules |"
+          echo "| 🌐 外部模块 | ${external:-本轮未运行} |"
+          echo "| 🔌 下载通道 | ${channel:-未知} |"
+        } >> "$GITHUB_STEP_SUMMARY"
+
+    - name: 🔍 审计远程脚本
+      if: inputs.probe != 'true'
+      shell: bash
+      run: |
+        # 转换只搬运 script-path 字符串。脚本本身哪天 404 了，模块照样能导入、
+        # 只是跑起来没反应——所以每次同步都把引用到的脚本抓一遍，留个快照当附件。
+        # 不加 --strict：单个脚本抓不到不该让整轮同步失败。
+        ./bin/loon2surge audit --out "$RUNNER_TEMP/script-audit.json" | tee audit.log
+
+    - name: 📎 上传脚本审计报告
+      if: inputs.probe != 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: script-audit
+        path: ${{ runner.temp }}/script-audit.json
+        retention-days: 30
+        if-no-files-found: warn
+
+    - name: 🚀 提交并推送
+      if: inputs.probe != 'true'
+      shell: bash
+      run: |
+        MSG="$RUNNER_TEMP/commit-msg.txt"
+
+        git add -A
+        if git diff --cached --quiet; then
+          echo "✅ 上游没有变化，本轮不提交" >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+        fi
+
+        # 提交信息由 loon2surge 生成：标题是北京日期，正文列出新增/更新/删除的模块
+        # 和可莉那边的时间。程序没写出来（例如提前失败）就退回一句话，别让推送卡住。
+        if [ ! -s "$MSG" ]; then
+          printf '🔄 自动更新 %s\n\n本轮有插件变更\n' "$(TZ=Asia/Shanghai date +%F)" > "$MSG"
+        fi
+
+        # 外部模块的增删由 external 自己统计，补在可莉那段后面，别让提交信息只报一半
+        if [ -s "$RUNNER_TEMP/external.log" ]; then
+          external=$(grep -m1 '^外部同步：' "$RUNNER_TEMP/external.log" || true)
+          [ -n "$external" ] && printf '\n%s\n' "$external" >> "$MSG"
+        fi
+
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git commit -F "$MSG"
+        git push
+
+        {
+          echo "🚀 已推送：\`$(head -n1 "$MSG")\`"
+          echo ""
+          echo '```'
+          sed -n '3,$p' "$MSG" | head -40
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"

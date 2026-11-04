@@ -1,0 +1,22 @@
+#!name=IT之家去广告
+#!desc=过滤IT之家信息流广告和文末广告，自定义移除置顶和轮播图，自定义移除项需在插件配置。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/IThome.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id570610859
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=5006000
+#!arguments=removePinnedArticles:false,removeAllBanners:false
+
+# 由 loon2surge 自动转换
+
+[Map Local]
+(?i:^https?:\/\/dat\.ruanmei\.com\/ithome\/money\/acd\.json$) data-type=text data="" status-code=404
+
+[Script]
+IT之家去广告 = type=http-response, pattern=(?i:^https:\/\/napi\.ithome\.com\/api\/(news\/indexv2\/iphone\/\d+|topmenu\/getfeeds\?)), script-path=https://kelee.one/Resource/JavaScript/IThome/IThome_remove_ads.js, requires-body=true, timeout=10, argument="{\"removeAllBanners\":{{{removeAllBanners}}},\"removePinnedArticles\":{{{removePinnedArticles}}}}"
+
+[MITM]
+hostname = %APPEND% napi.ithome.com, api.zuihuimai.com, dat.ruanmei.com

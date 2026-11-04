@@ -1,0 +1,27 @@
+#!name=Apple天气增强
+#!desc=解锁Apple天气的全部功能、替换空气质量数据源、添加下一小时降水数据、添加天气数据。
+#!author=VirgilClyne[https://github.com/VirgilClyne], WordlessEcho[https://github.com/WordlessEcho], 001[https://github.com/001ProMax]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/AppleWeather.png
+#!category=可莉插件
+#!openUrl=https://itunes.apple.com/app/id1069513131
+#!tag=功能增强
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=5005000
+#!arguments=Weather_Provider:ColorfulClouds,NextHour_Provider:ColorfulClouds,AirQuality_Calculate_Algorithm:EU_EAQI,API_ColorfulClouds_Token:,API_QWeather_Host:devapi.qweather.com,API_QWeather_Token:,API_WAQI_Token:,Storage:Argument,LogLevel:WARN
+
+# 由 loon2surge 自动转换
+# 有 4 行无法自动转换，见文件末尾注释
+
+[Script]
+天气可用性响应 = type=http-response, pattern=(?i:^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\/), script-path=https://github.com/NSRingo/WeatherKit/releases/download/v3.1.0/response.bundle.js, requires-body=true, timeout=10, argument="{\"Weather.Provider\":{{{Weather_Provider}}},\"NextHour.Provider\":{{{NextHour_Provider}}},\"AirQuality.Calculate.Algorithm\":{{{AirQuality_Calculate_Algorithm}}},\"API.ColorfulClouds.Token\":{{{API_ColorfulClouds_Token}}},\"API.QWeather.Host\":{{{API_QWeather_Host}}},\"API.QWeather.Token\":{{{API_QWeather_Token}}},\"API.WAQI.Token\":{{{API_WAQI_Token}}},\"Storage\":{{{Storage}}},\"LogLevel\":{{{LogLevel}}}}"
+天气响应 = type=http-response, pattern=(?i:^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/), script-path=https://github.com/NSRingo/WeatherKit/releases/download/v3.1.0/response.bundle.js, requires-body=true, binary-body-mode=true, timeout=10, argument="{\"Weather.Provider\":{{{Weather_Provider}}},\"NextHour.Provider\":{{{NextHour_Provider}}},\"AirQuality.Calculate.Algorithm\":{{{AirQuality_Calculate_Algorithm}}},\"API.ColorfulClouds.Token\":{{{API_ColorfulClouds_Token}}},\"API.QWeather.Host\":{{{API_QWeather_Host}}},\"API.QWeather.Token\":{{{API_QWeather_Token}}},\"API.WAQI.Token\":{{{API_WAQI_Token}}},\"Storage\":{{{Storage}}},\"LogLevel\":{{{LogLevel}}}}"
+
+[MITM]
+hostname = %APPEND% weatherkit.apple.com
+
+# ---- 以下 Loon 原始行无法自动转换，请人工确认 ----
+# DOMAIN, weather-analytics-events.apple.com, REJECT-DROP
+# DOMAIN, tether.edge.apple, REJECT-DROP
+# DOMAIN-SUFFIX, tthr.apple.com, REJECT-DROP
+# AND, ((OR, ((IP-ASN, 714, no-resolve), (IP-ASN, 6185, no-resolve))), (PROTOCOL, QUIC)), REJECT-DROP

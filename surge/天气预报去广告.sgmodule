@@ -1,0 +1,19 @@
+#!name=天气预报去广告
+#!desc=移除开屏广告、弹窗广告、横幅广告、悬浮挂件，精简我的页面。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/iReaderCityWeather.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id455611831
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+
+[Rule]
+DOMAIN,adsys.nineton.cn,REJECT,extended-matching,pre-matching
+DOMAIN,adcdn.ccqyj.com,REJECT,extended-matching,pre-matching
+
+[Map Local]
+(?i:^http:\/\/weatherapi\.ccqyj\.com\/server\/listsv\d$) data-type=text data="json" status-code=200

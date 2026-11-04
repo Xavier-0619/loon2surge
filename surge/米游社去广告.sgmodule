@@ -1,0 +1,25 @@
+#!name=米游社去广告
+#!desc=移除开屏广告、搜索栏热搜及资讯、青少年模式弹窗。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/miHoYoBBS.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id1470182559
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+
+[Body Rewrite]
+http-response-jq (?i:^https:\/\/bbs-api(-ab)?\.miyoushe\.com\/apihub\/api\/getAppStartupData$) 'delpaths([["data","resp_map","/teenager/api/info"],["data","resp_map","/apihub/api/getAppConfig","data","get_app_config_response","config","is_show_teenager_mode_btn"],["data","resp_map","/apihub/api/getAppConfig","data","get_app_config_response","config","teenager_popup_freq_type"]])'
+http-response-jq (?i:^https:\/\/bbs-api(-ab)?\.miyoushe\.com\/apihub\/api\/getAppConfig$) 'try setpath(["data.config.teenager_popup_freq_type\", \"data.config.is_show_teenager_mode_btn"]; [0, 0]) catch .'
+http-response-jq (?i:^https:\/\/bbs-api-ab\.miyoushe\.com\/teenager\/api\/info$) 'try setpath(["data.is_enabled\", \"data.is_teenager\", \"data.is_force"]; [false, false, false]) catch .'
+
+[Map Local]
+(?i:^https:\/\/bbs-api(-ab)?\.miyoushe\.com\/apihub\/api\/getAppSplash$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/bbs-api(-ab)?\.miyoushe\.com\/apihub\/api\/getHotKeywordAndEvent$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/bbs-api-static\.miyoushe\.com\/search\/api\/search\/pre_keyword\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[MITM]
+hostname = %APPEND% bbs-api.miyoushe.com, bbs-api-ab.miyoushe.com

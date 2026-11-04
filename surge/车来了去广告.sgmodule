@@ -1,0 +1,31 @@
+#!name=车来了去广告
+#!desc=清洗配置，移除开屏广告、首页金刚位、文章推荐，精简我的页面。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Chelaile.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id667831823
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+
+[Rule]
+DOMAIN,ad.chelaile.net.cn,REJECT,extended-matching,pre-matching
+
+[Map Local]
+(?i:^https:\/\/api\.chelaile\.net\.cn\/goocity\/flowPos\/home\?) data-type=text data="json" status-code=200
+(?i:^https:\/\/api\.chelaile\.net\.cn\/goocity\/flowPos\/listByPos\?) data-type=text data="json" status-code=200
+(?i:^https:\/\/web\.chelaile\.net\.cn\/api\/operative_position\/infoflow\/getInfo\?) data-type=text data="json" status-code=200
+(?i:^https:\/\/cdn\.web\.chelaile\.net\.cn\/info-flow\/index\.html\?) data-type=text data="" status-code=404
+(?i:^https:\/\/image3\.chelaile\.net\.cn\/hw6u6LYY\.png$) data-type=tiny-gif status-code=200
+(?i:^https:\/\/api\.chelaile\.net\.cn\/led-weather\/v\d\/condition_brief\?) data-type=text data="json" status-code=200
+(?i:^https:\/\/api\.chelaile\.net\.cn\/goocity\/config\/notices\?) data-type=text data="json" status-code=200
+(?i:^https:\/\/api\.chelaile\.net\.cn\/encourage\/activity\/control\?) data-type=text data="json" status-code=200
+
+[Script]
+清洗配置 = type=http-response, pattern=(?i:^https:\/\/api\.chelaile\.net\.cn\/bus-side\/appToggle\/getStatus\?), script-path=https://kelee.one/Resource/JavaScript/Chelaile/Chelaile_remove_ads.js, requires-body=true, timeout=10
+
+[MITM]
+hostname = %APPEND% api.chelaile.net.cn, web.chelaile.net.cn, cdn.web.chelaile.net.cn, image3.chelaile.net.cn

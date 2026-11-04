@@ -1,0 +1,47 @@
+name: 🌐 发布模块网站
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "index.json"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: 🚀 部署到 GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 📥 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 🧩 同步最新模块索引
+        # 网站只发布静态文件；索引在构建时从仓库根目录复制，不额外产生提交。
+        run: cp index.json docs/data/index.json
+
+      - name: ⚙️ 准备 Pages
+        uses: actions/configure-pages@v5
+
+      - name: 📦 上传网站
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: 🌐 发布
+        id: deployment
+        uses: actions/deploy-pages@v4

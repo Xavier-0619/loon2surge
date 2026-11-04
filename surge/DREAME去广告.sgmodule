@@ -1,0 +1,24 @@
+#!name=DREAME去广告
+#!desc=移除开屏广告、首页大图推广、横幅推广，精简底栏，阻止桌面图标替换。仅支持2.5.1版。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/DREAME.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id1564419343
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+
+[Body Rewrite]
+http-response-jq (?i:^https:\/\/cn\.iot\.dreame\.tech:13267\/dreame-system\/dreame-app\/setting\/query$) 'delpaths([["data","appIconConfig"]])'
+
+[Map Local]
+(?i:^https:\/\/cn\.iot\.dreame\.tech:\d+\/dreame-product\/public\/advertisement\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/cn-mall\.dreame\.tech\/dreame-mall\/api\/v1\/tag\/list$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/cn-wxmall\.dreame\.tech\/main\/goods\/get-topgoods$) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/cn\.iot\.dreame\.tech:\d+\/dreame-product\/public\/common-plugin$) data-type=text data="json" status-code=200
+
+[MITM]
+hostname = %APPEND% cn-mall.dreame.tech, cn-wxmall.dreame.tech, cn.iot.dreame.tech

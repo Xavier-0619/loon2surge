@@ -1,0 +1,38 @@
+#!name=测测去广告
+#!desc=移除开屏广告、活动皮肤、各类弹窗及横幅、金刚位红点文字，精简首页标签及搜索页面。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Cece.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id756771906
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+
+[Body Rewrite]
+http-response-jq (?i:^https:\/\/api\.cece\.com\/user\/init\?) 'delpaths([["data","launch_img_url"],["data","launch_goto_url"]])'
+http-response-jq (?i:^https:\/\/api\.cece\.com\/common\/app\/app_config\?) 'try setpath(["data.is_new_year\", \"data.spring_festival\", \"data.show_feedback_entry\", \"data.show_course_entry\", \"data.show_store_entry\", \"data.show_luna\", \"data.show_ead\", \"data.show_ad\", \"data.show_live_filter_tarot\", \"data.community_feed_adswitch\", \"data.open_screen_ad_times\", \"data.open_screen_ad_duration\", \"data.isShowThumbsGif\", \"data.teenager_mode_open\", \"data.flu_log"]; [false, false, false, false, false, false, false, false, false, false, 0, 0, false, false, false]) catch .'
+http-response-jq (?i:^https:\/\/api\.cece\.com\/common\/app\/app_config\?) 'delpaths([["data","activity_list"],["data","fortune_ab_config"]])'
+http-response-jq (?i:^https:\/\/api\.cece\.com\/chart\/tools\/home_10_tools\?) '.data.tools |= map(del(.icon_tip_image))'
+http-response-jq (?i:^https:\/\/api\.cece\.com\/user\/index\/tab_list\?) '.data.tabs |= map(select(.type != "shop"))'
+http-response-jq (?i:^https:\/\/api\.cece\.com\/common\/app\/risk_entrance\?) 'try setpath(["data.ai_fortune_show_ask_tool\", \"data.ai_sign_show_ask_tool\", \"data.single_tool_show_dice_card\", \"data.single_tool_show_tarot_card\", \"data.single_tool_show_bazi_card\", \"data.single_tool_show_hepan_card\", \"data.single_tool_show_ziwei_card\", \"data.single_tool_show_xingpan_card\", \"data.multi_tool_show_card\", \"data.ai_ccai_show_multi_tool"]; [false, false, false, false, false, false, false, false, false, false]) catch .'
+
+[Map Local]
+(?i:^https:\/\/api\.cece\.com\/user\/index\/banners\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/ask\/ai_chat\/popup\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/user\/popup\/) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/chart\/easter_egg\/popup\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/user\/register_task\/notice_task\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/ask\/ask\/alert_minus\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/msgAsk\/question\/new_coupon_status\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/user\/user\/myPageBanner\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/live\/user\/coupon_tab\?) data-type=text data="json" status-code=200
+(?i:^https:\/\/api\.cece\.com\/live\/recommend\/new_user\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/chart\/tools\/get_search_recommend\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/user\/rank\/list\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.cece\.com\/chart\/config\/chart_activity\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[MITM]
+hostname = %APPEND% api.cece.com

@@ -1,0 +1,29 @@
+#!name=美颜相机去广告
+#!desc=移除开屏广告、应用内弹窗，精简首页和我的页面。
+#!author=可莉🅥[https://github.com/luestr/ProxyResource/blob/main/README.md]
+#!icon=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/MeituMYXJ.png
+#!category=可莉插件
+#!openUrl=https://apps.apple.com/app/id592331499
+#!tag=去广告
+#!homepage=https://hub.kelee.one
+#!date=2026-10-02 13:57:49
+#!requirement=CORE_VERSION>=6008000
+
+# 由 loon2surge 自动转换
+
+[Rule]
+DOMAIN,adui.tg.meitu.com,REJECT,extended-matching,pre-matching
+
+[Body Rewrite]
+http-response-jq (?i:^https:\/\/api\.meiyan\.com\/operation\/get_config\.json\?) 'delpaths([["response","time_limit"],["response","bubble"],["response","person_center"]])'
+http-response-jq (?i:^https:\/\/api\.meiyan\.com\/operation\/get_config\.json\?) 'try setpath(["response.function_pop.meiyan_style.is_pop\", \"response.onoff.vip_half_window_exit_remain_popup.open\", \"response.onoff.vip_home_exit_remain_popup"]; [false, 0, 0]) catch .'
+
+[Map Local]
+(?i:^https:\/\/api\.meiyan\.com\/operation\/home_banner\.json\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+(?i:^https:\/\/api\.meiyan\.com\/vip\/permission_update_popup\.json\?) data-type=text data="{}" status-code=200 header="Content-Type:application/json"
+
+[Script]
+精简首页功能栏目并移除美颜推荐 = type=http-response, pattern=(?i:^https:\/\/api\.meiyan\.com\/operation\/home\.json\?), script-path=https://kelee.one/Resource/JavaScript/MeituMYXJ/MeituMYXJ_remove_ads.js, requires-body=true, timeout=10
+
+[MITM]
+hostname = %APPEND% api.meiyan.com

@@ -1,0 +1,24 @@
+.workbuddy/
+
+# 编译产物与本地调试目录
+/loon2surge
+/loon2surge.exe
+/bin/
+/build/
+/.tooling/
+/.verify/
+/.dbg/
+sync.log
+*.test
+
+# 编辑器
+.idea/
+.vscode/
+.DS_Store
+
+# 上游监听脚本的临时目录
+/.upstream-work/
+
+# Python 的字节码缓存（上游监听脚本会生成）
+__pycache__/
+*.pyc
