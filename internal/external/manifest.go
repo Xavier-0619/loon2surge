@@ -52,7 +52,11 @@ func removeIfUnchanged(path, expected string) {
 		fmt.Fprintf(os.Stderr, "! %s 被人工改过，不删除\n", path)
 		return
 	}
-	_ = os.Remove(path)
+	// 删不掉要说出来：清单已经不记这份模块了，文件却还躺在 surge/ 里，
+	// 下一轮会把它当成"别人占用的同名模块"，再也不会来清理它。
+	if err := os.Remove(path); err != nil && !errors.Is(err, os.ErrNotExist) {
+		fmt.Fprintf(os.Stderr, "! 删不掉 %s：%v\n", path, err)
+	}
 }
 
 // pruneSnapshot 删掉上游已经下线的快照文件，目录跟着上游走。

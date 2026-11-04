@@ -110,13 +110,6 @@ func formatRule(ctx *Ctx, kind, value, policy string, extra []string) (string, e
 		}
 	}
 
-	var options []string
-	switch {
-	case domainTypes[kind]:
-		options = append(options, "extended-matching")
-	case ipTypes[kind]:
-		options = append(options, "no-resolve")
-	}
 	// 源文件里的 extended-matching / no-resolve / pre-matching 不照搬，按类型重建；
 	// 其余选项 Surge 文档没确认过，原样透传等于把未知语法塞给客户端。
 	for _, item := range extra {
@@ -129,21 +122,38 @@ func formatRule(ctx *Ctx, kind, value, policy string, extra []string) (string, e
 		return "", unsupported("unsupported-rule", "未核验的规则选项 %s", item)
 	}
 
-	if kind == "DOMAIN-WILDCARD" || kind == "PROCESS-NAME" {
-		ctx.Need(ReqLatest)
-	}
-	if kind == "URL-REGEX" {
-		ctx.Need(ReqModern)
-	} else {
-		ctx.Need(ReqBase)
-	}
-
+	// 门槛要在选项定下来之后再抬：这一行如果被拒，不该留下任何痕迹。
+	options := ruleOptions(ctx, kind)
 	if rejectPolicies[policy] {
 		options = append(options, "pre-matching")
 		ctx.Need(ReqModern)
 	}
 
 	return strings.Join(append([]string{kind, value, policy}, options...), ","), nil
+}
+
+// ruleOptions 按类型补 Surge 需要的匹配选项，并把该类型要求的版本抬进门槛。
+//
+// 简单规则和逻辑规则都走这里：以前只有 formatRule 抬门槛，
+// AND/OR/NOT 里的 URL-REGEX、DOMAIN-WILDCARD、进程规则不抬——模块在低版本上
+// 能导入，但那几行规则静默不生效。
+func ruleOptions(ctx *Ctx, kind string) []string {
+	var options []string
+	switch {
+	case domainTypes[kind]:
+		options = append(options, "extended-matching")
+	case ipTypes[kind]:
+		options = append(options, "no-resolve")
+	}
+	switch kind {
+	case "DOMAIN-WILDCARD", "PROCESS-NAME":
+		ctx.Need(ReqLatest)
+	case "URL-REGEX":
+		ctx.Need(ReqModern)
+	default:
+		ctx.Need(ReqBase)
+	}
+	return options
 }
 
 func ruleAsMapLocal(ctx *Ctx, pattern, policy string) []Emit {
@@ -277,11 +287,11 @@ func (p *logicParser) expect(char byte) error {
 	return nil
 }
 
-func formatMatcher(node *matcher) string {
+func formatMatcher(ctx *Ctx, node *matcher) string {
 	if len(node.children) > 0 {
 		parts := make([]string, 0, len(node.children))
 		for _, child := range node.children {
-			parts = append(parts, formatMatcher(child))
+			parts = append(parts, formatMatcher(ctx, child))
 		}
 		return "(" + node.kind + ",(" + strings.Join(parts, ",") + "))"
 	}
@@ -290,13 +300,7 @@ func formatMatcher(node *matcher) string {
 	if alias, ok := ruleAliases[strings.ToUpper(kind)]; ok {
 		kind = alias
 	}
-	var options []string
-	switch {
-	case domainTypes[strings.ToUpper(kind)]:
-		options = append(options, "extended-matching")
-	case ipTypes[strings.ToUpper(kind)]:
-		options = append(options, "no-resolve")
-	}
+	options := ruleOptions(ctx, strings.ToUpper(kind))
 	suffix := ""
 	if len(options) > 0 {
 		suffix = "," + strings.Join(options, ",")
@@ -405,7 +409,7 @@ func logicRule(ctx *Ctx, parts []string) ([]Emit, error) {
 
 	parts2 := make([]string, 0, len(nodes))
 	for _, node := range nodes {
-		parts2 = append(parts2, formatMatcher(node))
+		parts2 = append(parts2, formatMatcher(ctx, node))
 	}
 	text := engine + ",(" + strings.Join(parts2, ",") + ")," + policy
 	if rejectPolicies[policy] && !kinds["PROCESS-NAME"] {

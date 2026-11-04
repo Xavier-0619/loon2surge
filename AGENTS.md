@@ -138,3 +138,8 @@ go run ./cmd/loon2surge convert internal/lpx/testdata/zhihu.lpx --category 可�
 - **可莉按 UA 放行。** 下载必须带 Loon 的 UA，改浏览器 UA 会整个 403。
 - **Cloudflare 看 TLS 指纹。** Go 原生栈会拿到 `cf-mitigated=challenge`，所以要能借
   Python 的 OpenSSL 栈（`internal/upstream/pyfetch.py`）。
+- **`#!requirement` 要按产物里真正用到的语法抬。** 简单规则抬了，逻辑规则里的
+  `URL-REGEX` / `DOMAIN-WILDCARD` / `PROCESS-NAME` 原先没抬——模块能导入、低版本上那几行
+  静默不生效。`formatRule` 和 `formatMatcher` 现在共用 `ruleOptions`，别再拆开写。
+- **`-h` 不能返回 `nil` 错误。** `internal/cli` 的 `parse` 一旦把 `flag.ErrHelp` 吞成
+  `nil`，五个子命令都会打印完帮助就继续执行——`sync -h` 真的会跑一整轮同步。

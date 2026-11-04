@@ -163,8 +163,14 @@ func (p *pySender) get(raw string) (reply, error) {
 	if err != nil {
 		return reply{}, fmt.Errorf("下载脚本没有返回状态码：%q", strings.TrimSpace(string(stdout)))
 	}
-	body, _ := os.ReadFile(out)
+	body, readErr := os.ReadFile(out)
 	_ = os.Remove(out)
+	// 403/404 时脚本本来就不写正文，缺文件是正常答复；但 2xx 报了成功却没拿到字节
+	// （或只拿到半份）不能算下载成功——截断的插件长得像完整插件，
+	// 它的 SHA 会被记成"这一版内容"，下一轮就再也不会重下了。
+	if readErr != nil && status >= http.StatusOK && status < http.StatusMultipleChoices {
+		return reply{}, fmt.Errorf("状态 %d 但下载脚本没有留下正文：%w", status, readErr)
+	}
 
 	// 脚本在被拒时会把 cf-ray / cf-mitigated 写到 stderr，用来区分"质询"和"IP 封锁"
 	hint := strings.TrimSpace(stderr.String())

@@ -111,7 +111,7 @@ func (s *Sources) kill(host, reason string) {
 // 是两个不同的服务，把 hub 的路径搬到 kelee.one 上只会得到 404。
 func (s *Sources) candidates(raw string) []string {
 	parsed, err := url.Parse(raw)
-	if err != nil || parsed.Host == "" || !strings.HasSuffix(parsed.Hostname(), "kelee.one") {
+	if err != nil || !isKeleeHost(parsed.Hostname()) {
 		return []string{raw}
 	}
 	tail := parsed.Path
@@ -124,6 +124,15 @@ func (s *Sources) candidates(raw string) []string {
 		out = append(out, mirror+tail)
 	}
 	return out
+}
+
+// isKeleeHost 只认真正的 kelee.one 及其子域。
+//
+// 光用 HasSuffix 会把 notkelee.one 也算进来，那样的话一个陌生主机的地址会被
+// 改写成镜像站上的同路径地址，拿回来的东西根本不是它声称的那份。
+func isKeleeHost(host string) bool {
+	host = strings.ToLower(host)
+	return host == "kelee.one" || strings.HasSuffix(host, ".kelee.one")
 }
 
 // Fetch 依次尝试可用来源，拿到第一份内容就返回。

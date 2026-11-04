@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"slices"
@@ -806,6 +807,43 @@ func TestPythonChannel(t *testing.T) {
 	}
 }
 
+// TestPySenderNeedsBodyOnSuccess 锁住 python 通道的分类：2xx 报了成功却没拿到正文
+// 要当失败（半份插件会被记成"这一版内容"，下一轮再也不重下），
+// 而 403/404 本来就不写正文，缺文件是正常答复，必须原样交给 Go 侧分类。
+func TestPySenderNeedsBodyOnSuccess(t *testing.T) {
+	sh, err := exec.LookPath("sh")
+	if err != nil {
+		t.Skip("这台机器没有 sh")
+	}
+
+	run := func(t *testing.T, script string) (reply, error) {
+		t.Helper()
+		dir := t.TempDir()
+		path := filepath.Join(dir, "fake.sh")
+		if err := os.WriteFile(path, []byte(script), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		channel := &pySender{python: sh, script: path, dir: dir}
+		return channel.get("https://kelee.one/Tool/Loon/Lpx/a.lpx")
+	}
+
+	t.Run("200 没正文", func(t *testing.T) {
+		if _, err := run(t, "#!/bin/sh\necho 200\n"); err == nil {
+			t.Error("期望报错，结果把空正文当成下载成功")
+		}
+	})
+
+	t.Run("404 没正文", func(t *testing.T) {
+		result, err := run(t, "#!/bin/sh\necho 404\n")
+		if err != nil {
+			t.Fatalf("404 是有效答复，不该当网络故障：%v", err)
+		}
+		if result.status != 404 || len(result.body) != 0 {
+			t.Errorf("404 答复不对：status=%d body=%q", result.status, result.body)
+		}
+	})
+}
+
 // TestCandidatesKeepOriginalHost 锁住一次真实事故：
 // 早期实现会把索引地址 hub.kelee.one/list.json 改写成 kelee.one/list.json，
 // 那是另一个服务，只会返回 404，于是整轮同步在第一步就失败。
@@ -828,6 +866,14 @@ func TestCandidatesKeepOriginalHost(t *testing.T) {
 	for i := range want {
 		if got[i] != want[i] {
 			t.Fatalf("第 %d 个候选是 %q，想要 %q", i, got[i], want[i])
+		}
+	}
+
+	// 后缀匹配会把 notkelee.one 也当成自己人，那样一来陌生主机的地址会被改写到镜像上。
+	for _, host := range []string{"notkelee.one", "evil-kelee.one", "kelee.one.evil.cn"} {
+		got := withMirror.candidates("https://" + host + "/Tool/Loon/Lpx/a.lpx")
+		if len(got) != 1 || got[0] != "https://"+host+"/Tool/Loon/Lpx/a.lpx" {
+			t.Errorf("%s 不是 kelee.one，不该搬去镜像：%v", host, got)
 		}
 	}
 }
