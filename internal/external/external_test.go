@@ -1,6 +1,10 @@
 package external
 
 import (
+	"archive/tar"
+	"bytes"
+	"compress/gzip"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -273,5 +277,63 @@ func TestRunRetiresModuleDroppedUpstream(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(snapshot, "gone.sgmodule")); err == nil {
 		t.Error("快照也要跟着清掉")
+	}
+}
+
+// 解包时路径完全来自远端仓库，而快照和 surge/ 都按它落盘：
+// `../../` 一旦穿过 filepath.Join，写到的就是仓库里毫不相干的文件。
+func TestReadTarballRejectsEscapingPaths(t *testing.T) {
+	var buf bytes.Buffer
+	gz := gzip.NewWriter(&buf)
+	writer := tar.NewWriter(gz)
+	for _, item := range []struct{ name, text string }{
+		{"Rewrite-main/good.sgmodule", fmt.Sprintf(moduleTemplate, "正常模块")},
+		{"Rewrite-main/../../evil.sgmodule", fmt.Sprintf(moduleTemplate, "越界模块")},
+	} {
+		header := &tar.Header{Name: item.name, Mode: 0o644, Size: int64(len(item.text)), Typeflag: tar.TypeReg}
+		if err := writer.WriteHeader(header); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := writer.Write([]byte(item.text)); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := writer.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := gz.Close(); err != nil {
+		t.Fatal(err)
+	}
+
+	sources, _, err := readTarball(buf.Bytes(), "ios151/Rewrite")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(sources) != 1 || sources[0].Path != "good.sgmodule" {
+		t.Fatalf("越界条目不该收进来，得到 %+v", paths(sources))
+	}
+}
+
+func paths(sources []Source) []string {
+	out := make([]string, 0, len(sources))
+	for _, source := range sources {
+		out = append(out, source.Path)
+	}
+	return out
+}
+
+func TestEscapesDir(t *testing.T) {
+	cases := map[string]bool{
+		"a/b.sgmodule":       false,
+		"good.sgmodule":      false,
+		"/abs/good.sgmodule": false, // 绝对路径会被 Join 收到目录里，不算越界
+		"../x.sgmodule":      true,
+		"a/../../x.sgmodule": true,
+		"a/b/../../../x":     true,
+	}
+	for path, want := range cases {
+		if got := escapesDir(path); got != want {
+			t.Errorf("escapesDir(%q) = %v，期望 %v", path, got, want)
+		}
 	}
 }

@@ -7,7 +7,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"os"
 )
 
 // Version 是发布版本号；只随发布递增，和转换规则版本（lpx.Version）是两件事。
@@ -96,9 +95,8 @@ func Run(argv []string) int {
 func parse(fs *flag.FlagSet, argv []string) (targets []string, err error) {
 	flags, targets := splitArgs(argv, valueFlagNames(fs))
 	if err := fs.Parse(flags); err != nil {
-		if errors.Is(err, flag.ErrHelp) {
-			return nil, nil
-		}
+		// ErrHelp 也要原样交回：吞成 nil 的话调用方会以为解析通过，接着真的去跑这条命令
+		// （`sync -h` 于是打印完帮助就开整轮同步）。exitCode 把它算正常退出。
 		return nil, err
 	}
 	return targets, nil
@@ -114,9 +112,4 @@ func exitCode(err error) int {
 	default:
 		return 2
 	}
-}
-
-func failf(format string, args ...any) int {
-	fmt.Fprintf(os.Stderr, format+"\n", args...)
-	return 2
 }

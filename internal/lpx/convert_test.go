@@ -132,6 +132,31 @@ func TestRules(t *testing.T) {
 		})
 	})
 
+	// 逻辑规则里的匹配项也要抬门槛：这几类语法在低版本 Surge 上是"能导入、
+	// 那一行静默不生效"，模块声明的版本比实际用到的低就等于把坑留给用户。
+	t.Run("逻辑规则抬高版本门槛", func(t *testing.T) {
+		cases := []struct {
+			name  string
+			input string
+			want  string
+		}{
+			{"URL-REGEX", "#!name=t\n[Rule]\nAND, ((URL-REGEX, ^https://a\\.com/ad), (USER-AGENT, Safari)), DIRECT\n", "6008000"},
+			{"DOMAIN-WILDCARD", "#!name=t\n[Rule]\nAND, ((DOMAIN-WILDCARD, *.a.com)), DIRECT\n", "6010000"},
+			{"进程规则", "#!name=t\n#!system=macos\n[Rule]\nAND, ((PROCESS-NAME, /Applications/A.app/Contents/MacOS/A)), DIRECT\n", "6010000"},
+		}
+		for _, test := range cases {
+			t.Run(test.name, func(t *testing.T) {
+				result := convert(t, test.input)
+				if len(section(result, "Rule")) != 1 {
+					t.Fatalf("规则没转出来，产物：\n%s", result.Text)
+				}
+				if !strings.Contains(result.Text, "#!requirement=CORE_VERSION>="+test.want) {
+					t.Errorf("门槛偏低，期望 >=%s，产物：\n%s", test.want, result.Text)
+				}
+			})
+		}
+	})
+
 	t.Run("重复规则合并", func(t *testing.T) {
 		result := convert(t, "#!name=t\n[Rule]\nDOMAIN, a.com, REJECT\nDOMAIN, a.com, REJECT\n")
 		if len(section(result, "Rule")) != 1 {

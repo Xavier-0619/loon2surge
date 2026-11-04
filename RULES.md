@@ -147,6 +147,9 @@ Surge 模块的 `[Rule]` 只接受 `DIRECT`、`REJECT`、`REJECT-TINYGIF`。
 
 递归重建括号结构，内部域名类补 `extended-matching`、IP 类补 `no-resolve`；
 顶层只在"拒绝策略且所有子项都支持 `pre-matching`"时才补，逻辑节点本身不加 `extended-matching`。
+内部每一项都按自己的类型抬门槛（`URL-REGEX` → `6008000`，`DOMAIN-WILDCARD` / `PROCESS-NAME` →
+`6010000`），和写成单条规则时同一套标准——否则模块声明的版本比实际用到的低，
+低版本 Surge 上那一行会静默不生效。
 
 ### PROCESS-NAME
 

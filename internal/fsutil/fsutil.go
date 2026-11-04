@@ -16,18 +16,39 @@ func WriteFile(path string, data []byte) (bool, error) {
 	if existing, err := os.ReadFile(path); err == nil && bytes.Equal(existing, data) {
 		return false, nil
 	}
-	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+	dir := filepath.Dir(path)
+	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return false, err
 	}
-	temp := path + ".tmp"
-	if err := os.WriteFile(temp, data, 0o644); err != nil {
+	// 临时名必须唯一：两轮进程重叠（比如手动跑了一次 sync，CI 的定时任务也在写）
+	// 时，固定的 path+".tmp" 会被两边互相覆盖，rename 之后内容和文件名就对不上。
+	temp, err := os.CreateTemp(dir, filepath.Base(path)+".tmp-*")
+	if err != nil {
 		return false, err
 	}
-	if err := os.Rename(temp, path); err != nil {
-		_ = os.Remove(temp)
+	tempName := temp.Name()
+	if err := writeAndClose(temp, data); err != nil {
+		_ = os.Remove(tempName)
+		return false, err
+	}
+	if err := os.Rename(tempName, path); err != nil {
+		_ = os.Remove(tempName)
 		return false, err
 	}
 	return true, nil
+}
+
+// writeAndClose 写完就关，顺手把权限补回 0644（CreateTemp 给的是 0600）。
+func writeAndClose(file *os.File, data []byte) error {
+	if _, err := file.Write(data); err != nil {
+		_ = file.Close()
+		return err
+	}
+	if err := file.Chmod(0o644); err != nil {
+		_ = file.Close()
+		return err
+	}
+	return file.Close()
 }
 
 // WriteString 是 WriteFile 的字符串版本。
