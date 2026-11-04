@@ -84,7 +84,8 @@ section 顺序固定（只输出非空的）：
 - 参数名只保留 ASCII 字母、数字、下划线，其余转 `_`；数字开头加 `ARG_`；归一后重名 → 致命。
 - 正文里的 `{Name}` / `${Name}` 统一换成 `{{{Name}}}`。
 - **未被任何产出行引用的参数会删除**，记 `argument-unused`。
-- 默认值含逗号或（去空白后）以双引号开头 → 用双引号包住并转义，`requirement` 抬到 `6008000`。
+- 默认值含逗号或（去空白后）以双引号开头 → 用双引号包住并转义；
+  出现引号包住的值时 `requirement` 抬到 `6008000`，否则抬到 `5005000`（Mac 5.5.0 引入参数表）。
 
 为什么不对含空格的值加引号：Surge 参数表里引号会进到值本身，`Cron:0 0 * * *` 加上引号后
 脚本收到的是 `"0 0 * * *"`，cron 直接失效。
@@ -132,7 +133,8 @@ Surge 模块的 `[Rule]` 只接受 `DIRECT`、`REJECT`、`REJECT-TINYGIF`。
 
 ### 裸域名
 
-`example.com` → `DOMAIN,example.com,REJECT,extended-matching,pre-matching`。
+`example.com` → `DOMAIN,example.com,REJECT,extended-matching,pre-matching`，
+门槛抬到 `6008000`（`pre-matching`，与普通规则同一套标准）。
 
 ### URL-REGEX 特例
 
@@ -269,10 +271,17 @@ Loon 旧语法没写 `timeout` 时取 10 秒，Surge 默认 5 秒，所以显式
 
 ## 版本门槛
 
+`CORE_VERSION` 按 Mac 版本编码（`major*1000000 + minor*1000 + patch`），
+iOS 版本按同批发布对应到 Mac 版本上，见 [requirement](https://manual.nssurge.com/profile/requirement.html)。
+`5005000` = Mac 5.5.0（模块参数表），`5006000` = iOS 5.10.0 / Mac 5.6.0
+（Map Local 的 `data-type`/`status-code` 与 Body Rewrite）。
+
 | 触发条件 | requirement |
 | --- | --- |
-| 模块参数、Map Local、普通 Body Rewrite | `CORE_VERSION>=20` |
-| JQ、`pre-matching`、URL-REGEX `extended-matching`、引号参数 | `CORE_VERSION>=6008000` |
+| 普通规则、Script、URL/Header Rewrite 等旧版语法 | `CORE_VERSION>=20` |
+| 模块参数表 `#!arguments` | `CORE_VERSION>=5005000` |
+| Map Local 的 `data-type`/`status-code`、普通 Body Rewrite | `CORE_VERSION>=5006000` |
+| JQ、`pre-matching`、URL-REGEX `extended-matching`、引号包住的参数默认值 | `CORE_VERSION>=6008000` |
 | IP Rewrite、`tun-included-routes`、`ipv6-vif`、`DOMAIN-WILDCARD`、`PROCESS-NAME` | `CORE_VERSION>=6010000` |
 
 取所有命中项的最大值。门槛宁可保守：向不支持的版本宣称可用，用户只会看到"模块装上了但不生效"。
@@ -296,7 +305,8 @@ Loon 旧语法没写 `timeout` 时取 10 秒，Surge 默认 5 秒，所以显式
 
 `Validate(text)` 把生成的模块当别人写的文件重读，检查：
 
-- 头部有 `#!name`，`#!arguments` 名字唯一，`#!requirement` 格式正确
+- 头部有 `#!name`，`#!arguments` 名字唯一，`#!requirement` 格式正确且不低于内容
+  实际用到的语法（低了就是"低版本上这些行静默不生效"，记 `requirement-low`）
 - section 都属于已知集合、不重复、顺序符合上面的固定序列
 - 没有 `enable=` / `enabled?=` / `%Arg%` / 裸 `{Name}` 残留（`%APPEND%` 除外）
 - `[Rule]` 至少三个字段，策略只允许 `DIRECT` / `REJECT` / `REJECT-TINYGIF`

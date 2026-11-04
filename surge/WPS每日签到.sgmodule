@@ -7,7 +7,7 @@
 #!tag=签到
 #!homepage=https://github.com/luestr/ProxyResource/blob/main/Resource/Markdown/WPS/README.md
 #!date=2026-10-02 13:57:49
-#!requirement=CORE_VERSION>=20
+#!requirement=CORE_VERSION>=5005000
 #!arguments=CaptureCookie:#,AK:,SK:,MAX_RETRIES:5,CRONEXP:0 8 * * *
 
 # 由 loon2surge 自动转换

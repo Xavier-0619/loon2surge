@@ -23,10 +23,15 @@ import (
 )
 
 // Surge 模块要求的版本门槛，取所有命中项的最大值。
+//
+// CORE_VERSION 按 Mac 版本编码：major*1000000 + minor*1000 + patch，
+// 见 https://manual.nssurge.com/profile/requirement.html。
 const (
-	ReqBase   = 20      // 模块参数 / Map Local / Body Rewrite
-	ReqModern = 6008000 // JQ / pre-matching / 引号参数
-	ReqLatest = 6010000 // IP Rewrite / tun 路由 / DOMAIN-WILDCARD / 进程规则
+	ReqBase      = 20      // 普通规则、Script、URL/Header Rewrite 等旧版就有的语法
+	ReqArguments = 5005000 // 模块参数表 #!arguments（Mac 5.5.0）
+	ReqMapLocal  = 5006000 // Map Local 的 data-type/status-code、普通 Body Rewrite（iOS 5.10.0 / Mac 5.6.0）
+	ReqModern    = 6008000 // JQ / pre-matching / 引号参数
+	ReqLatest    = 6010000 // IP Rewrite / tun 路由 / DOMAIN-WILDCARD / 进程规则
 )
 
 // SectionOrder 是模块里各 section 的固定输出顺序。

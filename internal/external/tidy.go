@@ -11,8 +11,11 @@ package external
 
 import (
 	"fmt"
+	"math"
+	"regexp"
 	"slices"
 	"sort"
+	"strconv"
 	"strings"
 
 	"loon2surge/internal/lpx"
@@ -49,6 +52,8 @@ func tidy(text, repo string) (string, []string) {
 	text = strings.TrimPrefix(text, "\ufeff")
 	text = strings.ReplaceAll(text, "\r\n", "\n")
 	text = strings.ReplaceAll(text, "\r", "\n")
+	// 内容要求的最低版本在头部统一算，避免每段各抬一遍。
+	needed := lpx.NeededRequirement(text)
 
 	raw := strings.Split(text, "\n")
 	lines := make([]string, len(raw))
@@ -120,7 +125,7 @@ func tidy(text, repo string) (string, []string) {
 	}
 
 	var out strings.Builder
-	if header := tidyHeader(head, repo, add); len(header) > 0 {
+	if header := tidyHeader(head, repo, add, needed); len(header) > 0 {
 		out.WriteString(strings.Join(header, "\n"))
 	}
 	if len(parts) > 0 {
@@ -134,8 +139,8 @@ func tidy(text, repo string) (string, []string) {
 
 // tidyHeader 规范头部：`#!key = value` 收成 `#!key=value`、按 MetaOrder 排序、
 // 去掉重复与空值；缺 author / category 的补上来源，免得不认识这个模块的人
-// 找不到出处。
-func tidyHeader(lines []string, repo string, add func(string)) []string {
+// 找不到出处。needed 是内容要求的最低 CORE_VERSION，声明不到就补/抬。
+func tidyHeader(lines []string, repo string, add func(string), needed int) []string {
 	type meta struct {
 		key   string
 		value string
@@ -205,6 +210,19 @@ func tidyHeader(lines []string, repo string, add func(string)) []string {
 		}
 	}
 
+	// 版本声明低于内容实际用到的语法时，低版本 Surge 会把这部分行当注释丢掉——
+	// 模块能导入、功能静默失效。补/抬到同一个标准，和转换器输出的口径一致。
+	if needed > 0 {
+		if at, ok := index["requirement"]; ok {
+			if declared := declaredRequirement(metas[at].value); declared < needed {
+				metas[at].value = "CORE_VERSION>=" + strconv.Itoa(needed)
+				add("requirement 抬到 CORE_VERSION>=" + strconv.Itoa(needed))
+			}
+		} else {
+			fill("requirement", "CORE_VERSION>="+strconv.Itoa(needed), "补齐 #!requirement")
+		}
+	}
+
 	sort.SliceStable(metas, func(i, j int) bool {
 		return metaRank(metas[i].key) < metaRank(metas[j].key)
 	})
@@ -223,6 +241,20 @@ func tidyHeader(lines []string, repo string, add func(string)) []string {
 func provenance(repo string) string {
 	return "# 由 loon2surge 从 " + repo + " 同步整理"
 }
+
+// declaredRequirement 解析已声明的 CORE_VERSION；解析不了返回最大值，
+// 表示"拿不准就别动"——这种写法会被自检按 meta-requirement 拒收，轮不到 tidy 救。
+func declaredRequirement(value string) int {
+	text := strings.TrimSpace(value)
+	if match := requirementValue.FindStringSubmatch(text); match != nil {
+		if parsed, err := strconv.Atoi(match[1]); err == nil {
+			return parsed
+		}
+	}
+	return math.MaxInt
+}
+
+var requirementValue = regexp.MustCompile(`^CORE_VERSION>=(\d+)$`)
 
 // canonicalSection 把 [script] 这种写法收回标准大小写。
 func canonicalSection(name string) string {

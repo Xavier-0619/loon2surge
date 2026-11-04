@@ -2,6 +2,7 @@
 #!desc=将 https://t.me/... 重定向到你选择的客户端（tg/sg/turrit/ime/ng/lingo
 #!author=b
 #!category=TG跳转
+#!requirement=CORE_VERSION>=6008000
 #!arguments=Client:"Telegram"
 #!arguments-desc=Client: Telegram/Swiftgram/Turrit/iMe/Nicegram/Lingogram 或 tg/sg/turrit/ime/ng/lingo
 # 由 loon2surge 从 ios151/Rewrite 同步整理

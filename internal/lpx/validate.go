@@ -41,8 +41,11 @@ var (
 	statusCode   = regexp.MustCompile(`\bstatus-code=(\d+)`)
 	dataType     = regexp.MustCompile(`\bdata-type=([a-z-]+)`)
 	bodyHead     = regexp.MustCompile(`^http-(request|response)(-jq)?\s`)
+	bodyJQ       = regexp.MustCompile(`^http-(request|response)-jq\s`)
 	scriptType   = regexp.MustCompile(`\btype=(http-request|http-response|cron|generic|event|dns)\b`)
 	requirement  = regexp.MustCompile(`^#!requirement=CORE_VERSION>=(\d+)$`)
+	// 规则行里的类型 token：行首或括号、逗号后的全大写单词。
+	ruleKindTok = regexp.MustCompile(`(?:^|[(,])\s*([A-Z][A-Z0-9-]+)`)
 )
 
 // hasLegacyPercentArg 找 `%Arg%` 形式的老占位符。
@@ -58,6 +61,82 @@ func hasLegacyPercentArg(line string) bool {
 	return false
 }
 
+// NeededRequirement 算出模块正文实际用到的最低 CORE_VERSION。
+//
+// 和转换器抬门槛是同一套口径：版本声明低于这个值，模块在低版本上能导入、
+// 但用到新语法的行会被当注释静默丢掉。自检拿它抓"声明与内容对不上"，
+// external 的 tidy 拿它给上游模块补声明。
+func NeededRequirement(text string) int {
+	needed := 0
+	section := ""
+	for _, raw := range strings.Split(text, "\n") {
+		line := strings.TrimSpace(raw)
+		if line == "" {
+			continue
+		}
+		if strings.HasPrefix(line, "#!") {
+			key, value, _ := strings.Cut(line[2:], "=")
+			if strings.TrimSpace(key) == "arguments" && strings.TrimSpace(value) != "" {
+				// 与转换器同口径：引号包住的默认值要求更高。
+				if strings.ContainsRune(strings.TrimSpace(value), '"') {
+					needed = max(needed, ReqModern)
+				} else {
+					needed = max(needed, ReqArguments)
+				}
+			}
+			continue
+		}
+		if strings.HasPrefix(line, "#") || strings.HasPrefix(line, "//") || strings.HasPrefix(line, ";") {
+			continue
+		}
+		if strings.HasPrefix(line, "[") && strings.HasSuffix(line, "]") {
+			section = strings.TrimSpace(line[1 : len(line)-1])
+			continue
+		}
+		needed = max(needed, requirementForLine(section, line))
+	}
+	return needed
+}
+
+// requirementForLine 给出一行内容要求的最低门槛；不涉及新语法时返回 0。
+func requirementForLine(section, line string) int {
+	switch section {
+	case "Body Rewrite":
+		if bodyJQ.MatchString(line) {
+			return ReqModern
+		}
+		return ReqMapLocal
+	case "Map Local":
+		if statusCode.MatchString(line) || dataType.MatchString(line) {
+			return ReqMapLocal
+		}
+	case "IP Rewrite":
+		return ReqLatest
+	case "General":
+		key, _, _ := strings.Cut(line, "=")
+		switch strings.ToLower(strings.TrimSpace(key)) {
+		case "tun-included-routes", "ipv6-vif":
+			return ReqLatest
+		}
+	case "Rule":
+		need := 0
+		for _, match := range ruleKindTok.FindAllStringSubmatch(line, -1) {
+			switch strings.ToUpper(match[1]) {
+			case "DOMAIN-WILDCARD", "PROCESS-NAME":
+				need = max(need, ReqLatest)
+			case "URL-REGEX":
+				need = max(need, ReqModern)
+			}
+		}
+		if fields := splitTop(line, ","); len(fields) > 0 &&
+			strings.EqualFold(strings.TrimSpace(fields[len(fields)-1]), "pre-matching") {
+			need = max(need, ReqModern)
+		}
+		return need
+	}
+	return 0
+}
+
 // Validate 检查一份模块文本，返回所有问题（按行号排序）。
 func Validate(text string) []Problem {
 	var problems []Problem
@@ -66,6 +145,9 @@ func Validate(text string) []Problem {
 	argsSeen := map[string]int{}
 	lastRank := -1
 	sawName := false
+	sawRequirement := false
+	declared, declaredLine := 0, 0
+	requirementOK := false // 声明行解析失败时 meta-requirement 已报，不再重复算缺口
 
 	for index, raw := range strings.Split(text, "\n") {
 		lineNo := index + 1
@@ -83,11 +165,16 @@ func Validate(text string) []Problem {
 			case "arguments":
 				problems = append(problems, checkArguments(lineNo, value, argsSeen)...)
 			case "requirement":
+				sawRequirement = true
 				match := requirement.FindStringSubmatch(line)
 				if match == nil {
 					problems = append(problems, Problem{lineNo, "meta-requirement",
 						"requirement 不是 CORE_VERSION>=数字：" + line})
+					continue
 				}
+				declared, _ = strconv.Atoi(match[1])
+				declaredLine = lineNo
+				requirementOK = true
 			}
 			continue
 		}
@@ -121,6 +208,16 @@ func Validate(text string) []Problem {
 
 	if !sawName {
 		problems = append(problems, Problem{0, "meta-name", "缺少 #!name，Surge 会拒绝这个模块"})
+	}
+	needed := NeededRequirement(text)
+	switch {
+	case !sawRequirement && needed > 0:
+		problems = append(problems, Problem{0, "requirement-low",
+			"缺少 #!requirement，但内容用到需要 CORE_VERSION>=" + strconv.Itoa(needed) + " 的语法"})
+	case requirementOK && needed > declared:
+		problems = append(problems, Problem{declaredLine, "requirement-low",
+			fmt.Sprintf("requirement 声明 CORE_VERSION>=%d，但内容用到需要 CORE_VERSION>=%d 的语法",
+				declared, needed)})
 	}
 	return problems
 }

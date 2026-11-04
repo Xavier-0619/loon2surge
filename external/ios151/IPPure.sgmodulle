@@ -3,6 +3,7 @@
 #!author=ios151[https://github.com/ios151/Rewrite]
 #!category=Information
 #!system=ios
+#!requirement=CORE_VERSION>=5005000
 #!arguments=group:Proxy
 #!arguments-desc=【可选】策略组名称。若自动嗅探失败，将读取此组选中节点。
 # 由 loon2surge 从 ios151/Rewrite 同步整理

@@ -3,6 +3,7 @@
 #!author=bb
 #!category=酷我音乐
 #!date=2025-12-18
+#!requirement=CORE_VERSION>=5005000
 #!arguments=phone:1xx,ocr:kk,notify:1
 #!arguments-desc=phone: 手机号 (用于Web登录，可留空)\nocr: OCR密钥 (用于验证码识别，可留空)\nnotify: 通知模式 (1=每次通知, 0=仅23点汇总，默认1)
 # 由 loon2surge 从 ios151/Rewrite 同步整理

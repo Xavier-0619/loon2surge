@@ -7,7 +7,7 @@
 #!tag=订阅管理
 #!homepage=https://hub.kelee.one
 #!date=2026-10-02 13:57:49
-#!requirement=CORE_VERSION>=20
+#!requirement=CORE_VERSION>=5005000
 #!arguments=cron:55 23 * * *
 
 # 由 loon2surge 自动转换

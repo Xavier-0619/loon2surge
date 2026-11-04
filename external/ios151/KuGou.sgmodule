@@ -3,6 +3,7 @@
 #!author=bb
 #!category=KuGouMusic
 #!homepage=https://github.com/ios151/Rewrite
+#!requirement=CORE_VERSION>=6008000
 #!version=1.2.2.6
 # 由 loon2surge 从 ios151/Rewrite 同步整理
 

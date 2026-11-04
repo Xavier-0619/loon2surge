@@ -98,6 +98,16 @@ func TestValidateCatches(t *testing.T) {
 			"#!name=t\n[Header Rewrite]\nhttp-request ^https://a\\.com header-add Content-Length 1\n",
 			"header-framing",
 		},
+		{
+			"requirement 声明低于内容",
+			"#!name=t\n#!requirement=CORE_VERSION>=20\n[Map Local]\n^https://a\\.com data-type=text data=\"\" status-code=200\n",
+			"requirement-low",
+		},
+		{
+			"缺 requirement 但内容需要",
+			"#!name=t\n[Body Rewrite]\nhttp-response ^https://a\\.com (?-ims)x y\n",
+			"requirement-low",
+		},
 	}
 
 	for _, test := range cases {

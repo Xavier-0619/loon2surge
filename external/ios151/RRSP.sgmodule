@@ -2,6 +2,7 @@
 #!desc=频道获取每日最新Token..UMID
 #!author=@Jsforbaby
 #!category=人人视频
+#!requirement=CORE_VERSION>=5005000
 #!arguments=Token:请填写, UMID:请填写, 播放器名称:SenPlayer, 自定义Scheme:xxx
 #!arguments-desc=播放器名称支持: SenPlayer, Infuse, Fileball, VidHub, Alook, VLC, Safari
 # 由 loon2surge 从 ios151/Rewrite 同步整理

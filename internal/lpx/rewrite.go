@@ -228,7 +228,7 @@ func applyRewrite(ctx *Ctx, lineno int, phase, pattern, action string) ([]Emit, 
 	lowered := strings.ToLower(name)
 
 	if code, ok := rejectCodes[lowered]; ok {
-		return rejectAction(pattern, lowered, code, args)
+		return rejectAction(ctx, pattern, lowered, code, args)
 	}
 	if lowered == "redirect" {
 		return redirectAction(pattern, args)
@@ -242,9 +242,9 @@ func applyRewrite(ctx *Ctx, lineno int, phase, pattern, action string) ([]Emit, 
 			return headerAction(match[1], pattern, match[3], args)
 		case "body":
 			if match[3] == "mock" || match[3] == "mock_file" {
-				return mockAction(phase, pattern, match[3], args)
+				return mockAction(ctx, phase, pattern, match[3], args)
 			}
-			return bodyAction(match[1], pattern, match[3], args)
+			return bodyAction(ctx, match[1], pattern, match[3], args)
 		default:
 			return jsonAction(ctx, match[1], pattern, match[3], args)
 		}
@@ -276,7 +276,7 @@ func splitCall(action string) (string, string, error) {
 // 各动作
 // ---------------------------------------------------------------------------
 
-func rejectAction(pattern, name string, defaultCode int, args []string) ([]Emit, error) {
+func rejectAction(ctx *Ctx, pattern, name string, defaultCode int, args []string) ([]Emit, error) {
 	code := defaultCode
 	if len(args) > 0 && isDigits(args[0]) {
 		parsed, err := strconv.Atoi(args[0])
@@ -288,6 +288,9 @@ func rejectAction(pattern, name string, defaultCode int, args []string) ([]Emit,
 	if code < 200 || code > 999 {
 		return nil, unsupported("map-local-status", "Surge Map Local 只接受 200-999，收到 %d", code)
 	}
+	// 状态码与 data-type 都是 iOS 5.10.0 / Mac 5.6.0 才有的写法，
+	// 低版本上整行不生效，门槛必须跟上。
+	ctx.Need(ReqMapLocal)
 
 	if name == "reject_img" {
 		return []Emit{{"Map Local", pattern + " data-type=tiny-gif status-code=" + strconv.Itoa(code)}}, nil
@@ -320,7 +323,7 @@ func urlReplaceAction(phase, pattern string, args []string) ([]Emit, error) {
 }
 
 // mockAction 把 V2 的 response.body.mock / mock_file 转成静态 [Map Local]。
-func mockAction(phase, pattern, op string, args []string) ([]Emit, error) {
+func mockAction(ctx *Ctx, phase, pattern, op string, args []string) ([]Emit, error) {
 	if phase != "response" {
 		return nil, unsupported("rewrite-mock", "%s 只能用在 response 阶段", op)
 	}
@@ -347,6 +350,7 @@ func mockAction(phase, pattern, op string, args []string) ([]Emit, error) {
 		if status < 200 || status > 999 {
 			return nil, unsupported("rewrite-mock", "Surge Map Local 只接受 200-999，收到 %d", status)
 		}
+		ctx.Need(ReqMapLocal)
 		line := pattern + ` data-type=file data="` + target + `" status-code=` + strconv.Itoa(status)
 		return []Emit{{"Map Local", line}}, nil
 	}
@@ -357,6 +361,7 @@ func mockAction(phase, pattern, op string, args []string) ([]Emit, error) {
 	if strings.ContainsAny(body, "\r\n") {
 		return nil, unsupported("rewrite-mock", "mock 正文含换行，无法写成单行 Map Local")
 	}
+	ctx.Need(ReqMapLocal)
 	contentType := ""
 	if json.Valid([]byte(body)) {
 		contentType = ` header="Content-Type:application/json"`
@@ -443,7 +448,7 @@ func isFramingHeader(name string) bool {
 	return false
 }
 
-func bodyAction(phase, pattern, op string, args []string) ([]Emit, error) {
+func bodyAction(ctx *Ctx, phase, pattern, op string, args []string) ([]Emit, error) {
 	if op != "replace" && op != "replace_regex" {
 		return nil, unsupported("rewrite-body", "不支持的 body 动作：%s", op)
 	}
@@ -465,6 +470,8 @@ func bodyAction(phase, pattern, op string, args []string) ([]Emit, error) {
 	if err != nil {
 		return nil, err
 	}
+	// Body Rewrite 是 iOS 5.10.0 / Mac 5.6.0 才有的 section。
+	ctx.Need(ReqMapLocal)
 	line := prefixes[phase] + " " + pattern + " " + regexToken + " " + replacement
 	return []Emit{{"Body Rewrite", line}}, nil
 }
@@ -696,7 +703,7 @@ func fromLegacy(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 
 	switch {
 	case keyword == "url":
-		return legacyURL(pattern, rest)
+		return legacyURL(ctx, pattern, rest)
 	case strings.HasPrefix(keyword, "request-header"),
 		strings.HasPrefix(keyword, "response-header"),
 		strings.HasPrefix(keyword, "header"):
@@ -707,7 +714,7 @@ func fromLegacy(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 	return nil, unsupported("rewrite-legacy", "不支持的旧语法动作：%s", keyword)
 }
 
-func legacyURL(pattern, rest string) ([]Emit, error) {
+func legacyURL(ctx *Ctx, pattern, rest string) ([]Emit, error) {
 	args := decodeAll(words(rest))
 	if len(args) == 0 {
 		return nil, unsupported("rewrite-legacy", "url 后缺少动作")
@@ -715,15 +722,15 @@ func legacyURL(pattern, rest string) ([]Emit, error) {
 
 	switch action := strings.ToLower(args[0]); action {
 	case "reject":
-		return rejectAction(pattern, "reject", 404, nil)
+		return rejectAction(ctx, pattern, "reject", 404, nil)
 	case "reject-200":
-		return rejectAction(pattern, "reject", 200, nil)
+		return rejectAction(ctx, pattern, "reject", 200, nil)
 	case "reject-dict":
-		return rejectAction(pattern, "reject_dict", 200, nil)
+		return rejectAction(ctx, pattern, "reject_dict", 200, nil)
 	case "reject-array":
-		return rejectAction(pattern, "reject_array", 200, nil)
+		return rejectAction(ctx, pattern, "reject_array", 200, nil)
 	case "reject-img":
-		return rejectAction(pattern, "reject_img", 200, nil)
+		return rejectAction(ctx, pattern, "reject_img", 200, nil)
 	case "302", "307":
 		if len(args) < 2 {
 			return nil, unsupported("rewrite-legacy", "重定向缺少目标地址")
@@ -845,7 +852,7 @@ func legacyBody(ctx *Ctx, pattern, keyword, rest string) ([]Emit, error) {
 		if err != nil {
 			return nil, err
 		}
-		ctx.Need(ReqBase)
+		ctx.Need(ReqMapLocal)
 		line := prefix + " " + pattern + " " + regex + " " + replacement
 		return []Emit{{"Body Rewrite", line}}, nil
 	}

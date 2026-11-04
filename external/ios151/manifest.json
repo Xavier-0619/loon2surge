@@ -1,7 +1,7 @@
 {
   "source": "https://github.com/ios151/Rewrite",
   "ref": "main",
-  "synced_at": "2026-11-03 23:01:43 UTC",
+  "synced_at": "2026-11-04 07:05:36 UTC",
   "count": 56,
   "merged": 46,
   "entries": [
@@ -52,12 +52,13 @@
       "name": "AppRaven 邀请助手",
       "path": "AppraveTask.sgmodule",
       "snapshot": "AppraveTask.sgmodule",
-      "sha256": "1ff905e94ea65da81560975b8488e0e2cc510e94741b4d29e3deacd9e8b45fc3",
-      "bytes": 634,
+      "sha256": "9fa007a8558843019a6899fee04be274cffd7e73b43800849fe2f5e67db3d832",
+      "bytes": 670,
       "status": "merged",
       "stem": "AppRaven 邀请助手",
       "tidy": [
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -92,8 +93,8 @@
       "name": "Fi11 VIP 解锁",
       "path": "hvvj0/fi11.sgmodule",
       "snapshot": "hvvj0/fi11.sgmodule",
-      "sha256": "78de3e3f9c578713933a4fad966e20f41a817d6b15c1e311d345f323f4e74d8c",
-      "bytes": 1047,
+      "sha256": "4897a801ed9b2b8338961704f8244282539546e5f643be0dbf9be7b43955f4d0",
+      "bytes": 1083,
       "status": "merged",
       "stem": "Fi11 VIP 解锁",
       "accepted_problems": [
@@ -101,21 +102,23 @@
       ],
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
       "name": "IPPure Panel",
       "path": "IPPure.sgmodulle",
       "snapshot": "IPPure.sgmodulle",
-      "sha256": "1d4ae1e15da88756b2def4af445beca00e8b9b0c6073a9a7ba6d296ebc00b6e8",
-      "bytes": 688,
+      "sha256": "fb6921ada1a90779e4385f290c2a0ab389557f9f8a690bb0d100c2ee86e9d56f",
+      "bytes": 724,
       "status": "merged",
       "stem": "IPPure Panel",
       "tidy": [
         "section 按 Surge 惯例重排",
         "补齐 #!author（标明来源）",
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -170,15 +173,16 @@
       "name": "Pear视频解析",
       "path": "pear.sgmodule",
       "snapshot": "pear.sgmodule",
-      "sha256": "69546766231cfa630e196b9f4eb5a042b2748f2826a73c491357a4668b09905a",
-      "bytes": 2721,
+      "sha256": "0dbe70ae496ae795302d905c26ba62af0b3ebb4bc4a4629b3486b3d370371f21",
+      "bytes": 2757,
       "status": "merged",
       "stem": "Pear视频解析",
       "accepted_problems": [
         "argument-name"
       ],
       "tidy": [
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -229,14 +233,15 @@
       "name": "Telegram跳转",
       "path": "TgRedirect.sgmodule",
       "snapshot": "TgRedirect.sgmodule",
-      "sha256": "06fc74b19c588126048d347149a49974ef9439ca474d02e6cb383e080d82c741",
-      "bytes": 572,
+      "sha256": "b10d052732007d5edc89fbf826b9ca4b834a85c1d15d8cd710176739bac1dab3",
+      "bytes": 608,
       "status": "duplicate",
       "duplicate_of": "Telegram重定向",
       "reason": "与 Telegram重定向 是同一个功能",
       "tidy": [
         "头部 #!key = value 统一成 #!key=value",
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -297,8 +302,8 @@
     {
       "name": "insav",
       "path": "insav.tv.sgmodule",
-      "sha256": "eca8634c923a653e912d75325cc00286b979c9d37828017a913f7be4f3836009",
-      "bytes": 1364,
+      "sha256": "c6545691546b240701aaeedea69f62a049418db5b9a3a838e736b2dab4aac5cf",
+      "bytes": 1400,
       "status": "upstream-duplicate",
       "reason": "同名保留内容更全的 insav-tv/modules/insav.sgmodule"
     },
@@ -306,15 +311,16 @@
       "name": "insav 解锁",
       "path": "insav-tv/modules/insav.sgmodule",
       "snapshot": "insav-tv/modules/insav.sgmodule",
-      "sha256": "880f9a781eaaa179e90b264b266807d81d1c42aad2e750b092ec87115370f8a7",
-      "bytes": 1523,
+      "sha256": "552d89b684cd10cfece66f62a7a0a687e64cde43610de295b54423d89ed08060",
+      "bytes": 1559,
       "status": "merged",
       "stem": "insav 解锁",
       "accepted_problems": [
         "argument-name"
       ],
       "tidy": [
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -365,15 +371,16 @@
       "name": "porntube VIP 解锁",
       "path": "porntube/modules/porntube.sgmodule",
       "snapshot": "porntube/modules/porntube.sgmodule",
-      "sha256": "3a349858fc46223750e66106f03e8a2b7c272a6c15bfa60a1ab9c5dd124dc120",
-      "bytes": 2982,
+      "sha256": "cc98dbfeee16ff4cdf0534b4f1cd84f9c06fe2106f155f74ca4a430d0461dc0e",
+      "bytes": 3018,
       "status": "merged",
       "stem": "porntube VIP 解锁",
       "accepted_problems": [
         "argument-name"
       ],
       "tidy": [
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -418,15 +425,16 @@
       "name": "xjh51 香蕉视频",
       "path": "xjh51/modules/xjh51.sgmodule",
       "snapshot": "xjh51/modules/xjh51.sgmodule",
-      "sha256": "ced0ecffca9c36b7ea91c548ed30cfc5fe61c6a81df5cc86f2c040a1768a6ec7",
-      "bytes": 1603,
+      "sha256": "7e2932f342ab8b3f64f49effa57573dd9d4f675718385a8f9eabdbc9097f5da9",
+      "bytes": 1639,
       "status": "merged",
       "stem": "xjh51 香蕉视频",
       "accepted_problems": [
         "argument-name"
       ],
       "tidy": [
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -475,13 +483,14 @@
       "name": "人人视频",
       "path": "RRSP.sgmodule",
       "snapshot": "RRSP.sgmodule",
-      "sha256": "89535032b1bd07bac9c0f8960f1a400fff1a30e5d7928c338aa351e080a2e7c7",
-      "bytes": 699,
+      "sha256": "7fda421786d5d49fc8b6130cc020846d13dae072111ef163b8afa63ba4062823",
+      "bytes": 735,
       "status": "incompatible",
-      "reason": "L10 [script-type] Script 行缺少合法的 type=：http-request ^https?:\\/\\/api\\.rrmj\\.plus\\/m-station\\/drama\\/(?:page|pla…",
+      "reason": "L11 [script-type] Script 行缺少合法的 type=：http-request ^https?:\\/\\/api\\.rrmj\\.plus\\/m-station\\/drama\\/(?:page|pla…",
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -519,15 +528,16 @@
       "name": "咪咕视频",
       "path": "MGSP.sgmodule",
       "snapshot": "MGSP.sgmodule",
-      "sha256": "961035280460bff00fdd2eb13c0df83a05c3071559d2bf9caa172cb2d72a64e7",
-      "bytes": 874,
+      "sha256": "fed34889e881677cfe9016674be49af8a6808ecc5d8912acdfbef90174c59fdf",
+      "bytes": 910,
       "status": "merged",
       "stem": "咪咕视频",
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
         "补齐 #!author（标明来源）",
         "补齐 #!category（Surge 里好归类）",
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -547,15 +557,16 @@
       "name": "妻友社区解锁",
       "path": "qiyoushe/modules/qiyoushequ.sgmodule",
       "snapshot": "qiyoushe/modules/qiyoushequ.sgmodule",
-      "sha256": "9e730d76de532ea8c5d99f7c6a9b3fe86908f6be21c7a0f65f99e2062f10568f",
-      "bytes": 1841,
+      "sha256": "d40299534504c33132c984a9ed96b35706db0e664302cae1dc980827a06b6088",
+      "bytes": 1877,
       "status": "merged",
       "stem": "妻友社区解锁",
       "accepted_problems": [
         "argument-name"
       ],
       "tidy": [
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -618,15 +629,16 @@
       "name": "洛丽塔 VIP 解锁",
       "path": "luolita/modules/luolita.sgmodule",
       "snapshot": "luolita/modules/luolita.sgmodule",
-      "sha256": "292c403b5fdd95ef203d74d580cd86c77f1b9f256db6183d1b8a22c6030de2d9",
-      "bytes": 1319,
+      "sha256": "9c299f8d466e323286bf8e1a7c01be8da1df59c28f4955cce1146f49804f4d8b",
+      "bytes": 1355,
       "status": "merged",
       "stem": "洛丽塔 VIP 解锁",
       "accepted_problems": [
         "argument-name"
       ],
       "tidy": [
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -673,43 +685,46 @@
       "name": "适配可莉插件中心",
       "path": "pluginhub.sgmodule",
       "snapshot": "pluginhub.sgmodule",
-      "sha256": "28faf22f519a6827f013f2292b643e374ee616d8431293764fa86c943b8bc4e6",
-      "bytes": 841,
+      "sha256": "073c0bf86d0cac11605326bd35f80c15ecf6541de1e32f60cc09111965ee2342",
+      "bytes": 877,
       "status": "merged",
       "stem": "适配可莉插件中心",
       "tidy": [
         "section 按 Surge 惯例重排",
         "头部 #!key = value 统一成 #!key=value",
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
       "name": "酷我音乐签到",
       "path": "KuWoTask.sgmodulle",
       "snapshot": "KuWoTask.sgmodulle",
-      "sha256": "08d2ccc83b59e0f4a72cfd90b7d58e54628339639df4888110fb1d5b505a2954",
-      "bytes": 951,
+      "sha256": "cfe6708abcf34410448af60cc50c5a53a9a3ff1d16150b19910c2d0a0b8048e9",
+      "bytes": 987,
       "status": "duplicate",
       "duplicate_of": "酷我音乐去广告",
       "reason": "与 酷我音乐去广告 是同一个功能",
       "tidy": [
         "requires-body 的 true/false 统一写成 1/0",
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
       "name": "酷狗音乐会员解锁",
       "path": "KuGou.sgmodule",
       "snapshot": "KuGou.sgmodule",
-      "sha256": "aeffd2acec2515ba0554cfc544e8717193a467180f8ccd6e233b20ff06be6328",
-      "bytes": 12590,
+      "sha256": "81a8a043ab1f96e8773e32188be7244cf73845bdbb25861c86636397911cab53",
+      "bytes": 12626,
       "status": "duplicate",
       "duplicate_of": "酷狗音乐去广告",
       "reason": "与 酷狗音乐去广告 是同一个功能",
       "tidy": [
         "去掉 1 处行尾空白",
         "requires-body 的 true/false 统一写成 1/0",
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
@@ -746,35 +761,37 @@
       "name": "黄果短剧去广告",
       "path": "huangguoduanju/modules/huangguo.sgmodule",
       "snapshot": "huangguoduanju/modules/huangguo.sgmodule",
-      "sha256": "550b8d80a9600aa582eebb2e61365e860aef789617ba55b0b1c4410eb8ba808b",
-      "bytes": 597,
+      "sha256": "d21dd67c813672fb07c52160660e384ffad7b110891eb2b155aec82d58f4d663",
+      "bytes": 633,
       "status": "merged",
       "stem": "黄果短剧去广告",
       "tidy": [
         "section 按 Surge 惯例重排",
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
       "name": "黄豆短剧VIP解锁",
       "path": "huangdouduanju/huangdou.sgmodule",
       "snapshot": "huangdouduanju/huangdou.sgmodule",
-      "sha256": "d93fd2c2f06bf4bda66dc8028959db6a9509fa1dae84ba7e8be236be783a7b97",
-      "bytes": 1772,
+      "sha256": "7be01c3a681840ccc55ee7cab142f8e7d97c69ef5ac689752c7db976f8b2b29c",
+      "bytes": 1808,
       "status": "merged",
       "stem": "黄豆短剧VIP解锁",
       "accepted_problems": [
         "argument-name"
       ],
       "tidy": [
-        "加一行来源说明"
+        "加一行来源说明",
+        "补齐 #!requirement"
       ]
     },
     {
       "name": "黄豆短剧VIP解锁",
       "path": "huangdouduanju/modules/huangdou.sgmodule",
-      "sha256": "d93fd2c2f06bf4bda66dc8028959db6a9509fa1dae84ba7e8be236be783a7b97",
-      "bytes": 1772,
+      "sha256": "7be01c3a681840ccc55ee7cab142f8e7d97c69ef5ac689752c7db976f8b2b29c",
+      "bytes": 1808,
       "status": "upstream-duplicate",
       "reason": "内容与 huangdouduanju/huangdou.sgmodule 完全相同"
     }

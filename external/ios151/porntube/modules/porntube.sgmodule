@@ -4,6 +4,7 @@
 #!icon=https://raw.githubusercontent.com/fishdown/Icon/master/app/porntube.png
 #!category=18+
 #!homepage=https://github.com/ios151/Rewrite
+#!requirement=CORE_VERSION>=5005000
 #!arguments=日志级别:info,播放器:lenna,自定义scheme:none,URL编码:default,播放器跳转:yes
 #!arguments-desc=日志级别: off / error / warn / info(默认) / debug / all\n播放器: lenna / SenPlayer / SenPlayer-dl / Infuse / Fileball / VidHub / IINA / Alook / VLC / KMPlayer / NPlayer / Safari\n自定义scheme: 填写后覆盖播放器，例如 myplayer://play?url= ；留默认 none 表示不启用\nURL编码: yes / no / default(默认，走播放器默认行为)\n播放器跳转: yes(默认) / no
 # 由 loon2surge 从 ios151/Rewrite 同步整理

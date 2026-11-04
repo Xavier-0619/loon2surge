@@ -4,6 +4,7 @@
 #!icon=https://raw.githubusercontent.com/ios151/Rewrite/refs/heads/main/luolita/modules/luolita.png
 #!category=18+
 #!homepage=https://github.com/ios151/Rewrite
+#!requirement=CORE_VERSION>=5005000
 #!arguments=日志级别:info,播放器:lenna,自定义scheme:none,URL编码:default,播放器跳转:no
 #!arguments-desc=去广告与完整视频解锁默认常开，无需设置。\n日志级别: off / error / warn / info(默认) / debug / all\n播放器: lenna / SenPlayer / SenPlayer-dl / Infuse / Fileball / VidHub / IINA / Alook / VLC / KMPlayer / NPlayer / Safari\n自定义scheme: 填写后覆盖播放器，例如 myplayer://play?url= ；留默认 none 表示不启用\nURL编码: yes / no / default(默认)\n播放器跳转: yes / no(默认)
 # 由 loon2surge 从 ios151/Rewrite 同步整理

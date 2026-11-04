@@ -7,7 +7,7 @@
 #!tag=功能增强
 #!homepage=https://hub.kelee.one
 #!date=2026-10-02 13:57:49
-#!requirement=CORE_VERSION>=20
+#!requirement=CORE_VERSION>=5005000
 #!arguments=Weather_Provider:ColorfulClouds,NextHour_Provider:ColorfulClouds,AirQuality_Calculate_Algorithm:EU_EAQI,API_ColorfulClouds_Token:,API_QWeather_Host:devapi.qweather.com,API_QWeather_Token:,API_WAQI_Token:,Storage:Argument,LogLevel:WARN
 
 # 由 loon2surge 自动转换

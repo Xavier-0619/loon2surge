@@ -2,6 +2,7 @@
 #!desc=Fi11 解锁 VIP 视频 + 去广告
 #!author=Jsforbaby
 #!category=18+
+#!requirement=CORE_VERSION>=5005000
 #!arguments=日志级别:info
 #!arguments-desc=日志级别: off / error / warn / info(默认) / debug / all
 # 由 loon2surge 从 ios151/Rewrite 同步整理

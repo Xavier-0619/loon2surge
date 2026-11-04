@@ -298,6 +298,30 @@ func TestMetadata(t *testing.T) {
 			t.Errorf("JQ 应抬到 6008000：\n%s", modern.Text)
 		}
 	})
+
+	// data-type / status-code、Body Rewrite、参数表都是新版本才认的写法；
+	// 声明的版本低了，低版本 Surge 上这些行会被当注释静默丢掉。
+	t.Run("新语法门槛不再停留在 20", func(t *testing.T) {
+		cases := []struct {
+			name  string
+			input string
+			want  string
+		}{
+			{"Map Local 旧语法", "#!name=t\n[Rewrite]\n^https:\\/\\/a\\.com\\/ad url reject-dict\n", "5006000"},
+			{"Map Local V2", "#!name=t\n[Rewrite]\nresponse if ${url} ~= /^https:\\/\\/a\\.com\\// then response.body.mock(\"x\")\n", "5006000"},
+			{"普通 Body Rewrite", "#!name=t\n[Rewrite]\nresponse if ${url} ~= /^https:\\/\\/a\\.com\\// then response.body.replace(/foo/, \"bar\")\n", "5006000"},
+			{"模块参数", "#!name=t\n[Argument]\nCron=select, \"0 1 * * *\"\n[Script]\ncron {Cron} script-path=https://e.com/j.js, tag=Job\n", "5005000"},
+			{"裸域名规则", "#!name=t\n[Rule]\nexample.com\n", "6008000"},
+		}
+		for _, test := range cases {
+			t.Run(test.name, func(t *testing.T) {
+				result := convert(t, test.input)
+				if !strings.Contains(result.Text, "#!requirement=CORE_VERSION>="+test.want) {
+					t.Errorf("门槛应抬到 %s，产物：\n%s", test.want, result.Text)
+				}
+			})
+		}
+	})
 }
 
 // ---------------------------------------------------------------------------

@@ -4,6 +4,7 @@
 #!category=18+
 #!homepage=https://github.com/ios151/Rewrite
 #!date=2026-09-02
+#!requirement=CORE_VERSION>=6008000
 # 由 loon2surge 从 ios151/Rewrite 同步整理
 
 [Rule]

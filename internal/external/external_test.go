@@ -101,6 +101,28 @@ func TestTidyLeavesComplicatedRegexAlone(t *testing.T) {
 	}
 }
 
+// 版本声明低于内容实际用到的语法时，低版本 Surge 会把这些行当注释丢掉。
+// tidy 要像转换器一样把声明补/抬到同一个标准，外部模块才不会被自检拦下。
+func TestTidyFillsRequirement(t *testing.T) {
+	missing := "#!name=x\n\n[Body Rewrite]\nhttp-response ^https://a\\.com (?-ims)x y\n"
+	got, _ := tidy(missing, "")
+	if !strings.Contains(got, "#!requirement=CORE_VERSION>=5006000") {
+		t.Errorf("Body Rewrite 应补 requirement：\n%s", got)
+	}
+
+	low := "#!name=x\n#!requirement=CORE_VERSION>=20\n\n[Map Local]\n^https://a\\.com data-type=text data=\"\" status-code=200\n"
+	got, _ = tidy(low, "")
+	if !strings.Contains(got, "#!requirement=CORE_VERSION>=5006000") {
+		t.Errorf("低估的 requirement 应抬到 5006000：\n%s", got)
+	}
+
+	high := "#!name=x\n#!requirement=CORE_VERSION>=6008000\n\n[Map Local]\n^https://a\\.com data-type=text data=\"\" status-code=200\n"
+	got, _ = tidy(high, "")
+	if !strings.Contains(got, "#!requirement=CORE_VERSION>=6008000") {
+		t.Errorf("已够高的 requirement 不应被改：\n%s", got)
+	}
+}
+
 func TestTidyDropsDuplicateLinesAndEmptySections(t *testing.T) {
 	input := "#!name=x\n\n[Rule]\nDOMAIN,a.com,REJECT\nDOMAIN,a.com,REJECT\n\n[Panel]\n"
 	got, _ := tidy(input, "")

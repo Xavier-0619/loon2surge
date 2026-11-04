@@ -7,7 +7,7 @@
 #!tag=定时任务
 #!homepage=https://hub.kelee.one
 #!date=2026-10-02 13:57:49
-#!requirement=CORE_VERSION>=20
+#!requirement=CORE_VERSION>=5005000
 #!arguments=CaptureAccountToken:#,RunTask:#,RunMonitor:true,TaskCron:0 0/2 * * * ?,TaskMonitor:0 * * * * ?
 
 # 由 loon2surge 自动转换

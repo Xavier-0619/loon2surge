@@ -3,6 +3,7 @@
 #!author=ios151 Rewrite
 #!category=18+
 #!homepage=https://github.com/ios151/Rewrite
+#!requirement=CORE_VERSION>=5005000
 #!arguments=播放器名称:lenna, 自定义Scheme:完整的URLscheme, URL编码:auto, 日志级别:info, 播放器跳转:yes
 #!arguments-desc=播放器支持: lenna, SenPlayer, SenPlayer-dl, Infuse, Fileball, VidHub, Alook, VLC, KMPlayer, IINA, NPlayer, Safari\n自定义Scheme优先级最高，例如: myplayer://play?url=\nURL编码: auto(自动), yes(强制编码), no(不编码)\n播放器跳转: yes(通知跳转外部播放器), no(不通知、不跳转)\n日志级别: off / error / warn / info(默认) / debug / all\n\n推荐使用BoxJS配置，无需填写参数！
 # 由 loon2surge 从 ios151/Rewrite 同步整理

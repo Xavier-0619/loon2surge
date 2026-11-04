@@ -7,7 +7,7 @@
 #!tag=去广告
 #!homepage=https://hub.kelee.one
 #!date=2026-10-02 13:57:49
-#!requirement=CORE_VERSION>=20
+#!requirement=CORE_VERSION>=5005000
 #!arguments=app:tg
 
 # 由 loon2surge 自动转换

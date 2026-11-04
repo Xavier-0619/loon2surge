@@ -2,6 +2,7 @@
 #!desc=支持可莉插件中心的插件给Surge使用; 非Loon用户切勿反馈插件任何问题，尊重原创; 使用前请先添加ScriptHub模块. 插件中心网址 https://pluginhub.kelee.one
 #!author=原作者@iKeLee
 #!category=可莉插件中心
+#!requirement=CORE_VERSION>=5006000
 # 由 loon2surge 从 ios151/Rewrite 同步整理
 
 [Header Rewrite]

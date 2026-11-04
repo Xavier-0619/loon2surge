@@ -57,7 +57,8 @@ func convertRule(ctx *Ctx, lineno int, line string) ([]Emit, error) {
 		if domain == "" {
 			return nil, nil
 		}
-		ctx.Need(ReqBase)
+		// 行尾带 pre-matching，与 formatRule 同一套门槛。
+		ctx.Need(ReqModern)
 		return []Emit{{"Rule", "DOMAIN," + domain + ",REJECT,extended-matching,pre-matching"}}, nil
 	}
 
@@ -158,7 +159,7 @@ func ruleOptions(ctx *Ctx, kind string) []string {
 
 func ruleAsMapLocal(ctx *Ctx, pattern, policy string) []Emit {
 	local := mapLocalByPolicy[policy]
-	ctx.Need(ReqBase)
+	ctx.Need(ReqMapLocal)
 	if local.tinyGif {
 		return []Emit{{"Map Local", pattern + " data-type=tiny-gif status-code=200"}}
 	}
